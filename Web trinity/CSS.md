@@ -1,4 +1,4 @@
-# CSS
+ # CSS
 
 Css (o **hojas de estilo en cascada**) es un "lenguaje" designado al diseño de nuestra pagina web, dado que con este añadimos el "estilo" de la pagina en si.
 
@@ -539,6 +539,22 @@ b{
 }
 ~~~
 
+Otras opciones del parámetro `display` son:
+
++ `inline-block` transforma un elemento de cualquier tipo a un elemento en linea que ademas nos permite editar las dimensiones de la caja con las propiedades `width` y `height`.
+
++ `flex`
+
+  + `inline-flex`
+
++ `grid`
+
+  + `inline-gird`
+
+  ---
+
+
+
 ### Propiedades de cajas
 
 Las cajas (al igual que todo técnicamente en css) tienen propiedades que editan el como se ven estas, las mismas podemos usarlas en distintas formas para distintas ocasiones, pero ahora veremos las principales.
@@ -660,7 +676,7 @@ la propiedad `position` es otra mas orientada a las cajas y se encarga de **posi
   
   ---
   
-+ `absolute` este es similar al `relative` con una diferencia especial, este al mover un objeto, también se mueve esa "caja vacía" que se generaba con el html (**ptra cosa importante es que si no definimos un valor para el `height` y `width` estos se ajustaran al tamaño del contenido aun sea una caja en bloque o en linea**) cabe recordar que este **usa los mismos parámetros de "top, left, right y bottom"**
++ `absolute` este es similar al `relative` con una diferencia especial, este al mover un objeto, también se mueve esa "caja vacía" que se generaba con el html (otra cosa importante es que si no definimos un valor para el `height` y `width` estos se ajustaran al tamaño del contenido aun sea una caja en bloque o en linea) **cabe recordar que este usa los mismos parámetros de "top, left, right y bottom"**
 
   ademas debo resaltar que a diferencia de el `relative`, en este la posición original es en torno al objeto "padre".
 
@@ -700,4 +716,346 @@ p{
 }
 ~~~
 
+---
 
+## Propiedades útiles
+Como ya sabemos hay un numero gigantesco de propiedades que nos pueden ser útiles en nuestro css, y por eso aquí veremos muchas de ellas.
+### Overflow
+
+Digamos que tienes una caja en la que quieres insertar texto, pero la cantidad de texto es mayor al tamaño de su contenedor, por lo que el texto se **"desborda"** esto obvio no es algo bonito para nuestra pagina y una forma de arreglar esto seria añadiendo un scroll **dentro del contenedor donde esta nuestro texto**.
+
+Esto mismo lo logramos con la propiedad `overflow:` que es un tipo de "propiedad **shorter**" por que al igual que otras como la propiedad `padding` este se compone de 2 propiedades, que son:
+
++ `overflow-x:`  crea el scroll de desborde en el eje x.
++ `overflow-y:` crea el scroll de desborde en el eje y.
+
+ este tiene por defecto una opción, la cual es "visible" y permite ver este texto fuera de su caja pero ademas de esta existen otras como:
+
++ `auto` este se encarga de ver si nuestro "en este caso texto" desborda su contenedor y de ser así le da una barra de scroll para poder moverte por este.
+
+  ---
+
++ `scroll` este **coloca la barra de scroll de forma obligada, sea necesario o no**
+
+  ---
+
++ `hidden` este se encarga de **esconder** el "contenido" que sale de su contenedor como si este desapareciera al no estar en contacto con su contenedor.
+
+  ---
+
+Cabe aclarar que estas opciones también funcionan con las propiedades `overflow-x:` y `overflow-y:` si es que queremos especificar con que eje queremos trabajar.
+
+*un ejemplo de uso de estos seria:*
+
+~~~css
+p{
+    overflow: scroll; /*nos da la barra de scroll en todo momento*/
+}
+
+p{
+    overflow-x: hidden; /*escuende el elemento que se "desborda" en solo el eje x*/
+}
+~~~
+
+---
+
+## Métodos de maquetáción
+
+### Float (y clear)
+
+Este es otro parámetro bastante útil en muchos casos, este nos permite seleccionar a que lado del contenedor se va a apegar un objeto, así saliendo del flujo normal del html.
+
+Esto significa que si por ejemplo movemos un objeto de su punto normal y lo volvemos a mover al punto original luego, este no afectara los demás elementos y se posicionara detrás de los elementos que si estén en este flujo html.
+
+Por defecto esta propiedad tendrá asignado el parámetro `none` que mantendrá el objeto en su flujo normal de html, pero ademas existen los parámetros:
+
++ `left` apega el objeto al lado izquierdo de su contenedor.
++ `right` apega el objeto al lado derecho de su contenedor.
++ `inherit` le entrega el mismo valor que una etiqueta "padre".
+
+*Un ejemplo de este seria:*
+
+~~~css
+img{
+    float: right; /*esto apegara la imagen al lado derecho de su contenedor*/
+}
+~~~
+
+---
+
+#### Clear
+
+Clear es una propiedad muy bien ligada a el float, al usar un dato float o de cualquier otro tipo podemos hacer algo llamado **limpieza** que se basa simplemente en seleccionar que datos pueden estar o no a los lados de un objeto.
+
+Sus parámetros son:
+
++ `left` hace esa "limpieza" a los objetos que estén al lado izquierdo de nuestro objeto.
++ `right` hace esa misma limpieza a los objetos que estén al lado derecho de nuestro objeto.
++ `both` que hace la limpieza a los objetos que estén tanto al lado izquierdo como al derecho de nuestro objeto.
++ `none` es el valor por defecto de esta propiedad.
+
+por ejemplo si tenemos un objeto  con un `float: left;` y le añadimos como extra un `clear: right;`, dejara un espacio en blanco al lado derecho de nuestro objeto en si.
+
+----
+
+## Pseudo-Elementos
+
+Los pseudo elementos son "partes" de los elementos que usamos y que podemos editar de por si, por ejemplo, la primera linea de un texto.
+
+Los pseudo-elementos requieren de la siguiente sintaxis:
+
+~~~css
+.elemento-1-texto::pseudo-elemento{
+    /*todo lo que ingresemos aqui, solo editara al pseudo-elemento que seleccionemos*/
+}
+~~~
+
+Y los pseudo-elementos que nos importan son los siguientes:
+
++ `::first-line` nos permite iterar en la primera linea de un texto (esta linea puede verse editada por el funcionamiento responsive de nuestra pagina) **este funciona en todos los tipos de elemento, excepto los elementos en linea**
+
+  *un ejemplo de uso seria:*
+
+  ~~~css
+  .texto1::first-line{
+      color: red;
+  }
+  ~~~
+
+  suponiendo que tenemos un texto multi-linea con un `id="texto1"`, esto hara que la primera linea de ese texto se muestre en color rojo
+  
+  ---
+  
++ `::first-letter` nos permite iterar en la primera palabra del texto que usemos (este no se adaptara al diseño responsive de nuestra pagina, sino a el texto que usemos) y al igual que el `::first-line` **funciona en todo tipo de elemento excepto los elementos en linea**
+
+  *un ejemplo de uso seria:*
+
+  ~~~css
+  .texto1::first-letter{
+      color: blue;
+      font-size: 4em;
+  }
+  ~~~
+
+  En este caso (suponiendo que tienes el mismo texto que mencionamos en el `::first-line`) determinara que la primera letra tendrá **color azul y un tamaño de 4 em**.
+
+  ---
+
++ `::placeholder` nos permite iterar con el "texto" que se muestre dentro de un input, refiriéndome con esto a por ejemplo ese típico texto de *inserte su contraseña*.
+
+  *un ejemplo de uso seria:*
+
+  ~~~css
+  .input::placeholder{
+      color: yellow;
+      font-size: 12px;
+  }
+  ~~~
+
+  esto hará que ese texto por defecto aparezca en color amarillo y con un tamaño de fuente de 12px.
+
+  ---
+
++ `::selection` haz notado que al mantener clic izquierdo y mover el mouse siempre se ve un cuadro azul con texto en blanco?, pues esto nos permite cambiar eso.
+
+  *un ejemplo de uso seria:*
+
+  ~~~css
+  .input::selection{
+      color: yellow;
+  }
+  ~~~
+
+  esto hará que en el input mencionado, si usamos esa "selección" (clic izquierdo y mover mouse) en el input, el color del texto seleccionado sera de color amarillo
+
+  ---
+
++ `::before` (antes) nos permite hacer una "edición" antes de un elemento **creando un elemento hijo** el cual es un "elemento en linea"
+
+  *por ejemplo:*
+
+  ~~~html
+  <p id="nombre">Rodrigo</p> <!--supongamos que tenemos esto en html-->
+  <!--esto deberia mostrar solo el texto "Rodrigo" en nuestra pagina-->
+  ~~~
+
+  para añadir un texto antes deberíamos hacer:
+
+  ~~~css
+  .nombre::before{
+      content: "Hola, mi nombre es ";
+  }
+  ~~~
+
+  Esto nos mostrara en la pagina el texto `Hola, mi nombre es Rodrigo` pues añadimos un "pseudo-elemento" **antes** de el elemento que queremos iterar, esto se puede aplicar a mas etiquetas, no solo texto.
+
+  **cabe recalcar que este necesita si o si el parámetro `content` o sino no funciona**
+
+  ---
+
++ `::after` (después) nos permite generar un "pseudo-elemento" hijo (en linea) **después** de el elemento que ya tenemos y en el que queremos iterar.
+
+  *por ejemplo:*
+
+  ~~~css
+  /*supongamos que estamos usando el mismo html de el ejemplo anterior*/
+  .nombre::after{
+      content: " ese es mi nombre!!!";
+  }
+  ~~~
+
+  Esto nos mostrara el texto `Rodrigo ese es mi nombre!!!` generando un `pseudo-elemento` **después** del elemento a iterar ademas de que este también se puede aplicar a otras etiquetas, no solo a las de texto.
+
+  **este al igual que el before requiere si o si del parámetro `content`.**
+
+---
+
+## Pseudo-Clases
+
+Estas podríamos resumirlos como "accionadores" que cuando se cumpla una "condición" se generara un "cambio" en el estilo de lo que active este "accionador" o mejor dicho **son estados de elementos que cambian según lo que haga el usuario**.
+
+**Recordar que aun que hablamos de "condiciones" este no sirve como una función o condicional de cualquier lenguaje de programación**.
+
+Su sintaxis es similar a la de los **pseudo-elementos** solo que con un cambio principal **usan `:` en lugar de `::`** y su uso seria de la siguiente forma:
+
+~~~css
+.elemento-seleccionado:pseudo-clase{
+    /*aqui va la edicion activada con esa pseudo-clase*/
+}
+~~~
+
+*alguna de estas son:*
+
+### Pseudo-Clases (enlaces)
+
++ `:hover` Nos permite generar cambios cuando **el mouse pasa sobre el elemento especifico**
+
++ `:active` Nos permite generar cambios cuando **se presiona un enlace u elemento**
+
++ `:link` Nos permite generar cambios **a un enlace sin visitar** (cuando el enlace se ve en azul normal)
+
++ `:visited` Nos permite generar cambios **a un enlace ya visitado** (cuando el enlace se ve en azul gastado)
+
+  ---
+
+### Pseudo-clases (generales)
+
++ `:first-child` si tenemos una clase padre con 3 elementos hijo, este nos permite **editar el primer elemento hijo** ademas de permitirnos seleccionar que tipo de elemento hijo queremos editar.
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-padre :first-child{
+      /*itera en el "primer hijo de la clase"*/
+  }
+  
+  .clase-padre p:first-child{
+      /*itera en el "primer hijo de la clase" que sea un parrafo*/
+  }
+  ~~~
+
++ `:last-child` si tenemos una clase padre con 3 elementos hijo, este nos permite **editar el ultimo elemento hijo** ademas de permitirnos seleccionar que tipo de elemento hijo queremos editar.
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-padre :last-child{
+      /*itera en el "ultimo hijo de la clase"*/
+  }
+  
+  .clase-padre p:last-child{
+      /*itera en el "ultimo hijo de la clase" que sea un parrafo*/
+  }
+  ~~~
+
+  ---
+
++ `:first-of-type` nos permite **seleccionar el primero elemento entre sus hermanos** y iterar en el.
+
+  *ejemplo de uso:*
+
+  ~~~css
+  p:first-of-type{
+      /*itera en el "primer elemento de tipo parrafo" que encuentre entre sus hermanos*/
+  }
+  
+  .clase-padre p:first-of-type{
+      /*itera en el "primer elemento de tipo parrafo" que este dentro de la "clase-padre"*/
+  }
+  ~~~
+
++ `:last-of-type` nos permite **seleccionar el ultimo elemento entre sus hermanos** y iterar en el.
+
+  *ejemplo de uso:*
+
+  ~~~css
+  p:last-of-type{
+      /*itera en el "ultimo elemento de tipo parrafo" que encuentre entre sus hermanos*/
+  }
+  
+  .clase-padre p:last-of-type{
+      /*itera en el "ultimo elemento de tipo parrafo" que este dentro de la "clase-padre"*/
+  }
+  ~~~
+
+  ---
+
+### Pseudo-clases (listas)
+
++ `:nth-child()` Si tenemos una lista, este nos permite seleccionar **en que elemento de la lista iterar**.
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-lista:nth-child(3){
+      /*en este caso al tener un 3 nos permite editar solo el tercer elemento de la lista*/
+  }
+  
+  .clase-lista:nth-child(odd){
+      /*en este caso al tener un odd nos permite editar los elementos con posicion inpar*/
+  }
+  
+  .clase-lista:nth-child(even){
+      /*en este caso al tener un even nos permite editar los elementos con posicion par*/
+  }
+  
+  .clase-lista:nth-child(4n){
+      /*en este caso al tener un 4n nos permite editar un elemento cada 4 de estos*/
+      /*osea que en este caso los 4to, 8vo, 12vo... elementos se editaran*/
+  }
+  ~~~
+
++ `nth-last-child` nos permite iterar con **solo el ultimo elemento en nuestra  lista**.
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-lista:nth-last-child{
+      /*en este caso iteramos en el ultimo elemento de la lista*/
+  }
+  
+  .clase-lista:nth-last-child(3){
+      /*en este caso iteramos en el elemento numero 3 de abajo hacia arriba*/
+  }
+  ~~~
+
++ `:nth-of-type()` nos permite seleccionar un elemento en una lista **dependiendo del tipo de elemento y con el indice que ingresemos en la pseudo-clase**
+
+  *ejemplo de uso:*
+  
+  ~~~css
+  .clase-lista p:nth-of-type(3){
+      /*en este caso se iterara en el tercer parrafo que este dentro de la "clase-lista"*/
+      /*la clase no necesariamente debe ser lista, pero debemos añadir indice si o si*/
+  }
+  ~~~
+  
++ `:nth-last-of-type` nos permite seleccionar un elemento en la lista **dependiendo del tipo de elemento, el indice usado y este se cuenta de forma inversa (de abajo hacia arriba)**
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-lista p:nth-last-of-type(3){
+      /*en este caso se iterara en el tercer parrafo en la clase desde abajo hacia arriba*/
+  }
+  ~~~
