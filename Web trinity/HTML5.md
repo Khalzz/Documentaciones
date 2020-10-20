@@ -371,9 +371,11 @@ ademas en el `<form></form>` existe el parámetro `method=""` ahí seleccionarem
 
 ~~~html
 <form method="metodo de envio al servidor">
-    <input type="tipoDeInput" name="nombreQueLoConectaConElBackend">
+    <input type="tipoDeInput" name="identificadorDeBackend" placeholder="textoDefault">
 </form>
 ~~~
+
+*Ojo: aquí usamos el parámetro `name=""` este es un "parámetro obsoleto y puede que google nos penalice a la hora de tener alguna prioridad en los buscadores, por lo que recomiendo que lo cambies por `id=""`*, ademas el `placeholder=""` nos permite ingresar textos default, como ese tipico texto de *inserte su contraseña*.
 
 En el type hay varias opciones que pueden ir en el atributo `type` y algunas son:
 
@@ -556,6 +558,3 @@ osea que si por ejemplo usamos un elemento en linea, al colocar otro debería or
 + `<table>` (tables)
 
 ---
-
-
-
