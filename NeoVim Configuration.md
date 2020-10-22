@@ -16,6 +16,7 @@ set sw=2
 set relativenumber
 set laststatus=2
 set updatetime=250
+
 call plug#begin('~/.vim/plugged')
 
 " Temas
@@ -37,6 +38,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'xuyuanp/nerdtree-git-plugin'
 Plug 'OmniSharp/omnisharp-vim'
+Plug 'mattn/emmet-vim'
 
 call plug#end()
 
@@ -47,7 +49,7 @@ let g:indentLine_fileTypeExclude = ['text', 'sh', 'help', 'terminal']
 let g:indentLine_bufNameExclude = ['NERD_tree.*', 'term:.*']
 let mapleader=" "
 let g:deoplete#enable_at_startup = 1
-
+let g:user_emmet_leader_key=','
 
 "atajos de teclado de pluggins
 nmap <Leader>s <Plug>(easymotion-s2)
