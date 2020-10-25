@@ -133,18 +133,22 @@ Antes de iniciar con la edición de html hay 3 cosas que deberías saber:
 
 El lenguaje de html se basa en "etiquetas" que de forma resumida son "marcadores" y indican la funcion del texto que estamos escribiendo, por ejemplo un `<p>asi escribimos un parrafo</p>` y se separan en 2 tipos distintos, los cuales son:
 
-+ Etiquetas "auto-concluidas" osea que se abren y se cierran al instante usando `</>`
++ Etiquetas "auto-concluidas" osea que se abren y se cierran al instante usando `<>`
 
   ~~~html
-  <meta name="description" content="esta es la descripcion de mi pagina"/>
+  <meta name="description" content="esta es la descripcion de mi pagina">
   ~~~
+
+  las etiquetas auto-concluidas no requieren de `/` para funcionar, de hecho deberiamos saltarnos este signo **a no ser que trabajemos con herramientas como react** pero en ese caso no es necesario en todas las ocaciones como con `<link>`,  `<br>` , `<img>`, etc...
+
+  ---
 
 + Etiquetas "dobles" osea que requieren de un texto que la inicie y otro que la cierre usando `<></>`
 
   ~~~html
   <p>Esto es un parrafo y requiere una "etiqueta doble"</p>
   ~~~
-  
+
   ---
 
 En el caso del primer ejemplo añadimos "propiedades" dentro de la etiqueta, esto se puede añadir a técnicamente **todas las etiquetas** así editamos lo que ingresemos en nuestras etiquetas o la función de la etiqueta en si (esto lo veremos mas adelante).
@@ -159,13 +163,13 @@ Esta nos permite en efecto editar estos datos, así entregando una "información
 Las "propiedades" que puede tener son las siguientes:
 
 ~~~html
-<meta name="description" content="aqui escribimos el texto de mi descripcion"/>
-<meta name="author" content="Rodrigo Seguel"/>
-<meta name="keywords" content="palabras,clave,para,facilitar,la,busqueda,de,tu,pagina"/>
-<meta charset="utf-8" /> este se usa para agregar caracteres extra a la pagina
-<meta name="copyright" content="nombre de la empresa quien tiene los derechos"/>
-<meta name="robots" content="index"/> este permite mostrar la pagina en buscadores
-<meta name="robots" content="noindex"/> este no muestra la pagina en buscadores
+<meta name="description" content="aqui escribimos el texto de mi descripcion">
+<meta name="author" content="Rodrigo Seguel">
+<meta name="keywords" content="palabras,clave,para,facilitar,la,busqueda,de,tu,pagina">
+<meta charset="utf-8" > este se usa para agregar caracteres extra a la pagina
+<meta name="copyright" content="nombre de la empresa quien tiene los derechos">
+<meta name="robots" content="index"> este permite mostrar la pagina en buscadores
+<meta name="robots" content="noindex"> este no muestra la pagina en buscadores
 ~~~
 
 Como se puede ver, la parte "name" nos permite elegir seleccionar que opción queremos mostrar, y el "content" nos permite mostrar el contenido de esa misma "opción".
@@ -220,7 +224,7 @@ Si queremos hacer un hipervínculo "interno" como lo podría ser un indice o alg
 
 ~~~HTML
 <head>
-	<link href="nombre-de-archivo.css" rel="stylesheet" type="text/css"/>
+	<link href="nombre-de-archivo.css" rel="stylesheet" type="text/css">
 </head>
 ~~~
 
