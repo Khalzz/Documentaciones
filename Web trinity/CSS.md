@@ -14,6 +14,8 @@ Debemos tomar en cuenta que el css se hace en conjunto usualmente con el html, p
 
 ---
 
+# CSS (Básico)
+
 ## inicia tu estilo
 
 Como ya dije css se usa para **crear el aspecto gráfico de nuestra pagina** así editando lo que se conoce como "**el flujo de html**" este siendo la forma en la que se "ven" los datos del html (en este caso desde arriba hacia abajo en orden) ademas de los colores y formas de todos estos datos.
@@ -47,7 +49,7 @@ Luego como demostramos en el ejemplo usamos el `href = "style.css"` para enlazar
 
 ---
 
-## Estructura de css
+## Conocimiento basico de css
 
 En el nuevo archivo de css debemos estructurar el código de una forma especifica, en el archivo debemos manejar la siguiente:
 
@@ -214,7 +216,7 @@ Cambien podríamos hacerlo con clases, id u otros métodos pero este también si
 
 ---
 
-   ### Unidades
+### Unidades
 
 En Css hay 2 tipos muy específicos de medidas (refiriéndome al tamaño) estas se aplican a todas las propiedades que trabajen con medidas y son estas:
 
@@ -260,6 +262,8 @@ p{
   ~~~
   
   Lo mismo se aplica si esto es un 100%, 20%, 1% etc...
+
+**OJO, si queremos usar numeros decimales como 0.1; 0.50; 0.23; etc... podemos simplemente usar el numero escribiendo por ejemplo: .1; .50; .23; etc...**
 
 ---
 
@@ -343,6 +347,29 @@ Esta jerarquía ya mencionada sigue la siguiente lista **(esta lista va en orden
        color:red
    }
    ~~~
+
+---
+
+### Colores
+
+A la hora de trabajar nuestros diseños como es obvio **el color sera importante para nosotros** pero al ser algo general debemos saber como trabajar con estos.
+
+El color de por si tiene muchas formas de ser ingresado y estas son:
+
++ **nombre de color** (red, blue, yellow, etc...) //no tan recomendado//
+
++ **Hexadecimal** (#B38176, #48DFCD, #140E5F, etc...)
++ **RGB** ([0, 230, 45], [255, 120, 21], [41, 87, 101], etc...)
++  **RGBA** ([0, 230, 45, 0,1], [255, 120, 21, 0.15], [41, 87, 101, 0.42], etc...)
++ **HSl** ([180, 50%, 50%], [44, 15%, 80%], [15, 50%, 41%], etc...) //poco usado//
++ **HSLA** ([180, 50%, 50%, 0.8], [44, 15%, 80%, 0.1], [15, 50%, 41%, 0.15], etc...) //poco usado//
+
+Y esto lo podemos aplicar a cualquier propiedad que tenga algo que ver con el color, como:
+
++ `color:` Cambia el color de los elementos que esten en **primer plano** y no cambia el color de la caja.
++ `background-color:` Cambia el color de fondo del elemento (de la caja).
++ `font-color:` Cambia solo el color de la fuente de un texto.
++ etc...
 
 ---
 
@@ -491,6 +518,17 @@ img{
 }
 ~~~
 
+Otra cosa que podríamos hacer seria algo mas fácil y se basa en **añadir en el archivo principal, la edición básica para nuestro css** por ejemplo:
+
+~~~css
+body{
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    /*estas serian las opciones principales para el body pero deberiamos añadir mas*/
+}
+~~~
+
 
 
 ---
@@ -506,6 +544,33 @@ Estas cajas determinan el espacio que ocupa el objeto y son visibles con la opci
 ![imagen no encontrada](https://hackernoon.com/hn-images/1*2jZwpWH9XO_QllhEpyGqMA.png)
 
 este es un "ejemplo" del modelo de cajas y lo que lo compone.
+
+---
+
+Algo a tomar en cuenta es que a la hora de trabajar con los elementos en bloque en varias ocasiones vamos a querer hace **cajas o figuras vaciar sin necesidad de tener algún elemento en su interior**.
+
+Esto principalmente para hacer formas geométricas que podamos usar en nuestro diseño para las partes que por ejemplo **no queramos un texto en su interior** y esa misma forma la queramos usar como "componente visual" solo para el diseño de la misma.
+
+Esto lo haremos en algunas partes de la documentación desde aquí en adelante y antes de ello debo dejar algo en claro.
+
+*Estas "cajas vacías" las hacemos con divs en html* (con en este caso una clase que usaremos para llamarlo desde css)
+
+~~~html
+<div class="div-1">
+    <!--aqui añadimos datos si lo necesitamos, en este caso no-->
+</div>
+~~~
+
+Al llamarlo en css y editarlo no ocurrirá nada si no definimos antes **el tamaño de la caja**
+
+~~~css
+.div-1{
+    width: 50px
+    height: 50px
+}
+~~~
+
+Luego podemos añadirle nuestro diseño, dado que el div por algún motivo, no se mostrara en pantalla **hasta tener un elemento o un tamaño seleccionado**.
 
 ---
 
@@ -543,13 +608,9 @@ Otras opciones del parámetro `display` son:
 
 + `inline-block` transforma un elemento de cualquier tipo a un elemento en linea que ademas nos permite editar las dimensiones de la caja con las propiedades `width` y `height`.
 
-+ `flex`
-
-  + `inline-flex`
++ `flex` Les permite usar un tipo "especial" de maquetádo, similar al bloque pero que nos permite acceder a mas características [mas informacion aqui](#FlexBox).
 
 + `grid`
-
-  + `inline-gird`
 
   ---
 
@@ -759,9 +820,139 @@ p{
 
 ---
 
-## Métodos de maquetáción
+### Object Fit
 
-### Float (y clear)
+A la hora de trabajar con cosas como imágenes o vídeos usualmente nos surgirá un problema **al cambiar su tamaño, en ocasiones estos se deformaran** haciendo que obvio la imagen pierda resolución ademas de dejar nuestra pagina en un estado digamos que "**poco estético**"
+
+Este lo usamos llamando alguna imagen (o vídeo) que tengamos dentro de un contenedor dado que esta propiedad itera en la imagen tomando en cuenta el tamaño de su contenedor.
+
+Principalmente tenemos los siguientes valores:
+
++ `fill` **El valor por defecto (deforma la foto en el momento que cambiamos el tamaño del contenedor).**
+
++ `contain` **Al cambiar el tamaño de la imagen esta se agranda o se achica, pero no se deforma.**
+
+  *ejemplo de uso*
+
+  ~~~css
+  .clase-imagen{
+      object-fit:contain;
+  }
+  ~~~
+
+  
+
++ `cover` **la imagen se agranda para rellenar el contenedor pero "cortada", lo faltante estará "fuera de la imagen".**
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-imagen{
+      object-fit:cover;
+  }
+  ~~~
+
++ `none` **se muestra solo una pequeña parte de la imagen según lo que declaremos.**
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-imagen{
+      object-fit:none;
+  }
+  ~~~
+
++ `scale-down` **hace una seleccion entre `none` y `contain` seleccionando el elemento que tenga el menor tamaño**
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-imagen{
+      object-fit:scale-down;
+  }
+  ~~~
+
+---
+
+### Object Position
+
+A la hora de trabajar con propiedades como `object-fit:cover` veremos que sera de ayuda mover "internamente la imagen" y eso lo logramos con esta propiedad.
+
+Con `object-position` seleccionamos a que lado se "apegue" la imagen utilizada en torno a su contenedor, esto se selecciona usando los valores:
+
++ `left` apega la imagen a su izquierda
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-imagen{
+      object-position:left;
+  }
+  ~~~
+
++ `right` apega la imagen a su derecha
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-imagen{
+      object-position:right;
+  }
+  ~~~
+
++ `top` apega la imagen a la parte superior
+
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-imagen{
+      object-position:top;
+  }
+  ~~~
+  
++ `bottom` apega la imagen a la parte inferior
+
+    *ejemplo de uso:*
+
+    ~~~css
+    .clase-imagen{
+        object-position:bottom;
+    }
+    ~~~
+
++ `unidades numericas` tambien podemos usar numeros u otras unidades numericas
+
+    *ejemplo de uso:*
+
+    ~~~css
+    .clase-imagen{
+        object-position:1em; /*puede ser negativo, positivo, px,em,mm,etc...*/
+    }
+    ~~~
+
+---
+
+### Cursor
+
+A la hora de trabajar con el "campo visual de nuestra pagina" una cosa que nos puede llamar la atención sera el cambiar el cursor al generarse una acción.
+
+Esto lo logramos con la propiedad `cursor` que por defecto se activa al pasar el cursor sobre el objeto en el que añadamos esta.
+
+*su sintaxis es:*
+
+~~~css
+.clase-caja{
+    cursor:nombre-del-cursor;
+}
+~~~
+
+Hay demasiados tipos de cursor como para ponerlos en una lista, por lo que la mejor opcion es ver sus nombres en [esta pagina](https://www.w3schools.com/cssref/tryit.asp?filename=trycss_cursor).
+
+---
+
+# CSS (Intermedio)
+
+## Float (y clear)
 
 Este es otro parámetro bastante útil en muchos casos, este nos permite seleccionar a que lado del contenedor se va a apegar un objeto, así saliendo del flujo normal del html.
 
@@ -796,11 +987,23 @@ Sus parámetros son:
 
 por ejemplo si tenemos un objeto  con un `float: left;` y le añadimos como extra un `clear: right;`, dejara un espacio en blanco al lado derecho de nuestro objeto en si.
 
+*ejemplo de uso:*
+
+~~~css
+.elemento{
+    clear:left;
+}
+~~~
+
+---
+
+
+
 ----
 
 ## Pseudo-Elementos
 
-Los pseudo elementos son "partes" de los elementos que usamos y que podemos editar de por si, por ejemplo, la primera linea de un texto.
+`inline-flex` Los pseudo elementos son "partes" de los elementos que usamos y que podemos editar de por si, por ejemplo, la primera linea de un texto.
 
 Los pseudo-elementos requieren de la siguiente sintaxis:
 
@@ -997,7 +1200,26 @@ Su sintaxis es similar a la de los **pseudo-elementos** solo que con un cambio p
       /*itera en el "ultimo elemento de tipo parrafo" que este dentro de la "clase-padre"*/
   }
   ~~~
++ `:only-child` nos permite seleccionar **el único "hijo" que tiene una clase en la que iteramos** y este mismo no tiene efecto **si la clase tiene mas de 1 "hijo"**
 
+  *ejemplo de uso:*
+
+  ~~~css
+  .clase-padre:only-child{
+      /*si tenemos un div con una subclase que es un <p> iteraremos en este parrafo*/
+      /*si hay mas subclases esta funcion no sirve*/
+  }
+  ~~~
+
++ `:only-of-type`nos permite seleccionar **el único "hijo" de un tipo especial** y por ejemplo, si queremos iterar en un párrafo pero hay mas de otros tipos este funciona, aun que deja de hacerlo si hay 2 párrafos.
+
+  *ejemplo de uso*
+
+  ~~~css
+  .clase-padre p:only-of-type{
+      /*solo trabajara en la unica subclase parrafo (solo si hay 1)*/
+  }
+  ~~~
   ---
 
 ### Pseudo-clases (listas)
@@ -1059,3 +1281,317 @@ Su sintaxis es similar a la de los **pseudo-elementos** solo que con un cambio p
       /*en este caso se iterara en el tercer parrafo en la clase desde abajo hacia arriba*/
   }
   ~~~
+  
+
+---
+
+## Responsive Web Design
+
+Responsive web design (o diseño web "responsivo") es una forma o mejor dicho **un conjunto de patrones de diseño** que seguirlos nos permite desarrollar nuestra pagina web de una forma que su diseño sea tanto compatible para dispositivos grandes (como la pantalla de un computador) como pequeños (como la pantalla de un smartphone o la pantalla de un computador "comprimido").
+
+El termino de "diseño responsivo" se acuño el año 2010 por Ethan Marcotte y su uso lo describía combinando tres "técnicas", las cuales son:
+
+1. **Columnas fluidas** usando **algunos anchos en porcentaje o medidas relativas ** (vh, vw, %, em, etc...) por lo menos solo en los elementos que **si serán responsivos** esto no es necesario si queremos que un elemento cambie su tamaño.
+2. **Imágenes flexibles** seleccionando el `max-width:100%` así pudiendo mantener un tamaño general para  la imagen tanto en pantallas de computador como en pantallas de dispositivos mobiles.
+3. **Media querys** el uso de "condicionales" que lean la forma de la pantalla y según eso muestren un tipo de pagina u otra.
+4. **Javascript** este es un extra pero realmente también se volvió algo indispensable para las paginas responsive, mas tomando en cuenta que para las paginas "complejas" este es simplemente nuestro **único aliado**.
+
+**Deben recordar que el responsive design no es un "tema de css en si" sino un tipo de "reglas" que deberíamos seguir a la hora que queramos hacer una pagina que funcione tanto en dispositivos pequeños como grandes y de hecho podemos saltarnos estas reglas totalmente**
+
+---
+
+#### Propiedades recomendadas
+
+a la hora de trabajar con nuestros diseños "responsive" existirán muchas cosas que querremos editar dependiendo del tamaño de la pantalla como es obvio.
+
+esto es algo que lograremos con el uso de algunas propiedades muy útiles como:
+
++ `min-width` Nos permite determinar el **ancho mínimo** de un elemento
++ `min-height` Nos permite determinar el **alto mínimo** de un elemento
++ `max-width` Nos permite determinar el **ancho máximo** de un elemento
++ `max-height` Nos permite determinar el **alto máximo** de un elemento
++ 
+
+---
+
+## FlexBox
+
+Flexbox (o cajas flexibles) es otro "método de maquetación" ocupado para lo mismo que usaríamos el `float` anteriormente visto.
+
+Como ya deberían saber, este es un "método" que podemos usar para "organizar" los componentes de nuestra pagina específicamente, editando nuestros elementos de forma que generemos un cambio en torno a **la posición** de nuestros elementos.
+
+Este funciona similar a los elementos con `display: block;` o simplemente elementos en bloque, solo que a diferencia de ellos, en este caso el tamaño se adapta aproximadamente al de su contenido pero intentando "mantener" una altura especifica aun que esto es variable y se puede cambiar.
+
+Antes de iniciar de lleno con lo que es FlexBox debemos saber unos conceptos clave:
+
++ El flexbox funciona como un tipo de "plano cartesiano" (supongamos que de -1 a 1 en todos sus ejes). 
+
++ El eje X se llama `Main Axis` y se conforma por:
+
+  + `main-start` (vendría siendo el -1 en el eje X del plano cartesiano)
+  + `main-end` (vendría siendo el 1 en el eje X del plano cartesiano)
+
++ El eje Y se llama `Cross Axis` y se conforma por:
+
+  + `cross-start` (vendría siendo el 1 en el eje y del plano cartesiano)
+  + `cross-end` (vendría siendo el -1 en el eje y del plano cartesiano)
+
++ En flexbox hay 2 elemntos con "nombres especiales" estos son los **`flex-container`** que son los contenedores que usan `display: flex;` y los **`flex-item`** que son **todo elemento que sea hijo directo de un `Flex-container`** 
+
+  *ejemplo:*
+
+  ~~~html
+  <div style="display: flex;"> <!--este div es un flex-container-->
+      
+      <h1>header de nivel 1</h1> <!--este es un Flex Item-->
+      <p>parrafo simple</p> <!--este es un Flex Item-->
+      
+      <div> <!--este es un Flex Item-->
+          <b>este es una "negrita"</b> <!--este NO es un Flex Item-->
+      </div> <!--este es el fin del div "Flex Item"-->
+    
+  </div> <!--este es el fin de nuestro flex-container-->
+  ~~~
+
+  En este caso el `<b></b>` no es un Flex Item pues no es hijo directo de el contenedor `<div></div>` que posee el `display: flex`
+
+  **debemos recordar que estos nombres de `flex-container` y `flex-item` son realmente identificadores que deberíamos usar al añadir un `id` o una `class` en nuestro elemento html**
+
+---
+
+### Propiedades de contenedor
+
+Flex (para "acortar" su nombre) como ya deberian saber es un valor de la propiedad `display:` y al seleccionarlo con `display: flex` podremos tener acceso a múltiples propiedades que nos permiten iterar sobre el funcionamiento de este estos contenedores.
+
+cabe recordar que los "contenedores flexibles" o `flex container` son **todos los contenedores que tengan la propiedad `display:flex;` y tengan como clase o id `flex-content` (aun que esto ultimo no es obligatorio)**.
+
+---
+
+#### Flex-flow
+
+Flex-flow es una propiedad shorthand (abreviada) que en realidad lo que hace es unir 2 propiedades en una sola, estas son `flex-direction` y `flex-wrap`.
+
+*su sintaxis es asi:*
+
+~~~css
+.flex-container{
+    flex-flow: valor-flex-direction valor-flex-wrap;
+    /*ejemplo*/
+    flex-flow: row wrap;
+}
+~~~
+
+Sus funcionalidades son:
+
++ `flex-direction:` Nos permite seleccionar la orientación de los elementos que tengamos dentro del `flex-container` donde usaremos esta propiedad.
+
+  *ejemplo de sintaxis:*
+
+  ~~~css
+  .flex-container{
+      flex-direction: row; /*el row lo podemos cambiar por otros valores*/
+  }
+  ~~~
+
+  *y sus valores son:*
+
+  + `:row` Posiciona los elementos en el `Main Axis` o una fila (de izquierda a derecha).
+  + `:row-reverse` Posiciona los elementos en el `Main Axis` o una fila pero inversa (de derecha a izquierda).
+  + `:column` Posiciona los elementos en el `Cross Axis` o en una columna (de arriba hacia abajo).
+  + `:column-reverse` Posiciona los elementos en el `Cross Axis` o en una columna pero inversa (de arriba hacia abajo).
+
+  ---
+
++ `flex-wrap: ` Nos permite "reorganizar" los elementos de un `flex-container` dependiendo del tamaño de la pantalla.
+
+  *ejemplo de sintaxis:*
+
+  ~~~css
+  .flex-container{
+      flex-wrap: wrap; /*el wrap podemos cambiarlo por otros valores*/
+  }
+  ~~~
+
+  *y sus valores son:*
+
+  + `:no-wrap` Es el valor por defecto **no genera cambios**.
+
++ `:wrap` **No cambia el tamaño de sus elementos** y por defecto si la pantalla se hace mas pequeña, estos elementos los envía hacia **abajo de uno en uno** (los elementos del `Main End` o de la derecha bajan primero).
+
+  + `:wrap-reverse` **No cambia el tamaño de sus elementos** y por defecto si la pantalla se hace mas pequeña, estos elementos los envía hacia **arriba de uno en uno** (los elementos del `Main End` o de la derecha suben primero).
+
+**Ambas podemos usarlas por si solas, en caso que queramos usar un valor en solo uno de ellos, en lugar de de editar algo en ambas propiedades**.
+
+---
+
+#### Posicionamiento general
+
+Estas propiedades nos permiten iterar en la posición de los elementos en torno a su "contenedor" y en base a la posición en tanto el `Main Axis` como en el `Cross Axis` ademas de hacer estas iteraciones tomando en cuenta aveces a los otros elementos que hay en su contenedor.
+
++ `justify-content:` Nos permite posicionar el o los elementos en torno al `Main Axis` (eje x).
+
+  *su sintaxis es:*
+
+  ~~~css
+  .flex-container{
+      justify-content: center; /*tiene mas valores, "center" es solo un ejemplo*/
+  }
+  ~~~
+
+  *Sus valores son:*
+
+  + `:center` Centra los elementos dentro de el contenedor en el `Main Axis`.
+  + `:flex-start` Posiciona los elementos dentro de el contenedor en el `Main Start` (a la izquierda).
+  + `:flex-end` Posiciona los elementos dentro de el contenedor en el `Main End` (a la derecha).
+  + `:space-between` Posiciona los elementos en el `Main Axis` de forma que todos tienen el mismo espacio entre ellos (a los costados del contenedor estos se apegan al mismo contenedor).
+  + `:space-around` Posiciona los elementos en el `Main Axis` de forma que todos tienen el mismo espacio entre ellos (a los costados del contenedor estos se separan del mismo por **la mitad de la distancia entre elementos**)
+
+  ---
+
++ `align-item:` Su funcionamiento es similar al del `Justify Content` a excepción que este itera en el `Cross Axis` (eje y) es recomendado usarlo **solo cuando los elementos usados usan una linea pues el `flex-wrap` lo hace ver raro** (para dos lineas usamos `align-content`).
+
+  *su sintaxis es:*
+
+  ~~~css
+  .flex-container{
+      align-item: center; /*tiene mas valores, "center" es solo un ejemplo*/
+  }
+  ~~~
+
+  *sus valores son:*
+
+  + `:center` Centra los elementos dentro de el contenedor en el `Cross Axis`.
+  + `:flex-start` Posiciona los elementos dentro de el contenedor en el `Cross Start` (arriba).
+  + `:flex-end` Posiciona los elementos dentro de el contenedor en el `Cross End` (abajo).
+  + `:space-between` Posiciona los elementos en el `Cross Axis` de forma que todos tienen el mismo espacio entre ellos (arriba  y abajo del contenedor estos elementos flexibles son ajustados de modo que sus bases queden alineadas. El elemento con la distancia mayor entre su límite transversal inicial y su base es combinado con el borde transversal de la línea. apegan al mismo contenedor).
+  + `:space-around` Posiciona los elementos en el `Cross Axis` de forma que todos tienen el mismo espacio entre ellos (arriba y abajo del contenedor estos se separan del mismo por **la mitad de la distancia entre elementos**)
+  + `:stretch` es el valor por defecto y hace que los elementos se estiren **para rellenar el contenedor en el eje Y**.
+  + `:baseline` Alinea la base de **todos los elementos flexibles** (en ocasiones se usa para hacer footers o posicionar elementos en la parte inferior de la pagina)
+
+  ---
+
++ `align-content:` Su función es exactamente la misma que el `align-item` solo que este esta pensado para cuando queremos 2 lineas de elementos dentro del contenedor a usar, los valores son los mismos que del `align-content` excepto que este funciona bien interactuando con el `flex-wrap`.
+
+    *su sintaxis es:*
+    
+    ~~~css
+    .flex-container{
+        align-content: center; /*tiene mas valores, "center" es solo un ejemplo*/
+}
+  ~~~
+
+  *sus valores son:*
+  
+  + `:center` Centra los elementos dentro de el contenedor en el `Cross Axis`.
+  + `:flex-start` Posiciona los elementos dentro de el contenedor en el `Cross Start` (arriba).
+  + `:flex-end` Posiciona los elementos dentro de el contenedor en el `Cross End` (abajo).
+  + `:space-between` Posiciona los elementos en el `Cross Axis` de forma que todos tienen el mismo espacio entre ellos (arriba  y abajo del contenedor estos elementos flexibles son ajustados de modo que sus bases queden alineadas. El elemento con la distancia mayor entre su límite transversal inicial y su base es combinado con el borde transversal de la línea. apegan al mismo contenedor).
+  + `:space-around` Posiciona los elementos en el `Cross Axis` de forma que todos tienen el mismo espacio entre ellos (arriba y abajo del contenedor estos se separan del mismo por **la mitad de la distancia entre elementos**)
++ `:stretch` es el valor por defecto y hace que los elementos se estiren **para rellenar el contenedor en el eje Y**.
+  
+  + `:baseline` Alinea la base de **todos los elementos flexibles** (en ocasiones se usa para hacer footers o posicionar elementos en la parte inferior de la pagina)
+  
+  (si queremos hacer algo en un footer por ejemplo debemos usar `align-content:baseline;` y con eso añadir un `flex-wrap: wrap-reverse;` )
+
+---
+
+### Propiedades de items
+
+Tanto como existen las propiedades de contenedores, existen las propiedades orientadas a los elementos dentro de estos contenedores.
+
+Así podemos hacer estas ediciones de forma mas especifica a cada elemento y no a un grupo de estos como lo hacíamos anteriormente.
+
+**Recordar que se considera flex item todos los "hijos" de un `flex-container` y tengan como clase o id el nombre `flex-item` (aun que esto ultimo no es obligatorio)**.
+
+**cabe aclarar que aqui el `margin:` funciona distinto, pues este cambia la posición de los elementos por separado, en lugar de hacer cambios a el margen de el mismo** (`margin: auto;` lo centra en ambos ejes, `margin: auto 0;` "solo lo centra en el eje Y" ademas del `margin: 0 auto` que "lo centra en el eje X" esto solo ocurre cuando el margin **se aplica en un objeto flexible**.
+
+---
+
+#### Posicionamiento individual
+
++ `align-self:` Es similar a las propiedades `align-items` y `align-content` anteriormente mencionados, solo que este ajusta la posición (en el Cross Axis) de un elemento especifico.
+
+  *su sintaxis es:*
+
+  ~~~css
+  .flex-item{
+      align-self: center; /*tiene mas valores, "center" es solo un ejemplo*/
+  }
+  ~~~
+
+  *sus valores son:*
+
+  + `:center` Centra el elemento en el `Cross Axis`.
+  + `:flex-start` Posiciona el elemento en el `Cross Start` (arriba).
+  + `:flex-end` Posiciona el elemento en el `Cross End` (abajo).
+  + `:auto` Ajusta el tamaño según el `align-items` del padre o al valor `stretch` si el elemento no tiene padre.
+  + `:stretch` es el valor por defecto y hace que el elemento se estire **para rellenar su contenedor en el eje Y**.
+  + `:baseline` Alinea la base de **todos los elementos flexibles** (en ocasiones se usa para hacer footers o posicionar elementos en la parte inferior de la pagina)
+
+  (si queremos hacer algo en un footer por ejemplo debemos usar `align-content:baseline;` y con eso añadir un `flex-wrap: wrap-reverse;` )
+
+  ---
+
+#### Flex
+
+La propiedad flex **al igual que flex flow es un shorthand** osea que es una propiedad compuesta por varias otras.
+
+*Su sintaxis es:*
+
+~~~css
+.flex-item{
+    flex: 0 50px 2 /*valor-flex-grow valor-flex-basis valor-flex-shrink*/
+}
+~~~
+
+Y las propiedades que lo componen son las siguientes:
+
++ `flex-grow:` nos permite hacer que un elemento en particular **aumente o disminuya su ancho dependiendo del tamaño de la pagina/pantalla/contenedor** rellenando las partes del `Cross Axis` que no tengan elemento y sin ocupar las que si tengan uno.
+
+  *su sintaxis es:*
+
+  ~~~css
+  .flex-item{
+      flex-grow: 0;
+  }
+  ~~~
+
+  A la hora de usarlo notaremos que este funciona con números (siendo 0 el valor por defecto que dice que el `flex-grow` no generara efecto alguno).
+
+  Estos números generan un tipo de "columnas invisibles" y con ese numero definimos **cuantas "columnas" usara nuestro elemento** por ejemplo si tenemos tres elementos donde **solo uno tiene la propiedad `flex-grow:1;` este usara gran parte del Cross Axis** pero los demás mantendrán su tamaño.
+
+  Pero por otro lado si mantenemos el mismo elemento con `flex-grow:1;` y le añadimos a otro elemento `flex-grow:2;` este ocupara mas espacio que el primer elemento, dado que el numero de "columnas ocupadas" es mayor.
+
+  **Luego solo nos queda jugar con estos valores**.
+
+  ---
+
++ `flex-basis:` esta es similar al `width`, a excepción que el `flex-basis` tiene mayor jerarquía que el `width`, osea si un elemento flexible tiene la propiedad `width:200px;` y un `flex-basis: 30px;` **el elemento final tendra 30 pixeles de ancho**.
+
+  *su sintaxis es:*
+
+  ~~~css
+  .flex-item{
+      flex-basis: 50px;
+  }
+  ~~~
+
+  **Su valor puede ser cualquier tipo de unidad en css (px, em, %, etc...)**
+
+  ****
+
++ `flex-shrink:` Este seria el "similar y opuesto" a `flex-grow` siendo el `flex-shrink:` la propiedad que se encarga de seleccionar **que tanto se va a "contraer" un elemento cuando el tamaño de su contenedor se vea disminuida** mientras que el `flex-grow` se encarga de calcular cuanto aumentara cuando su contenedor aumente de tamaño.
+
+  *su sintaxis es:*
+
+  ~~~css
+  .flex-item{
+      flex-shrink: 1 /*este es el valor por defecto*/
+  }
+  ~~~
+
+  El valor de 1 se puede cambiar por numeros (preferibles entre el 0 y el 10 y ademas podemos usar0.5) puesto que ya en por ejemplo 6 **el maximo de contraccion hace que el elemento se vea muy pequeño**, y de hecho 10 en su tamaño minimo en algunos casos no permite siquiera ver al mismo.
+
+  ---
+
+
