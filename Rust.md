@@ -61,7 +61,7 @@ fn main(){
 pero aquí logramos concluir algunas cosas del hola mundo que son los siguientes:
 
 + nuestro código fuente debe ir en una función con el nombre  `main`.
-+ usamos "println!" para 
++ usamos "println!" para **imprimir texto en pantalla**
 + para llamar un `macro o funcion interna` debemos usar `!` esto se profundizara mas adelante.
 + para iniciar una función debemos usar la palabra `fn` seguido de su nombre, parámetros y llaves.
 
