@@ -920,7 +920,7 @@ Con `object-position` seleccionamos a que lado se "apegue" la imagen utilizada e
     }
     ~~~
 
-+ `unidades numericas` tambien podemos usar numeros u otras unidades numericas
++ `unidades numericas` también podemos usar números u otras unidades numéricas
 
     *ejemplo de uso:*
 
@@ -1503,7 +1503,7 @@ Así podemos hacer estas ediciones de forma mas especifica a cada elemento y no 
 
 **Recordar que se considera flex item todos los "hijos" de un `flex-container` y tengan como clase o id el nombre `flex-item` (aun que esto ultimo no es obligatorio)**.
 
-**cabe aclarar que aqui el `margin:` funciona distinto, pues este cambia la posición de los elementos por separado, en lugar de hacer cambios a el margen de el mismo** (`margin: auto;` lo centra en ambos ejes, `margin: auto 0;` "solo lo centra en el eje Y" ademas del `margin: 0 auto` que "lo centra en el eje X" esto solo ocurre cuando el margin **se aplica en un objeto flexible**.
+**cabe aclarar que aquí el `margin:` funciona distinto, pues este cambia la posición de los elementos por separado, en lugar de hacer cambios a el margen de el mismo** (`margin: auto;` lo centra en ambos ejes, `margin: auto 0;` "solo lo centra en el eje Y" ademas del `margin: 0 auto` que "lo centra en el eje X" esto solo ocurre cuando el margin **se aplica en un objeto flexible**.
 
 ---
 
@@ -1530,7 +1530,7 @@ Así podemos hacer estas ediciones de forma mas especifica a cada elemento y no 
 
   (si queremos hacer algo en un footer por ejemplo debemos usar `align-content:baseline;` y con eso añadir un `flex-wrap: wrap-reverse;` )
 
-  ---
+---
 
 #### Flex
 
@@ -1540,7 +1540,12 @@ La propiedad flex **al igual que flex flow es un shorthand** osea que es una pro
 
 ~~~css
 .flex-item{
-    flex: 0 50px 2 /*valor-flex-grow valor-flex-basis valor-flex-shrink*/
+    flex: 0 2 50px; /*valor-flex-grow valor-flex-shrink valor-flex-basis*/
+    
+    /*tambien podemos hacer:*/
+    flex: 2 2; /*valor-flex-grow valor-flex-shrink*/
+    flex: 4 50px; /*valor-flex-grow valor-flex-basis*/
+    flex: 3; /*valor-flex-grow*/
 }
 ~~~
 
@@ -1566,7 +1571,21 @@ Y las propiedades que lo componen son las siguientes:
 
   ---
 
-+ `flex-basis:` esta es similar al `width`, a excepción que el `flex-basis` tiene mayor jerarquía que el `width`, osea si un elemento flexible tiene la propiedad `width:200px;` y un `flex-basis: 30px;` **el elemento final tendra 30 pixeles de ancho**.
++ `flex-shrink:` Este seria el "similar y opuesto" a `flex-grow` siendo el `flex-shrink:` la propiedad que se encarga de seleccionar **que tanto se va a "contraer" un elemento cuando el tamaño de su contenedor se vea disminuida** mientras que el `flex-grow` se encarga de calcular cuanto aumentara cuando su contenedor aumente de tamaño.
+
+  *su sintaxis es:*
+
+  ~~~css
+  .flex-item{
+      flex-shrink: 1 /*este es el valor por defecto*/
+  }
+  ~~~
+
+  El valor de 1 se puede cambiar por números (preferibles entre el 0 y el 10 y ademas podemos usar 0.5) puesto que ya en por ejemplo 6 **el máximo de contracción hace que el elemento se vea muy pequeño**, y de hecho 10 en su tamaño mínimo en algunos casos no permite siquiera ver al mismo.
+
+  ---
+
++ `flex-basis:` esta es similar al `width`, a excepción que el `flex-basis` tiene mayor jerarquía que el `width`, osea si un elemento flexible tiene la propiedad `width:200px;` y un `flex-basis: 30px;` **el elemento final tendrá 30 pixeles de ancho**.
 
   *su sintaxis es:*
 
@@ -1578,20 +1597,350 @@ Y las propiedades que lo componen son las siguientes:
 
   **Su valor puede ser cualquier tipo de unidad en css (px, em, %, etc...)**
 
-  ****
+---
 
-+ `flex-shrink:` Este seria el "similar y opuesto" a `flex-grow` siendo el `flex-shrink:` la propiedad que se encarga de seleccionar **que tanto se va a "contraer" un elemento cuando el tamaño de su contenedor se vea disminuida** mientras que el `flex-grow` se encarga de calcular cuanto aumentara cuando su contenedor aumente de tamaño.
+#### Order
+
+Esta propiedad nos permite **ordenar o seleccionar el orden** de los elementos dependiendo de su `flex-direction` usando números que tomaremos como un "indice" para posicionar el elemento, siendo 1 el elemento que este mas posicionado a la izquierda y los números mas altos irán organizándose en orden hacia la derecha de este elemento con `order: 1;`.
+
+*su sintaxis es:*
+
+~~~css
+.flex-item{
+    order: 0; /*valor inicial*/
+    
+    /*ejemplos:*/
+    order: 1; /*el elemento se quedara apegado al lado izquierdo de su contenedor*/
+    order: 2; /*este elemento se posicionara al lado derecho del elemento anterior*/
+}
+~~~
+
+En los dos ejemplos que mostré (`order: 1;` y `order: 2;`) si nuestra `flex-direction` tubiéra el valor `row`  el primer ejemplo apegaría el elemento a la parte superior (o inferior si es `row-reverse`) mientras que los demás elementos se organizaran tomando en cuenta la posición de ese elemento.
+
+---
+
+## Grid
+
+Grid es otro "sistema de maquetacion" que podemos usar para diseñar y organizar los componentes/elementos de nuestra pagina.
+
+Este sistema se basa en el uso de una "grilla" (un tipo de cuadro separado por cuadriculas) donde cada cuadricula la usaremos para posicionar elementos 
+
+Pero antes hay algunos conceptos básicos que debemos aprender, los cuales son:
+
++ **Grid Container** es el **contenedor externo de la grilla** donde se encuentran las "cuadriculas" donde añadiremos nuestros elementos (es similar al `flex container` solo que algo distinto) específicamente son **los contenedores que en la propiedad `display` tengan el valor `grid`**.
+
++ **Grid item** son los **elementos que introduciremos en nuestra grilla** o mejor dicho los que se posicionaran en la misma siendo estos **hijos directos de nuestro Grid Container**.
+
+  *ejemplo:*
+
+  ~~~html
+  <div style="display:grid;"> <!--este es un grid container--> 
+      <div> <!--este div es un grid item pues es hijo directo de un grid container-->
+          <p>este parrafo no es grid item</p> <!--pues no es hijo del grid container-->
+      </div>
+  </div>
+  ~~~
+
++ **Grid cells** son las "cuadriculas" que conforman la "grilla" aun que su nombre real seria "celdas" similar a como ocurre en excel son esos cuadros donde colocamos nuestra información solo que, en este caso son nuestros elementos.
+
++ **Grid tracks** son el conjunto de celdas que conforman ya sea una `column` (columna) o `row` (fila).
+
++ **Grid area** es **el conjunto de celdas que ocupamos** para posicionar nuestros elementos.
+
++ **Grid line** son las lineas que separan un grid track de otro y separan tanto las columnas como las filas y algo a tomar en cuenta es que esto empieza en  **la primera linea donde inicia el grid container**.
+
+Otro tema a tomar en cuenta de grid es que cuando iniciamos un "contenedor grid" con `display: grid;` este grid se creara **con solo 1 columna** donde estarán nuestros elementos por defecto, similar a la disposición de elementos de html.
+
+---
+
+### Propiedades de contenedor
+
+A la hora de trabajar con grid al igual que con flexbox debemos crear el "contenedor" que ya mencionamos, este se crea añadiendo la propiedad `display: grid;` y recomendablemente nombrar con `class="grid-container"` en html el elemento que usaremos como "contenedor".
+
+Tras esto podemos empezar a trabajar con sus propiedades
+
+---
+
+#### Tamaño del grid
+
+Antes de trabajar con un grid debemos seleccionar el numero de celdas que con el que trabajaremos, este seleccionándose con las propiedades:
+
++ `grid-template-columns:` Sirve para seleccionar el numero y tamaño de las columnas con las que trabajaremos.
 
   *su sintaxis es:*
 
   ~~~css
-  .flex-item{
-      flex-shrink: 1 /*este es el valor por defecto*/
+  .grid-container{
+      grid-template-columns: 150px 150px 150px;
   }
   ~~~
 
-  El valor de 1 se puede cambiar por numeros (preferibles entre el 0 y el 10 y ademas podemos usar0.5) puesto que ya en por ejemplo 6 **el maximo de contraccion hace que el elemento se vea muy pequeño**, y de hecho 10 en su tamaño minimo en algunos casos no permite siquiera ver al mismo.
+  en este caso hacemos un grid **con 3 columnas con un tamaño de 150 pixeles en cada una** aun que estos números pueden cambiar dependiendo de el tamaño que queramos aplicarle.
 
   ---
 
++ `grid-template-rows:` Sirve para seleccionar el numero y tamaño de las filas con las que trabajaremos.
+
+  *su sintaxis es:*
+
+  ~~~css
+  .grid-container{
+      grid-template-rows: 150px 150px 150px;
+  }
+  ~~~
+
+  en este caso hacemos un grid **con 3 filas con un tamaño de 150 pixeles en cada una** aun que estos números pueden cambiar dependiendo de el tamaño que queramos aplicarle.
+
+**Antes de continuar, esta configuración nos hará un grid de `3x3` totalmente cuadrado y estático** en lo que su tamaño se refiere, pues loso tamaños que usamos son en efecto, estáticos.
+
+Para cambiar esto debemos usar la unidad `fr` esta es similar a la propiedad `flex-grow` y nos permitirá que el tamaño de alguna cuadricula u otra cambie de tamaño dependiendo de lo que queremos hacer. 
+
+**otra cosa a tomar en cuenta es que podemos usar la función `repeat()` a la hora de seleccionar el tamaño de el `grid-template`** esto funcionaria de la siguiente forma:
+
+~~~css
+.grid-container{
+    /*en lugar de hacer 150px 150px 150px podemos hacer:*/
+    grid-template-rows: repeat(3, 150px); /*(numero de veces que se repite, unidad usada)*/
+}
+~~~
+
+---
+
+#### Margen entre celdas
+
+Si por alguna razón queremos hacer un tipo de "margen" entre las celdas con las que trabajaremos, nos sera muy necesaria la propiedad `grid-gap:`.
+
+Esta propiedad es un "shorthand" y su sintaxis es:
+
+~~~css
+.grid-container{
+    grid-gap: 10px 10px; /*valor-fila valor-columna*/
+    /*estos valores pueden variar dependiendo de lo que quieras hacer*/
+}
+~~~
+
+Y las propiedades que lo componen son:
+
++ `grid-row-gap:` nos permite seleccionar el espacio que hay entra cada celda **en una fila por la linea que esta en contacto con otra celda**.
++ `grid-column-gap:` nos permite seleccionar el espacio que hay entra cada celda **en una columna por la linea que esta en contacto con otra celda**.
+
+---
+
+#### Grid explicito y implícito
+
+El grid se puede dividir en dos tipos distintos.
+
++ Grid Explicito (es la parte que funciona dependiendo de los cambios que nosotros apliquemos en el)
++ Grid Implícito (es la parte que funciona tomando en cuenta la forma en la que grid interactúa con su edición **sin tomar en cuenta las ediciones que hagamos**) seria algo así como un tipo de "comportamiento por defecto"
+
+Estos generan una función que de por si a veces es rara, ya que por ejemplo al usar un `grid-template` de cualquier tipo y corremos un elemento con `grid-column` o `grid-row` un tema "implícito" seria que los objetos que quedan fuera de el tamaño original del grid quedan solo en una fila mas no en una columna.
+
+Esta clase de problemas los podemos arreglar con las siguientes propiedades:
+
++ `grid-auto-columns:` nos permite seleccionar el tamaño de la columna nueva que se creara a la hora de que se corran elementos a esa columna de forma automatica.
+
+  *ejemplo:*
+
+  ~~~css
+  .grid-container{
+      grid-auto-columns: 120px;
+      /*cuando se cree otra columna por correr elementos, esta tendra 120px*/
+  }
+  ~~~
+  
++ `grid-auto-rows:` nos permite seleccionar el tamaño de la fila nueva que se creara a la hora de que se corran elementos a esa fila de forma automatica.
+
+  *ejemplo:*
+
+  ~~~css
+  .grid-container{
+      grid-auto-rows: 120px;
+      /*cuando se cree otra fila por correr elementos, esta tendra 120px*/
+  }
+  ~~~
+  
++ `grid-auto-flow:` nos permite seleccionar la forma en la que actuaran los "elementos" que sobren en nuestro container, yendo a una columna si le damos como valor `:column` o como fila si seleccionamos `:row`
+
+---
+
+### Propiedades de items
+
+También puede que queramos aplicar alguna propiedad que específicamente altere el orden y función de un elemento en especifico, para ello tenemos otras propiedades que nos pueden ser muy útiles.
+
+---
+
+#### Asignación de espacio
+
+A la hora de posicionar nuestros elementos en el grid, puede que queramos posicionar un especifico elemento **en mas de una celda**, esto es muy simple y muy útil.
+
+Esto lo lograremos con las propiedades:
+
++ `grid-column:` Nos permite seleccionar el espacio que ocupara nuestro elemento en una columna especifica, por ejemplo este usara 1, 2, 3 o mas celdas de la columna.	
+
+  *su sintaxis es:*
+
+  ~~~css
+  .grid-item{
+      grid-column: 1/3; 
+  	/*este item ocupara 2 celdas de una columna (desde la celda 1 a la celda 3)*/
+      /*el mismo ira desde el inicio de el item 1 al inicio del item 3*/
+  }
+  ~~~
+
++ `grid-row:` Nos permite seleccionar el espacio que ocupara nuestro elemento en una fila especifica.
+
+  *su sintaxis es:*
+
+  ~~~css
+  .grid-item{
+      grid-row: 1/3
+      /*este item ocupara 2 celdas de una fila (desde la celda 1 a la celda 3)*/
+      /*el mismo ira desde el inicio de el item 1 al inicio del item 3*/
+  }
+  ~~~
+
+Ambas van a "correr" los elementos que sobren así **creando un nuevo espacio para el objeto que sobre**, ademas podemos en lugar de hacer que un objeto se calcule entre el inicio de una celda y el inicio de otra, **que se ocupen las celdas enteras** así haciendo mas fácil el calculo de el espacio a asignar.
+
+Para esto en lugar de usar (*inicio de columna o fila / inicio de columna o fila*) añadiremos la palabra `span` haciendo (*inicio de columna o fila* / **span** *columna o fila a usar*) asi en lugar de por ejemplo llenarse dos filas si hacemos `frid-row: 1/3;` podemos llenarlas haciendo `grid-row: 1/span2;`.
+
+---
+
+### Grid dinámico
+
+A la hora de trabajar con grid es muy probable que queramos seguir conceptos del diseño responsive, hacer que nuestra pagina se ajuste al tamaño de la pantalla en la que lo veamos, por lo que debemos recurrir al **Grid dinámico**.
+
+---
+
+#### Repeat
+
+Como ya mencionamos el repeat es una función que se encarga de **facilitar el uso de valores en el `grid-template`**.
+
+Usando principalmente dos datos:
+
++ El numero de veces que se repetirá el valor de la unidad de "tamaño a usar".
++ La unidad que se repetirá para seleccionar el "tamaño" de cada celda.
+
+Pero algunos de estos valores se pueden cambiar, especialmente este ultimo, "la unidad de tamaño".
+
++ `min-content` nos permite ver la parte mas "grande del contenido" dentro de una celda y ajusta el tamaño de la celda "a ese contenido", por ejemplo no se hará mas pequeño que la palabra mas larga.
+
++ `max-content` nos permite seleccionar el valor máximo del contenido y seleccionarlo como el tamaño de la celda por ejemplo en el caso de una frase, el largo de la misma.
+
++ `minmax()` esta función nos permite seleccionar el valor mínimo y máximo de la misma celda, así haciendo que su tamaño no varíe tanto si hacemos algún cambio en el tamaño de la pagina.
+
+  *su sintaxis es así:*
+
+  ~~~css
+  .grid-container{
+      grid-template-row: repeat(3, minmax(100px, 300px)); /*valor minimo, valor maximo*/
+      /*esto hara que el tamaño de las celdas en la fila varien entre 100px y 300px*/
+      /*dependiendo de el tamaño de la pantalla o de la pagina en si*/
+      
+  }
+  ~~~
+
+  De por si tanto el valor mínimo como el máximo se pueden definir tanto con varias unidades como con `max-content` y `min-content`
+
+---
+
+Pero también existen valores que se pueden añadir en "la cantidad de veces que se repite la funcion" específicamente valores como:
+
++ `auto-fill` añadirá mas celdas dependiendo de el tamaño de la pantalla y de si esto es necesario o no.
++ `auto-fit` hará un escalado de las celdas, así rellenando el "espacio libre" que queda al agrandar el tamaño de la pagina.
+
+---
+
+### Alineación y control de flujos
+
+Si recuerdas bien a la hora de trabajar con flex habían 3 propiedades bastante necesarias para posicionar nuestros elementos en nuestra pagina.
+
+cabe aclarar que estos elementos funcionan similar que en flex pero estas propiedades no se aplican al elemento en la pagina, sino al elemento en su contenedor (en este caso la celda del grid).
+
+*las propiedades son:*
+
++ `justify-items:` nos permite seleccionar como posicionaremos los elementos según el contenedor en el que se encuentra de forma horizontal (este se aplica en el contenedor).
+
+  *sus valores son:*
+
+  + `:start` alinea los elementos en si a el "inicio de el eje horizontal" (en este caso a la izquierda).
+  + `:end` alinea los elementos en si al "final de el eje horizontal" (en este caso a la derecha).
+  + `:center` nos permite centrar los elementos en su contenedor/la celda en si.
+  + `:stretch` rellena todo el ancho de la celda con los elementos (es el valor por defecto)
+
+  ---
+
++ `align-items:` nos permite seleccionar como posicionaremos los elementos según el contenedor en el que se encuentra de forma vertical (este se aplica en el contenedor).
+
+  *sus valores son:*
+
+  - `:start` alinea los elementos en si a el "inicio de el eje vertical" (en este caso arriba).
+  - `:end` alinea los elementos en si al "final de el eje vertical" (en este caso a la abajo).
+  - `:center` nos permite centrar los elementos en su contenedor/la celda en si.
+  - `:stretch` rellena todo el alto de la celda con los elementos (es el valor por defecto).
+  
+  ---
++ `align-self:` nos permite seleccionar como posicionaremos **un elemento en especifico** en el eje vertical (hay que recordar que este se le aplica directo al elemento a mover y no a su contenedor)
+  + `:start` alinea el elemento en si a el "inicio de el eje vertical" (en este caso arriba).
++ `:end` alinea el elemento en si al "final de el eje vertical" (en este caso abajo).
+  + `:center` nos permite centrar el elemento en su contenedor/la celda en si.
+  + `:stretch` rellena todo el alto de la celda con el elemento (es el valor por defecto).
++ `justify-self:` nos permite seleccionar como posicionaremos **un elemento en especifico** en el eje horizontal (hay que recordar que este se le aplica directo al elemento a mover y no a su contenedor)
+  + `:start` alinea el elemento en si a el "inicio de el eje horizontal" (en este caso a la izquierda).
+  + `:end` alinea el elemento en si al "final de el eje horizontal" (en este caso a la derecha).
+  + `:center` nos permite centrar el elemento en su contenedor/la celda en si.
+  + `:stretch` rellena todo el ancho de la celda con el elemento (es el valor por defecto).
+
+**estos dos últimos los podemos remplazar por un `place-self` que nos permite unificarlos en un shorthand (`place-self: valor-align-self valor-justify-self;`).**
+
+---
+
+#### Alineación de filas y columnas
+
++ `align-content:` nos permite especificar/seleccionar donde y como posicionaremos las filas, asi moviendo las mismas en conjunto por el eje y (este se aplica en el contenedor).
+  + `:start` alinea las filas a "el inicio del eje vertical" (en este caso arriba).
+  + `:end` alinea las filas "al final del eje vertical" (en este caso abajo).
+  + `:center` alinea las filas "al centro de su contenedor".
+  + `:stretch` (valor por defecto) ajusta las filas al tamaño total de su contenedor.
+  + `:space-between` posiciona los elementos en el eje vertical de forma que todos tienen el mismo espacio entre ellos (haciendo mucho mas pequeño el espacio arriba y abajo).
+  + `:space-around` posiciona los elementos en el eje vertical de forma que todos tienen el mismo espacio entre ellos (arriba y abajo contenedor se separan del mismo borde por **la mitad de la distancia entre elementos**).
+  + `:space-evenly` posiciona los elementos en el eje vertical de forma que todos tienen el mismo espacio entre ellos (incluso arriba y abajo).
++ `justify-content:` nos permite especificar/seleccionar donde y como posicionaremos las columnas, así moviendo las mismas en conjunto por el eje x (este se aplica en el contenedor).
+  + `:start` alinea las columnas a "el inicio del eje horizontal" (en este caso a la izquierda).
+  + `:end` alinea las columnas "al final del eje horizontal" (en este caso a la derecha).
+  + `:center` alinea las columnas "al centro de su contenedor".
+  + `:stretch` (valor por defecto) ajusta las columnas al tamaño total de su contenedor.
+  + `:space-between` posiciona los elementos en el eje horizontal de forma que todos tienen el mismo espacio entre ellos (haciendo mucho mas pequeño el espacio a los lados del mismo).
+  + `:space-around` posiciona los elementos en el eje horizontal de forma que todos tienen el mismo espacio entre ellos (arriba y abajo del contenedor se separan del mismo borde por **la mitad de la distancia entre elementos**).
+  + `:space-evenly` posiciona los elementos en el eje horizontal de forma que todos tienen el mismo espacio entre ellos (incluso arriba y abajo).
+
+---
+
+### Order
+
+El order es similar al "zindex" solo que envez de trabajar en el orden (tomando en cuenta el eje z) nos permite tomar en cuenta el orden de los elementos en el mismo **"flujo de html"**.
+
+Su funcion se basa en entregar un "indice" a cada elemento en css, asi el elemento con el indice mas alto estara ultimo en el flujo y el con elemento mas pequeño estara primero.
+
+**Algo a tomar en cuenta es que un elemento con `order: 1;` tiene un indice mas alto que un elemento que no tiene esa propiedad, por lo que ira después de los elementos que no posean esta misma**
+
+*ejemplo:*
+
+~~~css
+.grid-item-1{
+    order: 3; /*este ira ultimo pues su order es el mayor de los tres*/
+}
+
+.grid-item-2{
+    /*este elemento ira primero*/
+}
+
+.grid-item-3{
+    order: 1; 
+    /*este ira segundo pues su order es mayor que el item 2, pero menor que el item 1*/
+}
+~~~
+
+**Es similar al funcionamiento de el "order" en flexbox, pero en este caso la orientación de este orden varia dependiendo del "grid track"**
+
+---
 
