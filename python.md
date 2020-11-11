@@ -27,18 +27,18 @@ Esta documentación no esta guiada a enseñar python al 100%, sino a ser de ayud
      + [**Negación lógica**](#Negación-lógica)
 6. [**Condicionales**](#Condicionales)
    + [**Operadores de logica booleana**](#Operadores-de-lógica-booleana)
-   + [**Condicional if**](#Condicional-`if`)
-   + [**Condicional elif**](#Condicional-`elif`)
-   + [**Condicional else**](#Condicional-`else`)
-7. [**Bucles**](#Bucles)
-   + [**Bucle `while`**](#Bucle-`while`)
-   + [**Bucle `for`**](#Bucle-`for`)
-8. [**Funciones**](#Funciones)
-9. [**Colecciones**](#Colecciones)
+   + [**Condicional if**](#Condicional-if)
+   + [**Condicional elif**](#Condicional-elif)
+   + [**Condicional else**](#Condicional-else)
+7. [**Colecciones**](#Colecciones)
    + [**Listas**](#Listas)
    + [**Tuplas**](#Tuplas)
    + [**Conjuntos**](#Conjuntos)
    + [**Diccionarios**](#Diccionarios)
+8. [**Bucles**](#Bucles)
+   + [**Bucle while**](#Bucle-while)
+   + [**Bucle for**](#Bucle-for)
+9. [**Funciones**](#Funciones)
 10. [**Módulos**](#Módulos)
 11. [**Paquetes**](#Paquetes)
 12. [**Archivos externos**](#Archivos-externos)
@@ -471,7 +471,7 @@ Estos operadores son especiales y están hechos para "comparar" datos de una con
 
 ---
 
-### Condicional `if`
+### Condicional if
 
 La condicional `if` (si) se basa en una pregunta bastante fácil tanto de ejecutar como de responder y funciona de la siguiente forma:
 
@@ -501,7 +501,7 @@ Cabe aclarar que en algunos casos y lenguajes hace falta usar "{}" para marcar c
 
 ---
 
-### Condicional `elif`
+### Condicional elif
 
 La condicional `elif` una abreviación de`else if` o `si no, si` esta condición actúa cuando la condición if o otra condición `elif` no se cumple.
 
@@ -521,7 +521,7 @@ Al igual que el `if`, este puede anidarse para generar mas `if ` o `elif` dentro
 
 ---
 
-### Condicional `else`
+### Condicional else
 
 La condicional `else` o `si no` sirve para ejecutar una acción si ni una de las condiciones antes expuestas es  correcta o se cumple
 
@@ -724,7 +724,7 @@ Los bucles son bastante similares a las condicionales, mientras se cumpla una fu
 
 ---
 
-### Bucle `while`
+### Bucle while
 
 El bucle `while`  o `mientras`entre los 2 es el mas similar a las condicionales, pues la función de este se basa en que **mientras se cumpla una función** se ejecute una acción o el código que este en el bucle y de hecho este se traduciría casi exactamente así.
 
@@ -741,9 +741,11 @@ el `código()` se ejecutara una y otra vez hasta que la condición sea False, cu
 
 ---
 
-### Bucle `for`
+### Bucle for
 
-El bucle `for` o `por ` es mas distinto a las condicionales, su funcionamiento principal se basa en **por cada "elemento" en "iterables"** ejecuta un código, (**los iterables son objetos o listas, colecciones en general que permiten el recorrer sus elementos, lo veremos mas a profundidad cuando veamos las [Colecciones]()**) la idea es que este bucle a comparación del `for` no puede o es muy difícil que sea infinito dado que este si o si tiene que tener un dato final el cual siendo una lista o otras colecciones o variables evita que este bucle se mantenga repitiéndose de forma constante e infinita
+El bucle `for` o `por ` es mas distinto a las condicionales, su funcionamiento principal se basa en **por cada "elemento" en "iterables"** ejecuta un código, (**los iterables son listas o  colecciones en general que permiten el recorrer sus elementos.
+
+ la idea es que este bucle a comparación del `while` no puede o es muy difícil que sea infinito dado que este si o si tiene que tener un dato final el cual siendo una lista o otras colecciones o variables evita que este bucle se mantenga repitiéndose de forma constante e infinita
 
 Ejemplo con una lista:
 
