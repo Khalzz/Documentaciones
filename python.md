@@ -1,7 +1,3 @@
-
-
-
-
 # Python 3
 
 **Documentación por Rodrigo Andres Seguel Nuñez**
@@ -458,7 +454,7 @@ En la introducción de los operadores mencione que eran 4 pero el cuarto, los [*
 
 ## Condicionales
 
-Para hacer programas funcionales debemos comprobar constantemente si ciertas condiciones se cumplen o no, para esto usamos las condicionales.
+Para hacer programas "funcionales" debemos comprobar constantemente si ciertas condiciones se cumplen o no, para esto usamos las condicionales.
 
 ### Operadores de lógica booleana
 
@@ -481,12 +477,12 @@ La condicional `if` (si) se basa en una pregunta bastante fácil tanto de ejecut
 
 ~~~python
 #si (condicion) se cumple
-if "ejemplo" == "ejemplo": #verdad/true
+if 1 == 1: #verdad/true
     #ejecutar codigo
     print("algo")
 #-----------------------------------------------------------------------------------------
 #si (condicion) no se cumple
-if "ejemplo" == "ejemplo2": #falso/false
+if 1 == 2: #falso/false
     #no ejecuta este codigo si es falso
     print("algo")
 ~~~
@@ -545,83 +541,6 @@ else: #si ni una condicion se cumple, ejecuta la accion de esta condicional
 ~~~
 
 Este al igual que todos, se puede anidar 
-
----
-
-## Bucles
-
-Los bucles son bastante similares a las condicionales, mientras se cumpla una función, se ejecuta un código todas  las veces que sea posible, hasta que esa misma condición deje de cumplirse.
-
----
-
-### Bucle `while`
-
-El bucle `while`  o `mientras`entre los 2 es el mas similar a las condicionales, pues la función de este se basa en que **mientras se cumpla una función** se ejecute una acción o el código que este en el bucle y de hecho este se traduciría casi exactamente así.
-
-Ejemplo:
-
-~~~python
-#mientras la condicion sea true
-while (condicion == true):
-    #ejecuta el codigo que este aqui
-    codigo()
-~~~
-
-el `código()` se ejecutara una y otra vez hasta que la condición sea False, cuando eso se cumpla, el bucle parara y el código dejara de repetirse y ejecutarse.
-
----
-
-### Bucle `for`
-
-El bucle `for` o `por ` es mas distinto a las condicionales, su funcionamiento principal se basa en **por cada "elemento" en "iterables"** ejecuta un código, (**los iterables son objetos o listas, colecciones en general que permiten el recorrer sus elementos, lo veremos mas a profundidad cuando veamos las [Colecciones]()**) la idea es que este bucle a comparación del `for` no puede o es muy difícil que sea infinito dado que este si o si tiene que tener un dato final el cual siendo una lista o otras colecciones o variables evita que este bucle se mantenga repitiéndose de forma constante e infinita
-
-Ejemplo con una lista:
-
-~~~python
-#asignar variable a la lista
-nums = [1, 2, 3, 4]
-
-for n in nums: #por cada "dato" en la lista nums
-    print(n) #imprime en pantalla un numero de la lista
-
-#------------------------(esto se mostrara en la terminal)--------------------------------
->> 1
->> 2
->> 3
->> 4
-~~~
-
-En este caso el `print(n)̣` se ejecutara por cada dato en la lista, al haber 4 datos en la misma, esta se ejecutara 4 veces.
-
----
-
-## Funciones
-
-Con los conocimientos ya adquiridos hasta este punto de la documentación podemos proceder a algo muy útil del mismo código y de hecho, cuando descubras lo útil que es, no pararas de usarlo.
-
-La función de (vaga la redundancia) las funciones principal mente es **similar a las variables** envés de guardar datos, **guardan código o acciones**.
-
-Se crean usando la siguiente sintaxis:
-
-~~~python
-def nombreFuncion(parametros):
-    #codigo
-~~~
-
-Estas funciones se llaman usando `nombreFuncion(parametros a añadir o nada)`.
-
-Un ejemplo de el uso de parámetros es el siguiente:
-
-~~~python
-def suma(num1,num2): #en el parametro se proponen que datos tendra la funcion
-    print(num1 + num2)
-    
-suma(2,5) #en el parametro se asigna "num1 = 2" y el "num2 = 5"
-
->>>7
-~~~
-
-Como extra, los parámetros pueden ser de varios tipos: **strings, integers, listas, tuplas, etc...** 
 
 ---
 
@@ -690,6 +609,7 @@ Sus métodos no son tantos como serian los de las lista de por si, pero los mét
 Son una colección en la que **su orden no importa**, al igual que las listas y tuplas, puede tener distintos tipos de datos dentro de la misma y esta se inicia usando llaves `{}`. 
 
 Ejemplo:
+
 ~~~python
 set = {"dato1", 2, 3.0, [4,5], (6,7)}
 ~~~
@@ -795,6 +715,83 @@ del(diccionario["clave"])
 #en este caso usaremos un print
 print diccionario["lista"][index de dato de lista "0"]
 ~~~
+
+---
+
+## Bucles
+
+Los bucles son bastante similares a las condicionales, mientras se cumpla una función, se ejecuta un código todas  las veces que sea posible, hasta que esa misma condición deje de cumplirse.
+
+---
+
+### Bucle `while`
+
+El bucle `while`  o `mientras`entre los 2 es el mas similar a las condicionales, pues la función de este se basa en que **mientras se cumpla una función** se ejecute una acción o el código que este en el bucle y de hecho este se traduciría casi exactamente así.
+
+Ejemplo:
+
+~~~python
+#mientras la condicion sea true
+while (condicion == true):
+    #ejecuta el codigo que este aqui
+    codigo()
+~~~
+
+el `código()` se ejecutara una y otra vez hasta que la condición sea False, cuando eso se cumpla, el bucle parara y el código dejara de repetirse y ejecutarse.
+
+---
+
+### Bucle `for`
+
+El bucle `for` o `por ` es mas distinto a las condicionales, su funcionamiento principal se basa en **por cada "elemento" en "iterables"** ejecuta un código, (**los iterables son objetos o listas, colecciones en general que permiten el recorrer sus elementos, lo veremos mas a profundidad cuando veamos las [Colecciones]()**) la idea es que este bucle a comparación del `for` no puede o es muy difícil que sea infinito dado que este si o si tiene que tener un dato final el cual siendo una lista o otras colecciones o variables evita que este bucle se mantenga repitiéndose de forma constante e infinita
+
+Ejemplo con una lista:
+
+~~~python
+#asignar variable a la lista
+nums = [1, 2, 3, 4]
+
+for n in nums: #por cada "dato" en la lista nums
+    print(n) #imprime en pantalla un numero de la lista
+
+#------------------------(esto se mostrara en la terminal)--------------------------------
+>> 1
+>> 2
+>> 3
+>> 4
+~~~
+
+En este caso el `print(n)̣` se ejecutara por cada dato en la lista, al haber 4 datos en la misma, esta se ejecutara 4 veces.
+
+---
+
+## Funciones
+
+Con los conocimientos ya adquiridos hasta este punto de la documentación podemos proceder a algo muy útil del mismo código y de hecho, cuando descubras lo útil que es, no pararas de usarlo.
+
+La función de (vaga la redundancia) las funciones principal mente es **similar a las variables** envés de guardar datos, **guardan código o acciones**.
+
+Se crean usando la siguiente sintaxis:
+
+~~~python
+def nombreFuncion(parametros):
+    #codigo
+~~~
+
+Estas funciones se llaman usando `nombreFuncion(parametros a añadir o nada)`.
+
+Un ejemplo de el uso de parámetros es el siguiente:
+
+~~~python
+def suma(num1,num2): #en el parametro se proponen que datos tendra la funcion
+    print(num1 + num2)
+    
+suma(2,5) #en el parametro se asigna "num1 = 2" y el "num2 = 5"
+
+>>>7
+~~~
+
+Como extra, los parámetros pueden ser de varios tipos: **strings, integers, listas, tuplas, etc...** 
 
 ---
 
