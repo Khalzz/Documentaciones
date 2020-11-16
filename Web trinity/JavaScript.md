@@ -67,7 +67,7 @@ Pero para entenderlo primero les haré saber algunos conceptos importantes para 
 
 + **Javascript es un lenguaje orientado a objetos** osea utiliza el sistema de orientación a objetos que es tan usado en otros lenguajes o incluso **indispensable en otros lenguajes** como lo es en C#, Java, C++ y muchos otros (este tema se va a profundizar mas tarde)
 
-+ **Javascript es un lenguaje basado en prototipos** osea, haciendo referencia a el tema anterior, al trabajar con objetos usamos "clases" que definen lo que es un objeto, esto no es necesario en javascript, haciendo el código mas fácil de escribir y de leer.
++ **Javascript es un lenguaje basado en prototipos** osea, haciendo referencia a el tema anterior, al trabajar con objetos usamos "clases" que definen lo que es un objeto, a la hora de hacer mas objetos en base a ese, no requeriremos de hacer mas clases, simplemente instanciar el objeto ya creado con los datos que usara.
 
   ---
 
@@ -314,7 +314,7 @@ Son los "datos originales" que trae el lenguaje por "defecto" y que no requieren
 
 Pero en general lo tipos de datos primitivos son:
 
-+ **String** o cadenas de texto, se diferencian por siempre llevar `"comillas"` para definir que un dato es un string en si.
++ **String** o cadenas de texto, se diferencian por siempre llevar `"comillas"`  ya sean comillas dobles como en el ejemplo `""`, comillas simples `''` para definir que un dato es un string en si.
 
   *Ejemplo:*
 
@@ -488,9 +488,17 @@ Esto ocurre por que al "unir las variables" en realidad no se enlazan como en ot
 
 ---
 
-### Arrays
+### Tipos de datos (objetos)
 
-Los array (o arreglos) son un tipo de dato (no primitivo/objeto) forma en la que podemos unir varios datos en uno mismo, similar a una lista, solo que en este caso podemos acceder a ellos por un indice.
+En javascript, todo tipo de dato que no es un **tipo de dato primitivo** se le considera objeto, dado que requiere de otros valores para funcionar y que esos valores en su mayoria son **datos primitivos**.
+
+Estos son por ejemplo: arrays, objetos en si, funciones, entre otros tipos de datos.
+
+**Los mas importantes son:**
+
+#### Arrays
+
+Los array (o arreglos) entran en un tipo de dato que podemos llamar "objetos" y es forma en la que podemos unir varios datos en uno mismo, similar a una lista, solo que en este caso podemos acceder a ellos por un indice.
 
 *declarar un array:*
 
@@ -557,6 +565,193 @@ let componentesPc = {
 componentesPc[ram]; //nos dara el valor de la "clave ingresada"
 //luego podemos iterar con el dato ingresandolo en un alert o lo que sea
 ~~~
+
+---
+
+#### Funciones
+
+Las funciones son bloques de código que nos permiten "particionar nuestro código" así ejecutando ciertas lineas en el momento que nosotros lo decidamos, **por ahora este es un tema algo mas avanzado, pero entramos en profundidad a el en [esta parte de la documentación](#Funciones)**
+
+---
+
+#### Objetos
+
+Son todos los "objetos" creados tomando en cuenta el paradigma de **programación orientada a objetos**, este tema es mas avanzado así que **puedes verlo en [esta parte de la documentación](#Programación-orientada-a-objetos)**
+
+---
+
+#### Math
+
+A la hora de "trabajar" con datos que requieran de un procesamiento matemático es muy necesario utilizar algunas funciones y parámetros que nos pueden ser muy útiles.
+
+Ya sea **ver números aleatorios o el valor de pi** hay muchos datos y parámetros que podemos utilizar a la hora de hacer iteraciones matemáticas.
+
+Y su sintaxis de ejemplo seria: `let numero = Math.funcion(propiedades);`
+
+*las funciones que podemos usar para acceder a estos datos son:*
+
+|       función       |                          definición                          |
+| :-----------------: | :----------------------------------------------------------: |
+|  **`Math.sqrt()`**  | Devuelve la raiz cuadrada positiva del numero añadido en el parámetro |
+|  **`Math.cbrt()`**  | Devuelve la raiz cuadrada negativa del numero añadido en el parámetro |
+|  **`Math.max()`**   |    Devuelve el valor mas alto de los números que le pasas    |
+|  **`Math.min()`**   |  Devuelve el valor mas pequeño de los números que le pasas   |
+| **`Math.random()`** |       Devuelve un numero pseudo aleatorio entre 0 y 1        |
+| **`Math.round()`**  |     Devuelve un valor "aproximado" al entero mas cercano     |
+| **`Math.fround()`** | Devuelve un valor "aproximado" al entero mas cercano de tipo flotante |
+| **`Math.floor()`**  | Devuelve el mayor entero, menor que o igual a un numero (redondea hacia abajo) |
+| **`Math.trunc()`**  |      Transforma un float (decimal) en un numero entero       |
+
+---
+
+**OJO, si queremos hacer por ejemplo un numero aleatorio del 0 al 100 en lugar de el 0 al 1 debemos hacer lo siguiente:**
+
+~~~javascript
+let numeroRandom = Math.random()*100; //al usar el *100 nos da valores entre el 0 y el 100
+
+//pero este sale con muchos decimales, por lo que usamos
+numeroRandom = Math.round(numeroRandom); //redondeamos el valor al entero mas cercano
+//o
+numeroRandom = Math.floor(numeroRandom)
+~~~
+
+Este ultimo es el mas util si lo que buscamos es que los valores elegidos no se admitan en el conteo, dado que este va  a aproximar hacia el numero mas bajo, pero ademas podemos hacer:
+
+~~~javascript
+let numeroRandom = Math.round(Math.random() * 100))
+//en este caso lo hacemos todo en una linea
+//pero en caso que no querramos que se muestre el 0 o el 100 debemos hacerlo asi:
+let numeroRandom = Math.round(Math.random() * 99) + 1)
+~~~
+
+Y como ultimo tema importante, si queremos hacer un numero aleatorio entre 2 valores debemos usar:
+
+~~~javascript
+function numeroAleatorio(nMin, nMax) {
+  return Math.random() * (nMax - nMin) + nMin;
+}
+
+//si la ejecutamos de la siguiente forma
+numeroAleatorio(0, 5) //nos dara un numero aleatorio entre el 0 y el 5
+//luego solo debemos jugar con las demas formas de hacer numeros aleatorios
+~~~
+
+---
+
+**Ademas hay propiedades que equivalen a valores específicos usando la sintaxis `Math.propiedad`**.
+
+*por ejemplo:*
+
+~~~javascript
+const numeroPi = Math.PI; //esto le otorga a la constante, el valor de pi (aproximado)
+~~~
+
+*y estas propiedades son:*
+
+|     propiedad      |                          definición                          |
+| :----------------: | :----------------------------------------------------------: |
+|   **`Math.PI`**    |  Nos entrega el valor de pi aproximado (3.141592653589793).  |
+|   **`Math.LN2`**   |          **Logaritmo natural de 2** (0.693 aprox).           |
+|  **`Math.LN10`**   |          **Logaritmo natural de 10** (2.303 aprox).          |
+|  **`Math.LOG2E`**  |         **Logaritmo de E con base 2** (1.443 aprox).         |
+| **`Math.LOG10E`**  |           **Logaritmo de E con base 10** (0.434).            |
+| **`Math.SQRT1_2`** |           **Raíz cuadrada de 1/2**  (0.707 aprox).           |
+|  **`Math.SQRT2`**  |            **Raíz cuadrada de 2** (1.414 aprox).             |
+|    **`Math.E`**    | **Constante de Euler** la base de los logaritmos naturales (2.718 aprox) |
+
+---
+
+## Métodos o funciones de datos
+
+Todos los tipos de datos tienen en especifico "funciones" o "métodos" que nos permiten interactuar con los mismos en base a el valor que tienen y como se muestra este.
+
+---
+
+### Funciones de string
+
+
+
+Especialmente los string que de por si tienen muchos tipos de interacciones aplicables a ellos y usando la sintaxis **`variableString.funcion(propiedades);`**.
+
+*las principales funciones son:*
+
+| función              |                         descripción                          |
+| :------------------- | :----------------------------------------------------------: |
+| **`.concat()`**      | nos permite concatenar dos strings que añadamos como propiedad. |
+| **`.startWith()`**   | Nos da `true` si el string inicia con el dato que añadamos como propiedad. |
+| **`.endsWith()`**    | Nos da `true` si el string termina con el dato que añadamos como propiedad. |
+| **`.includes()`**    | Nos da `true` si el string incluye el dato que añadamos como propiedad. |
+| **`.indexOf()`**     | nos entrega "el indice numérico" de la primera letra en una palabra (si no se encuentra nos dará -1). |
+| **`.lastIndexOf()`** | nos entrega "el indice numérico" de la ultima letra en una palabra (si no se encuentra nos dará -1). |
+| **`.padStart()`**    | nos permite seleccionar un valor que se repetirá al inicio hasta que nuestro string tenga cierto largo `(largo, valor a repetir)`. |
+| **`.padEnd()`**      | nos permite seleccionar un valor que se repetirá al final hasta que nuestro string tenga cierto largo `(largo, valor a repetir)`. |
+| **`.repeat()`**      | repite el string la cantidad de veces que seleccionemos en la misma función. |
+| **`.split()`**       | nos permite "separar" el string según el carácter deseado (" " lo separa por espacios). |
+| **`.substring()`**   | nos permite seleccionar cuantas letras se mostraran del string ejemplo (0, 3) se mostraran **solo las 4 primeras letras**. |
+| **`.toLowerCase()`** | Transforma todas las letras de un string **en minúsculas**.  |
+| **`.toUpperCase()`** | Transforma todas las letras de un string **en mayúsculas**.  |
+| **`.toString()`**    | Transforma un valor en string (ejemplo transforma un 3 a un "3"). |
+| **`.trim()`**        |   Elimina los espacios al inicio y al final de un string.    |
+| **`.trimEnd()`**     |         Elimina los espacios al final de un string.          |
+| **`.trimStart()`**   |         Elimina los espacios al inicio de un string.         |
+
+---
+
+### Funciones de arrays
+
+Al igual que los strings puede que requieras hacer algunos cambios en los array con alguna función en especifico, estas tienen la misma sintaxis que las funciones de los string, solo que como es obvio **el tipo de dato debe ser si o si un array**
+
+*las principales funciones son:*
+
+|     función      |                         descripción                          |
+| :--------------: | :----------------------------------------------------------: |
+|   **`.pop()`**   | Elimina el ultimo elemento de un array para luego "retornarlo". |
+|  **`.shift()`**  | Elimina el primer elemento de un array para luego "retornarlo". |
+|  **`.push()`**   | Añade un elemento al array y lo posiciona al final del mismo. |
+| **`.reverse()`** |       Invierte el orden de los datos dentro del array.       |
+| **`.unshift()`** | agrega uno o mas elementos al array y nos retorna el largo nuevo del mismo. |
+|  **`.sort()`**   | Nos permite "ordenar" los datos de un array según su valor.  |
+| **`.splice()`**  | Nos permite eliminar varios elementos consecutivamente (indice Inicial, numero de datos a borrar después de este) aun que **también nos deja añadir datos**. |
+|  **`.join()`**   | Une todos los datos de el array en un string con el que podemos luego iterar. |
+|  **`.slice()`**  | Nos entrega los elementos que seleccionamos (el numero donde empieza, fin) ojo hay que recordar que el fin no cuenta. |
+
+**Y hay 2 funciones muy especiales a la hora de trabajar con arrays que de hecho funcionan similares a los bucles y son:**
+
++ `.filter(función)` **por cada elemento de el  array, se ejecuta la funcion que ingresemos en el filter** repitiéndose hasta "repasar" todos los datos del mismo array **y de paso generando un nuevo array**.
+
+  *ejemplo:*
+
+  ~~~javascript
+  const array = [1,2,3,4,5,6,7,8,9,10];
+  
+  //la variable numeros es como al variable asignada en un 'for x in array'
+  const num = array.filter(numeros => numeros < 5) //en este caso hay un arrow function
+  //la funcion solo retorna los datos que sean menores de 5
+  console.log(num) //este imprime esos numeros retornados
+  ~~~
+
+  Hay que recordar que en este ejemplo no hace falta poner el `let ` o `const` dado que genera errores y que la función puede ser de cualquier tipo pero por el ejemplo lo hice de tipo flecha pero **requiere de estar unido a una variable o constante pues o sino tampoco funciona**.
+
+  ---
+
++ `.forEach()` **por cada elemento de el  array, se ejecuta la función que ingresemos en el forEach **repitiéndose hasta "repasar" todos los datos del mismo array **y sin necesidad de crear otro array con el mismo**.
+
+  *ejemplo:*
+
+  ~~~javascript
+  const array = [1,2,3,4,5,6,7,8,9,10];
+  
+  //la variable numeros se asigna a cada valor del array cuando el bucle se repite
+  array.forEach(function (numeros){ //en este caso usamos una funcion normal
+  	console.log(numeros) //esto se repite por cada dato en el array
+  })
+  ~~~
+
+  **a la hora de iterar con los datos del mismo es mejor hacerlo desde la misma función y no requiere de `let` o `const`**.
+
+  ---
+
+**OJO, en los array también sirven algunas funciones de strings como `.toString()`, `.indexOf()`, `.lastIndexOf()` y `.includes()`**.
 
 ---
 
@@ -799,7 +994,1329 @@ if (numero === 1) { //esta condicion es falsa
 
 ---
 
-# Arrays (arreglos)
+# Bucles
 
-Los array son un tipo de dato (no primitivo o mejor llamado **objeto**) que 
+Los bucles son similares a las condicionales, solo que en este caso **si la condicional (de algunos) nos da true** va a ejegutar ese codigo de forma infinita **o hasta que hagamos que ese bucle se rompa**.
 
+---
+
+## Bucle while
+
+Este es el mas similar a las condicionales originales, ya que **mientras una condicion se cumpla**, el bloque de código dentro de este se repetira.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+while (condicion) {
+    //codigo a repetir
+}
+~~~
+
+Recomiendo siempre que usemos el while, buscar llegar al final del mismo con break, rompiendo la condicion u con otras sentencias, dado que los bucles infinitos nos pueden generar problemas de rendimiento.
+
+*un buen ejemplo de uso puede ser:*
+
+~~~javascript
+let numero = 0;
+
+while (numero < 20) { //mientras la variable numero sea menor a 20
+    numero++; //sumar 1 a la variable numero
+    document.write(`<h1>${numero}</h1>`);
+}
+~~~
+
+En este caso se mostrara un conteo desde el 1 al 20 en el html de la pagina en si.
+
+Una palabra clave que nos ayudara bastante es `break` que nos permite **romper el bucle y continuar con el codigo que hay tras este bucle**.
+
+*un ejemplo de esto seria:*
+
+~~~javascript
+let numero = 0;
+
+while (true) { //con while(true) generamos un bucle infinito
+    numero++; //sumar 1 a la variable numero
+    if (numero == 5){ //podemos anidar condicionales dentro de bucles
+        break; //rompemos el bucle
+    }
+}
+//el codigo continua aqui...
+~~~
+
+---
+
+#### Do while
+
+El bucle **while** en si tiene un tipo de  "variación", la cual conocemos como "el bucle **do while**".
+
+Este funciona similar al bucle while solo que **primero seleccionamos el bloque a ejecutar y luego vemos si la condición se cumple**.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+do{
+    //este codigo se reproducira 1 vez
+} while (condicion) //si esta condicion es true, el bloque de codigo se repite
+~~~
+
+*ejemplo de uso:*
+
+~~~javascript
+let numero = 0;
+
+do {
+    numero++; //sumar 1 a la variable numero
+    document.write(`<h1>${numero}</h1>`); //imprimir el dato de la variable 1
+} while (numero < 20) //si la variable es menor a 20 volver a repetir
+~~~
+
+---
+
+## Bucle for
+
+El bucle for es un tipo de "bucle mas complejo" dado que no requiere solo de una condicional.
+
+Mientras que el while puede ser infinito (dado que podemos simplemente **no romper el bucle**), mientras que el bucle for **debemos seleccionar cuando termina antes que todo lo demás**.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+for (variableDeclarada; condicional; comoCambiaLaVariable) {
+    //bloque de codigo
+}
+~~~
+
+*un ejemplo de uso podría ser:*
+
+~~~javascript
+for (let i = 0; i < 6; i++) { //la variable i  aumentara de 1 en 1 hasta ser mayor a 6
+    document.write(i); //este escribira el valor de i cada vez que se repite el código
+}
+~~~
+
+Otra de las **palabras clave** que nos serviran al trabajar con bucles es el `continue;`, este nos permite "saltarnos" un ciclo del bucle.
+
+*ejemplo de uso:*
+
+~~~javascript
+for (let i = 0; i <=5; i++) {
+    if (i == 2) { //si i es igual a 2
+        continue; //saltarse el ciclo
+    }
+    alert(i); //en este caso al terminar el bucle se vera impreso "0, 1, 3, 4, 5"
+}
+~~~
+
+---
+
+### Bucle for in
+
+El bucle `for in` funciona muy diferente a el for normal y de hecho funciona muchisimo mas distinto que en otros lenguajes.
+
+Este aparte de requerir un array en el que iterar, ademas requiere de menos datos que ingresar en el mismo y debemos saber que este **itera sobre el nombre de el dato o el indice del dato**.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+let miArray = ["manzana", "pera", "platano", "piña", "durazno"]; //creamos array
+
+//for nombreElementos in Array{}
+for (let frutas in miArray) {
+    //se crea una variable (en este caso con el nombre frutas)
+    //cada vez que el bucle se repita este tendra otro indice del array
+    //al llegar al ultimo se rompera el bucle
+    document.write(frutas); //se mostraran todos los indices del array asi = 01234
+}
+~~~
+
+---
+
+### Bucle for of
+
+Es similar al bucle `for in` solo que este **en lugar de iterar con el nombre o indice de los datos, itera con el mismo valor del mismo** osea que este funciona como el `for in` de otros lenguajes.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+let miArray = ["manzana", "pera", "platano", "piña", "durazno"]; //creamos array
+
+//for nombreElementos in Array{}
+for (let frutas of miArray) {
+    //se crea una variable (en este caso con el nombre frutas)
+    //cada vez que el bucle se repita este tendra otro valor del array
+    //al llegar al ultimo se rompera el bucle
+    document.write(frutas); //se mostraran todos los datos del array
+}
+~~~
+
+---
+
+## Labeled
+
+Cuando trabajemos con bucles es probable que querramos hacer referencias a un bucle en especifico, ya sea por que queremos romper un bucle anidado o algo asi, referenciar estos bucles puede ser muy util.
+
+El label nos permite añadirle un tipo de "identificador" a nuestros bucles con los que iterar a la hora de usar `continue` o un `break`.
+
+*ejemplo de uso*
+
+~~~javascript
+let numero = 0;
+
+labelDeMiBucle: while (numero < 10){
+    numero++;
+    document.write(numero);
+    while (numero == 5) {
+        break labelDeMiBucle; //este break rompera el bucle especifico al que referencia
+    }
+}
+~~~
+
+**normalmente el break o continue interactuan con el bucle en el que estan pero luego continuan en su "bucle padre" el `label` nos permite seleccionar por ejemplo en este caso un bucle "padre" para "romperlo"**.
+
+---
+
+# Funciones
+
+**Aquí es donde todo se pone interesante**.
+
+Las funciones son una forma de "encapsular nuestro código" permitiendo guardar porciones  o bloques de código en 1 función que al llamarla ejecutara una acción o el mismo bloque de código que ingresamos en la misma función.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+function nombreFuncion(){
+    //bloque de codigo que ejecutar
+}
+
+nombreFuncion(); //para ejecutar la funcion debemos llamarla por su nombre seguido de "()"
+~~~
+
+*un ejemplo de uso seria:*
+
+~~~javascript
+function decirHola(){ //definimos la funcion
+    alert("Hola!!!, como te encuentras amigo???")
+}
+
+decirHola() //llamamos la funcion para que funcione
+~~~
+
+En este caso se mostrara el mensaje solo al "llamar" la función que ya creaste.
+
+*también podríamos hacer:*
+
+~~~javascript
+let suma = function(){ //asignamos la funcion a una variable
+    let resultado = 1+2;
+    return resultado //para que la asignacion sea exitosa debemos "retornar" un valor
+}
+
+suma() //llamamos la funcion
+
+//la variable numeros ahora tiene el valor 3
+//tambien lo podriamos hacer asi:
+
+function suma(){ //declaramos la variable
+    let resultado = 1+2;
+    return resultado
+}
+
+let numeros = suma(); //asignamos el valor de la funcion a una variable
+~~~
+
+**Cabe aclarar que al igual que podemos anidar condicionales, podemos anidar funciones, ingresando una función dentro de otra**.
+
+----
+
+## Parametros
+
+Los parámetros son una parte un poco mas avanzada de las funciones , a la hora de trabajar con ellas solo podemos usar valores que estén **dentro de la misma función** pero en caso de que los datos se crearan de forma externa a la misma, hay una forma de "introducirlos en la función".
+
+*la sintaxis de una función completa seria la siguiente:*
+
+~~~javascript
+function mensaje(nombreNuevoDeVariable){ //aqui van todos los parametros de la funcion
+    alert(nombreNuevoDeVariable)
+} //si intentamos ejecutar nuestra funcion con solo suma() no se podra
+
+//en este caso deberemos usar
+mensaje("hola amigo, como te encuentras"); //esto mostrara el mensaje de forma exitosa
+~~~
+
+Lo que aquí podemos ver es que en los paréntesis `()` de la función al declararla va un "parámetro", este sera **el nuevo nombre que tendrá un dato dentro de la función** por lo que solo podremos interactuar con ella dependiendo del nombre que ingresemos en ese paréntesis.
+
+Otra cosa a tomar en cuenta es que hay que ingresar esos datos en la función, por lo que a la hora de "hacerla funcionar" o llamarla debemos añadir el dato original con el que se trabajara **en el ejemplo es `variableFueraDeFuncion`** y dentro de la función la misma se llama `nombreNuevoDeVariable`.
+
+**Tras esto solo debemos jugar con los parámetros y ver el mundo de cosas interesantes que podemos hacer**.
+
+*como:*
+
+~~~javascript
+//definimos la funcion y los parametros que usara
+function suma(numero, numeroDos){
+    alert(numero+numeroDos);
+}
+
+//llamamos a la funcion y le entregamos los datos que queremos usar en ella
+suma(1,2); //esto nos entregara como resultado el numero 3
+~~~
+
+**esto en ciertos casos puede no ser necesario usar parametros dado que en javascript es totalmente valido hacer esto:**
+
+~~~javascript
+let nombre = "Rodrigo";
+
+function decirNombre(){
+    alert(nombre);
+}
+
+decirNombre();
+~~~
+
+**específicamente no es necesario usar parámetros cuando no retornamos un valor o iteramos en valores distintos, por ejemplo en este caso solo "mostramos el texto en pantalla" por lo que no es necesario usar parámetros para ingresar los datos**.
+
+---
+
+## Scope
+
+El scope es una "característica" de javascript que se define por **ser el "contexto actual de ejecucion" en el que una variable es declarada y donde esta puede ser tanto accedida como utilizada**
+
+*de por si hay 2 tipos de scope:*
+
++ **scope global** osea que su valor puede ser accedido desde cualquier parte del código
+
+  *ejemplo:*
+
+  ~~~javascript
+  let numero = 2
+  
+  function numerica(){
+      //si llamamos la variable numero
+      alert(numero) //este hace referencia a la variable numero y su valor es 3
+  }
+  
+  function numerica2(){
+      //si llamamos la variable numero
+      alert(numero) //este hace referencia a la misma variable y denuevo es 3
+  }
+  ~~~
+
+  ---
+
++ **scope local** osea que su valor puede ser accedido **solo dentro de donde la definamos** y no importa si las declaramos con `let` , `const` o `var`.
+
+  *ejemplo:*
+
+  ~~~javascript
+  //estos son scope de funcion
+  function frutas(){
+      let fruta = "pera"
+      //si llamamos la variable numero
+      alert(fruta) //este mostrara el valor pera
+  }
+  
+  function frutas2(){
+      let fruta = "manzana"
+      //si llamamos la variable numero
+      alert(fruta) //este mostrara el valor manzana
+  }
+  
+  //pero aun asi, el valor de ambos es independiente entre cada funcion
+  ~~~
+
+  Aun que el scope local se divide en 2 tipos distintos:
+
+  + **De función** son las variables declaradas dentro de una función que se pueden llamar dentro de la misma, incluso en una función anidada o en un condicional dentro de el mismo pero **no se puede llamar fuera de la función**.
+
+    *ejemplo:*
+
+    ~~~javascript
+    //estos son scope de funcion
+    function frutas(){
+        let fruta = "pera"
+        if (fruta == "pera"){
+            fruta = "manzana" //podemos llamarla dentro de la funcion
+        }
+        alert(fruta) //este mostrara el valor manzana dado el orden de ejecución
+    }
+    
+    //si tratamos de llamar el valor "fruta" aqui no podremos acceder al mismo
+    ~~~
+
+    ---
+
+  + **De bloque** son las variables declaradas dentro de un bloque, el cual se especifica con las llaves `{}` y **no se puede llamar fuera del mismo bloque**.
+
+    *por ejemplo:*
+
+    ~~~javascript
+    function numerica(){
+        //si llamamos la variable numerica
+        if (true){
+            let numero = 3 //creamos una variable (es distinto crearla a llamarla)
+            //llamarla seria usar "numero = 3" si existiera la misma
+        }
+        alert(numero) //al ser local y de bloque el dato no es accesible desde afuera
+        //esto ocurre por que estan hechas con let pero con const ocurre igualmente
+    } 
+    
+    //al ejecutar esta funcion nos dara un error
+    ~~~
+
+
+---
+
+## Arrow functions
+
+Las arrow functions son una "forma" de crear funciones la cual nos permite "ahorrarnos lineas de código" dado que este esta sujeto a varias reglas que nos pueden acortar la escritura de la misma.
+
+*su sintaxis básica es la siguiente:*
+
+~~~javascript
+const miFuncion = (parametros) => {
+    //bloque de codigo
+}
+
+//en este caso la llamamos con:
+miFuncion(parametros);
+~~~
+
+Pero esta esta sujeta a múltiples reglas que nos pueden ser muy útiles, como lo son:
+
++ **solo si hay un parámetro, los paréntesis en el mismo son opcionales**.
+
+  *ejemplo:*
+
+  ~~~javascript
+  const miFuncion = parametros => {
+      //bloque de codigo
+  }
+  ~~~
+
+  ---
+
++ **si el bloque de codigo que ejecuta la funcion tiene una sola linea podemos dejar toda la funcion en una sola linea de la siguiente forma**:
+
+  ~~~javascript
+  const decirHola = () => {alert('Hola!!!, como te encuentras');}
+  ~~~
+
+  ---
+  
++ **si el mismo código tiene una sola linea, las llaves `{}` son opcionales y podemos acortar mas nuestra linea de código así:**
+
+  ~~~javascript
+  const decirHola = () => alert('Hola!!!, como te encuentras');
+  ~~~
+
+  ---
+
++ **Si queremos devolver un valor con un `return`, no hará falta usar esta palabra clave, dado que el `return` se aplica automáticamente**
+
+  *ejemplo:*
+
+  ~~~javascript
+  let numero = 1;
+  let numero2 = 2;
+  
+  //ejemplo 1 
+  let suma = function(valor1, valor2){
+      return valor1 + valor2
+  } //la variable suma tiene el valor 3
+  alert(suma(numero, numero2)); //llamamos la funcion (su valor es 3) 
+  
+  //seria lo mismo hacer:
+  //ejemplo 2
+  const suma = (valor1, valor2) => valor1 + valor2
+  alert(suma(numero, numero2)); //llamamos la funcion (su valor es 3)
+  ~~~
+
+  Como podemos ver en el ejemplo 1 la función es mucho mas larga que en el ejemplo 2 mientras que en este ultimo nos podemos ahorrar suficiente memoria para hacer que la pagina cargue muchísimo mas rápido.
+
+---
+
+# Programación orientada a objetos
+
+La programación orientada a objetos es un "paradigma" que nos permite particionar nuestro código separándolo en objetos.
+
+**Y en general la POO se define por 4 pilares fundamentales y estos son**:
+
++ Encapsulamiento (Es la capacidad de ocultar datos y o permitir que estos iteren en otros objetos
++ abstraccion (Expresa las caracteristicas especiales de un objeto (y que lo diferencia de otro))
++ herencia (La capacidad de que un objeto "herede" el funcionamiento y datos de otro)
++ polimorfismo (La capacidad de que estos datos "heredados" se puedan editar en el objeto nuevo)
+
+**Este "paradigma" se conforma principalmente por:**
+
+---
+
+## Clases
+
+A la hora de crear un objeto deberemos definir una clase, la clase es **un molde** en el que los demás objetos que creemos se basaran **y le otorgaran valores según cada objeto requiera**.
+
+*por ejemplo:*
+
+~~~javascript
+//creamos un "molde" o clase con el nombre persona
+class persona {
+    constructor(nombre, edad, altura){ 
+        //el constructor sirve para dar el valor de los datos que usaremos en el objeto
+        this.nombre = nombre
+        this.edad = edad
+        this.altura = altura
+        //la keyword "this" solo se usa en el constructor
+    }
+}
+
+//para crear un objeto/instanciar un objeto (en este caso una persona) usamos
+let yo = new persona('Rodrigo', 17, 1.78);
+~~~
+
+En las primeras lineas creamos un objeto con una **función constructora** que nos permite entregarle valores a nuestro objeto, al terminar el objeto creamos una variable y esta debe:
+
++ usar la palabra `new` para definir que se esta basando en una clase.
++ mencionar el nombre de la clase a la que se referencia como molde.
++ entregar los datos en los paréntesis de el objeto instanciado.
+
+---
+
+## Métodos
+
+Los Métodos son las funciones que rigen el comportamiento de nuestro objeto, estos se definen como funciones normales pero sin la palabra clave `function` dentro de la clase y **las funciones flecha no funcionan al hacer métodos**.
+
+*por ejemplo:*
+
+~~~javascript
+class persona {
+    constructor(nombre){ 
+        this.nombre = nombre
+    }
+    decirHola(){
+        alert("Hola, como estas?")
+    }
+}
+let yo = new persona('Rodrigo');
+//objeto.metodo()
+yo.saludar() //esto llama a la funcion saludar de el objeto "yo"
+~~~
+
+Hay que recordar que a la hora de crear objetos siempre hay que primero instanciarlos antes de usar sus métodos.
+
+**Cabe resaltar que técnicamente el `constructor` es un método solo que su única y principal función es trabajar con los valores que usara nuestro objeto/clase**.
+
+Otra cosa importante son los **métodos estaticos** que nos permiten "salir de la funcion normal de los metodos en una clase" osea no requerimos crear un objeto para referenciar el método y esto lo logramos anteponiendo la palabra `static` al nombre del método.
+
+*ejemplo:*
+
+ ~~~javascript
+class persona {
+    constructor(nombre){ 
+        this.nombre = nombre
+    }
+    static decirHola(){
+        alert("Hola, como estas?")
+    }
+}
+
+//para llamar a la funcion decir hola, no debemos "crear un nuevo objeto" solo hacer:
+persona.decirHola() //y no nos generara error como lo hacia sin la palabra static
+ ~~~
+
+---
+
+## Herencia
+
+La herencia en términos simples es el "separar clases en dos tipos", las clases padre (o `super`) y las clases hijo (o `sub-clases`).
+
++ **Clases padres o `super`** suele ser la clase en la que definimos la forma mas básica de un objeto.
++ **Clases hijo o sub-clases** son las clases que heredan datos y funciones de una clase **`super`**.
+
+Esto nos sirve para no tener que rehacer constantemente clases con distintas funciones, sino el poder crear una base principal, crear otra que herede esos datos y si queremos hacer cambios simplemente editar lo que sea necesario.
+
+*esto funciona de la siguiente forma:*
+
+~~~javascript
+//creamos una clase padre (en este caso haremos una sintaxis basica con una funcion)
+class padre {
+    constructor(dato1, dato2){
+        this.dato1 = "dato1";
+        this.dato2 = "dato2";
+    }
+    mostrarMensaje(){
+        alert("este es un mensaje de ejemplo")
+    }
+}
+
+//si hacemos:
+class hijo extends padre { //usamos extends para seleccionar de que padre haremos herencia
+    constructor(dato1, dato2, dato3){ //mencionamos los datos de nuestro constructor
+        super(dato1, dato2); //con super traemos los datos/variables de la clase padre
+        this.dato3 = "dato3"; //este dato solo existe en la clase hijo y no en el padre
+    }
+    mostrarMensaje(){
+        alert(this.dato1);
+    }
+}
+
+//con solo esto y por ejemplo sin volver a generar una variable podemos hacer 
+let claseHijo = new hijo
+claseHijo.mostrarMensaje() //incluso sin definir la funcion esta existe
+~~~
+
+---
+
+## Polimorfismo
+
+El polimorfismo es la capacidad de que las clases heredadas **puedan cambiar de forma** y así obtener tanto funciones y datos diferentes a los originalmente seleccionados en una clase padre o incluso cambiar estos que ya existían.
+
+De hecho esto es tan simple como **simplemente llamar los datos y funciones y cambiar su valor**
+
+*por ejemplo:*
+
+~~~javascript
+class padre {
+    constructor(dato1, dato2){
+        this.dato1 = "dato1";
+        this.dato2 = "dato2";
+    }
+    mostrarMensaje(){
+        alert("este es un mensaje de ejemplo")
+    }
+}
+
+//si hacemos:
+class hijo extends padre {
+    constructor(dato1, dato2, dato3){
+        super(dato1, dato2);
+       	this.dato1 = "dato nuevo" //solo en esta clase, el dato1 tiene un valor nuevo
+        //esto podemos aplicarlo a todos los datos que querramos
+        //de hecho el dato2 sigue con su valor original
+    }
+    mostrarMensaje(){ //llamamos denuevo la funcion para cambiar su bloque de codigo
+        alert('este es otro mensaje'); //cambiamos el bloque de la misma funcion
+    }
+}
+~~~
+
+---
+
+## Getters y Setters
+
+A la hora de crear el `constructor` de nuestra clase puede ocurrir que querramos **cambiar el valor de las variables con una función** y esto lo hacemos con las "funciones" `set`.
+
+**Los setters son los que se encargan de "cambiar el valor" de los datos que ya definimos ya sea como nulos o como otro tipo de dato**.
+
+*su sintaxis de un setter es:*
+
+~~~javascript
+class persona{
+    constructor(nombre, edad){
+        this.nombre = null; //valor a cambiar (este esta en null pero puede de todo)
+        this.edad = null; //valor a cambiar (este esta en null pero puede de todo)
+    }
+    //este es un setter
+    set setNombre(nuevoNombre){
+        this.nombre = nuevoNombre; //llamamos la variable y le asignamos el set
+    }
+    //este es otro setter
+    set setEdad(nuevaEdad){
+        this.edad = nuevaEdad; //llamamos la variable y le asignamos el set
+    }
+}
+
+let p = new persona
+
+//los setter pueden parecer a una funcion pero no funcionan como uno
+//para cambiar el dato no usamos p.setNombre("dato"), sino:
+p.setNombre = "Rodrigo"; //cambiamos el valor de "null" a "Rodrigo"
+p.setEdad = 17; //cambiamos el valor de "null" a 17
+~~~
+
+**mientras que los getters se encargan de "seleccionar" que datos se "retornaran" en base a la funcion que apliquemos en el mismo**.
+
+*ejemplo de sintaxis:*
+
+~~~javascript
+class persona{
+    constructor(nombre){
+        this.nombre = "Rodrigo";
+    }
+    //este es un getter
+    get getNombre(){
+        return this.nombre; //al ejecutar la funcion este hara referencia a el dato
+    }
+}
+
+//ahora si queremos llamarlo solo debemos hacer:
+let p = new persona;
+//y interactuamos con el getter, por ejemplo:
+document.write(p.getNombre); //esto llamara el valor "Rodrigo"
+~~~
+
+---
+
+# La consola
+
+A la hora de codificar puede que requiramos de algún "output" o salida de datos que nos permita ya sea "localizar errores" o simplemente hacer "pruebas" que nos serán muy útiles durante nuestro desarrollo.
+
+La consola nos permite "trabajar con esos datos" y "mostrar mensajes de los mismos" con la idea de mostrarse en un lugar que no interfiera en la experiencia del mismo usuario.
+
+Como ya mencionamos **para abrir la consola en google chrome, chromium o en firefox** debes ya sea **presionar `f12` y seleccionar la pestaña `Console`** o **presionar `ctrl` + `shift` + `i` y luego seleccionar la pestaña `Console`**.
+
+**Al igual que el interprete de python, en este podemos escribir comandos o incluso código en si, pero es mas recomendable hacer esto con ayuda de algún editor de código **.
+
+---
+
+## Métodos de registro
+
+A la hora de trabajar con la consola hay muchos métodos que quizá queramos usar, ya sea para mostrar mensajes o avisar de alguna forma que la pagina esta fallando, siempre hay algúna función que nos pueden facilitar la vida.
+
+**la sintaxis de los métodos que interactúan con la consola es `console.metodo(parametros)`**.
+
+*estos métodos son:*
+
+|     métodos     |                         descripción                          |
+| :-------------: | :----------------------------------------------------------: |
+|  **`.log()`**   | Nos permite mostrar en consola el mensaje ingresado como parámetro |
+| **`.clear()`**  |                      Limpia la consola                       |
+| **`.error()`**  | Nos permite mostrar en consola el mensaje ingresado en el parámetro como error |
+|  **`.info()`**  | Nos permite mostrar un mensaje informativo en la consola (prefiere usar .log()) |
+| **`.table()`**  | Muestra una tabla (en los parámetros debe ir un array o un objeto con index y value) |
+|  **`.warn()`**  | Muestra en consola el mensaje ingresado en el parámetro como advertencia |
+|   **`dir()`**   | Muestra una lista interactiva de las propiedades del objeto especificado (no estándar) |
+| **`.assert()`** | Compara una condición, si es true se ejecuta normalmente, si no lanza error |
+
+**Algo útil, si queremos mostrar un texto en pantalla y queremos cambiar su estilo, podemos añadirle un css de una forma especial usando por ejemplo:**
+
+~~~javascript
+console.log("%cMensaje a imprimir", "color:red;background:black;") //y añadimos mas
+//para esto simplemente hay que llamar el string y al inicio añadirle "%c"
+//luego de escribir el mensaje debemos usar coma y elegir el estilo como si fuera css
+~~~
+
+---
+
+## Métodos de conteo
+
+Quizá a la hora de ejecutar alguna función múltiples veces queremos saber cuantas veces se esta ejecutando la misma y así tener un conocimiento mas profundo de el funcionamiento de la misma pagina.
+
+*Para esto tenemos dos métodos:*
+
++ **`count()`** usualmente  va dentro de una función y **nos permite contar cuantas veces se ejecuta una función en si**.
+
+  *ejemplo de uso:*
+
+  ~~~javascript
+  function accion(){
+      console.count();
+  }
+  
+  //cada vez que lo ejecutemos habra un contador que se sumara en 1
+  accion(); //default: 1
+  accion(); //default: 2
+  accion(); //default: 3
+  accion(); //default: 4
+  ~~~
+
+  ---
+
++ **`countReset()`** si en un punto del conteo queremos que este vuelva a cero debemos usar esta función, cabe aclarar que esta **no suele ir dentro de otra función**.
+
+  *ejemplo de uso:*
+
+  ~~~javascript
+  function accion(){
+      console.count();
+  }
+  
+  //cada vez que lo ejecutemos habra un contador que se sumara en 1
+  accion(); //default: 1
+  accion(); //default: 2
+  accion(); //default: 3
+  accion(); //default: 4
+  
+  console.countReset(); //reiniciamos el conteo
+  
+  accion(); //default: 1 (el conteo vuelve al inicio)
+  ~~~
+
+---
+
+## Métodos de agrupación
+
+A la hora de escribir código en la consola o simplemente ejecutar mensajes en la misma puede que queramos agrupar todo este código en algo similar a una función que solo se agrupe en la consola.
+
+*esto lo logramos usando:*
+
+|         métodos         |                          definición                          |
+| :---------------------: | :----------------------------------------------------------: |
+|     **`.group()`**      | Permite crear un grupo (podemos darle un nombre al grupo como parámetro). |
+|    **`.groupEnd()`**    | Elimina el grupo que hemos creado, o mejor dicho "salimos de el". |
+| **`.groupCollapsed()`** | Permite crear un grupo, pero en este caso el grupo se crea "colapsado". |
+
+---
+
+## Métodos de temporizador
+
+Puede que queramos utilizar nuestra consola como un temporizador, así sabiendo cuanto tarda en ocurrir una función u otras cosas que nos pueden salvar la vida.
+
+*estos métodos son:*
+
+|     métodos      |                          definición                          |
+| :--------------: | :----------------------------------------------------------: |
+|  **`.time()`**   | Inicia un temporizador que se ejecutara "en segundo plano".  |
+| **`.timeLog()`** | Muestra en pantalla el tiempo que ha transcurrido desde el uso de `.time()`. |
+| **`timeEnd()`**  | Detiene el temporizador y muestra en pantalla el tiempo que transcurrió. |
+
+---
+
+# DOM
+
+Como ya se ha mencionado, el uso principal de javascript esta en el desarrollo web en si, pero para esto debemos saber un concepto nuevo llamado **DOM** o **Document Object Model** que específicamente nos permite trabajar directamente con lo que es **html** y **css**
+
+El dom en si **es la forma en la que javascript puede acceder a nuestro html** y diciéndolo de forma técnica **representando el documento como un grupo de nodos** así modificando tanto la **estructura**, el **estilo** y el **contenido**.
+
+De hecho el dom puede ser visualizado desde la consola de forma fácil, simplemente intenta escribir `console.log(document)` y veras toda la estructura html de la misma pagina.
+
+*pero antes unos conceptos iniciales:*
+
++ **nodo** son todos los elementos que estén en el dom, principalmente etiquetas y otros tipos de elementos (**hay que aclarar que todas las etiquetas son nodos, pero no todos los nodos son etiquetas**) y este se compone por:
+
+  ---
+
+  + **Document** es "**el nodo raíz**" osea el que almacena todos los otros nodos.
+  + **Element** son los nodos definidos **por etiquetas html**.
+  + **Text** es el nodo que representa un texto dentro de el nodo **Element** siendo un hijo de este.
+  + **Attribute** son los atributos de las etiquetas que definen nodos. (en javascript no se les ve como nodos, sino como información asociada a los nodos de tipo **Element**).
+  + **Comentarios y otros** son los nodos generados por los comentarios en si y otros elementos como las declaraciones **doctype** en la cabecera de nuestro **html**.
+
+---
+
+ ## Métodos de selección de elementos
+
+Para poder trabajar con estos nodos, debemos primero acceder a los mismos y para eso tenemos distintos métodos que nos permiten elegir el elemento con el que vamos a trabajar.
+
+**La sintaxis de estos es: `document.metodo()`**.
+
+*y estos métodos son:*
+
+|           métodos            |                         descripción                          |
+| :--------------------------: | :----------------------------------------------------------: |
+|   **`.getElementById()`**    | Selecciona un elemento por su id (ademas nos muestra su tipo de objeto) |
+| **`.getElementByTagName()`** | Selecciona un elemento por el nombre de su etiqueta (y muestra su tipo) |
+|    **`.querySelector()`**    | Selecciona el primer elemento por su selector en css (y muestra su tipo) |
+|  **`.querySelectorAll()`**   | Selecciona todos los elementos que coincidan por su selector de css (los une en una lista) |
+
+---
+
+## Métodos de atributos de elementos
+
+También puede que mas que buscar el elemento a utilizar queramos cambiar uno de sus atributos, esto lo logramos con los siguientes métodos:
+
++ **`.setAttribute("atributoACambiar", "valorNuevo")`** nos permite cambiar el valor de un atributo de html.
+
+  *un ejemplo de uso seria:*
+
+  ~~~html
+  <input type="range" class="entrada">
+  ~~~
+
+  *Si quisiéramos cambiar su tipo de input con javascript, debemos hacer:*
+
+  ~~~javascript
+  const elemento = document.querySelector(".entrada") //el selector es solo de ejemplo
+  
+  elemento.setAttribute("type", "text") //asi cambiamos de "rango" a un input de "texto"
+  ~~~
+
+  ---
+
++ **`.getAttribute("atributoARecibir")`** nos permite ver el valor de un atributo seleccionado.
+
+  *un ejemplo de uso seria:*
+
+    ~~~html
+  <input type="range" class="entrada">
+    ~~~
+
+  *Si quisiéramos ver su tipo de input en javascript, debemos hacer:*
+
+    ~~~javascript
+  const elemento = document.querySelector(".entrada") //el selector es solo de ejemplo
+    
+  elemento.getAttribute("type") //asi nos da el tipo de input (en este caso "Range")
+    ~~~
+
+  ---
+
++ **`.removeAttribute()`** nos permite remover un atributo especificado en su parámetro.
+
+  *por ejemplo:*
+
+  ~~~html
+  <input type="text" class="entrada">
+  ~~~
+
+  Para eliminar en este caso el atributo `type` debemos hacer:
+
+  ~~~javascript
+  const elemento = document.querySelector(".entrada") //el selector es solo de ejemplo
+    
+  elemento.removeAttribute("type") //asi eliminamos el atributo type="text"
+  ~~~
+
+
+---
+
+### Atributos globales
+
+  **Debemos tomar en cuenta que en especial las etiquetas html comparten un conjunto de atributos que podemos editar.**
+
+Para acceder a estos podemos hacerlo de multiples formas, como:
+
+~~~javascript
+const elemento = document.querySelector(".input");
+
+//lo llamamos con un ".setAttribute()" y remplazamos su valor
+elemento.setAttribute("type", "text")
+
+//o
+
+//llamamos directamente al elemento con su atributo por defecto
+elemento.atributo //sin parentesis pues es un atributo, no una función
+
+//o
+
+//en todos podemos hacer
+elemento.value = "texto" //y cambiar el valor de el atributo
+~~~
+
+**hay que recordar que para acceder a los atributos de cosas como etiquetas o elementos en especial debemos usar el elemento como palabra clave en lugar de `document`**.
+
+*ejemplo:*
+
+~~~javascript
+document.write("llamamos al documento");
+
+const elemento = document.querySelector(".input"); //instanciamos el elemento
+elemento.value; //llamamos el atributo "value" del mismo
+~~~
+
+*y los atributos son:*
+
+  + **`contentEditable`** nos permite editar el texto de la pagina y tiene dos valores:
+
+    + **`true`** **activa la opción de editar el texto**.
+
+    + **`false`** **(valor por defecto) desactiva la opción de editar el texto**.
+
+  + **`dir`** nos permite seleccionar la orientación de un texto o algo similar y sus valores son:
+
+    + **`ltr`** **(valor por defecto) Left To Right/izquierda a derecha**.
+    + **`rtl`** **Right To Left/derecha a izquierda**.
+
+  + **`hidden`** nos permite seleccionar si queremos esconder o no un elemento y sus valores son:
+
+    + **`true`** **esconde el elemento**.
+    + **`false`** **(valor por defecto) permite que el elemento sea visible**.
+
+  + **`tabindex`** nos permite "marcar el contorno de un texto" como si fuera un input, sus valores son:
+
+    + **`cualquier numero`** **nos permite marcar con el tabulador y el numero significa el orden en el que se vera al presionar tabulador**.
+    + **`cualquier valor no numerico`** nos bloquea la opción de **"marcarlo con el tabulador"**.
+
+  + **`title`** nos permite seleccionar el texto que se mostrara en pequeño "titulo" al pasar el ratón por sobre algún elemento, **su valor debe ser un texto de cualquier tipo `"como este"`**.
+
+  + **`style`** nos permite "editar" el estilo de la pagina accediendo al css de el elemento en si.
+
+    De hecho nos permite acceder a todo del css y aplicarle estilo como quisiéramos, solo que en lugar de escribir como en css debemos usar:
+
+    ~~~javascript
+    //ejemplo para seleccionar el color
+    elemento.style.color = "blue";
+    
+    //ejemplo para seleccionar el color de fondo
+    elemento.style.backgroundColor = "green"; //cambiamos el - de css por camelCase
+    ~~~
+
+
+
+---
+
+## Atributos de input
+
+Una utilidad muy importante es la de acceder a los **atributos de inputs** para así poder iterar sobre estos datos entregados por el usuario.
+
+la sintaxis de estos atributos es diferente a los anteriormente señalados, dado que no requieren de "selectores de atributos", de hecho funcionan así:
+
+~~~javascript
+const elemento = document.querySelector(".input");
+
+//llamamos directamente al elemento con su atributo
+elemento.atributo //sin parentesis pues es un atributo, no una función
+
+//en todos podemos hacer
+elemento.value = "texto" //y cambiar el valor de el atributo
+~~~
+
+**aun que igualmente podemos escribirlos con los métodos de selección ya vistos**.
+
+*estos atributos son:*
+
+|      atributo      |                         descripción                          |
+| :----------------: | :----------------------------------------------------------: |
+|  **`.className`**  | nos permite acceder al nombre de la clase del elemento html. |
+|    **`.value`**    | nos permite acceder al valor del input (podemos igualarlo a un dato por defecto). |
+|    **`.type`**     | nos permite seleccionar el tipo de input, por ejemplo (`elemento.type = "range"`). |
+|   **`.accept`**    | nos permite seleccionar el tipo de archivo a subir ("image/png", "image/gif", ) |
+|    **`.form`**     | nos permite seleccionar a que formulario pertenece por id (si este esta fuera). |
+|  **`.minLength`**  | nos permite seleccionar el largo mínimo de texto a ingresar en un input. |
+| **`.placeHolder`** | nos permite escribir un texto dentro de el input del estilo "ingresa tu nombre". |
+|  **`.required`**   | nos permite seleccionar si requiere de algún imput (de ser así usar `= " "`) |
+
+---
+
+## Clases, ClassList y sus métodos
+
+Las clases son uno de los principales identificadores que utilizaremos en el desarrollo web, no por que sean los mejores sino por que es la forma mas cómoda de hacerlo.
+
+A la hora de trabajar con estas tendremos algunas funciones que nos permiten acceder a esta propiedad y asi hacer cambios en base a la clase  del mismo elemento.
+
+*Su sintaxis es:*
+
+~~~javascript
+const elemento = document.querySelector(".elementoPrueba"); //llamamos el elemento
+
+elemento.classList.add("ejemplo") //asi llamamos un metodo de classList
+~~~
+
+*específicamente los métodos son:*
+
+|      método       |                         descripción                          |
+| :---------------: | :----------------------------------------------------------: |
+|   **`.add()`**    | nos permite añadir una clase al elemento con el nombre ingresado en su parámetro. |
+|  **`.remove()`**  | nos permite remover la clase del elemento con el mismo nombre que su parámetro. |
+|   **`.item()`**   | nos permite acceder a una clase por un indice numérico ingresado en el parámetro. |
+| **`.contains()`** | revisa si nuestro elemento posee la clase ingresada en el parámetro (y da true o false). |
+|  **`.toggle()`**  | revisa si nuestro elemento posee una clase (si es así la elimina, si no la crea). |
+| **`.replace()`**  | nos permite remplazar una clase por otra ("claseVieja", "claseNueva") |
+
+---
+
+## Obtención y modificación de elementos
+
+También puede que requiramos de acceder directamente al elemento y no sus parámetros, así accediendo por ejemplo al texto de un párrafo en lugar de el color del mismo.
+
+*La sintaxis de estos atributos es:*
+
+~~~javascript
+const elemento = document.querySelector(".elemento-Prueba"); //instanciamos el elemento
+
+const texto = elemento.textContent //llamamos el contenido del elemento
+~~~
+
+*y específicamente sus atributos pueden ser:*
+
+|     atributos      |                         descripción                          |
+| :----------------: | :----------------------------------------------------------: |
+| **`.textContent`** | nos permite acceder al contenido (especialmente de texto) de un elemento pero sin considerar las etiquetas que hay dentro de nuestro elemento principal. |
+|  **`.innerHTML`**  | nos permite acceder al texto del elemento (incluyendo el contenido html mostrando incluso las etiquetas dentro de este pero **ignorando las del mismo elemento**). |
+|  **`.outerHTML`**  | nos permite acceder al texto por completo (incluyendo su código html y mostrando tanto **las etiquetas dentro del elemento como las del elemento mismo**) |
+
+---
+
+## Creación de elementos
+
+También como es obvio puede que queramos crear varios elementos los cuales irán en nuestro html en medio de la ejecución de nuestra pagina **y estos se añaden principalmente al document mas que a un elemento**.
+
+Para esto tenemos varios métodos los cuales son:
+
++ **`.createElement()`** Nos permite crear un elemento con el nombre de la etiqueta que ingresemos en sus parametros **estos siempre deben ir todo en mayúsculas o todo en minúsculas**.
+
+  *ejemplo:*
+
+  ~~~javascript
+  const divisor = document.createElement("DIV") //asi creamos el elemento <div></div>
+  ~~~
+
+  ---
+
++ **`.createTextNode()`** nos permite crear un nodo de texto dentro de unas etiquetas o elemento en si.
+
+  *ejemplo:*
+
+  ~~~javascript
+  const divisor = document.createElement("DIV"); //asi creamos el elemento <div></div>
+  
+  const textoDiv = document.createTextNode("Hola amigos!!!"); //creamos el text element
+  
+  divisor.appendChild(textoDiv); //añadimos como un elemento como hijo al elemento padre
+  //en este caso el elemento padre es el "divisor" y el hijo es "textoDiv"
+  //el método "appendChild()" lo veremos un poco mas adelante
+  ~~~
+
+  *quedaría algo similar a esto en html:*
+
+  ~~~html
+  <div>
+  	Hola amigos!!!
+  </div>
+  ~~~
+
+  ---
+
++ **`.createDocumentFragment()`** nos permite crear lo que se conoce como "fragmentos" osea piezas de nuestro nuevas de nuestro html con tanto datos nuevos como simplemente de distintos tipos.
+
+  **Esto por ejemplo se suele usar bastante en casos como notepads donde para ver una lista de las notas que vamos creando debe cada una ser un fragmento nuevo con datos nuevos**.
+
+  *ejemplo de uso:*
+
+  ~~~javascript
+  //supongamos que tenemos una lista en html con el nombre de clase "lista"
+  const miLista = document.querySelector(".lista"); //llamamos nuestro elemento padre
+  const fragmento = document.createDocumentFragment(); //creamos nuestro fragmento padre
+  
+  let item = document.createElement("li"); //creamos un elemento (hijo del fragmento)
+  
+  item.textContent = "item 1 de la lista"; //como extra le damos un texto al mismo
+  
+  fragmento.appendChild(item); //añadimos el elemento hijo a su fragmento
+  miLista.appendChild(fragmento); //añadimos nuestro fragmento padre al elemento padre
+  ~~~
+
+  Osea en general creamos el fragmento y los objetos que irán en su interior, tras esto añadimos estos objetos dentro del fragmento, y el mismo fragmento dentro de su contenedor.
+
+---
+
+## Childs y Parents
+
+A la hora de trabajar con elementos tenemos que separarlos en 2 tipos distintos:
+
++ **padres** (o parents) los elementos que contienen algún elemento en su interior
++ **hijos** (o childs) los elementos que están al interior de un elemento padre
++ **hermanos** (o siblings)el conjunto de elementos que están al mismo nivel de parentesco
+
+*ejemplo:*
+
+~~~html
+<div> <!--este elemento es un padre-->
+    <div> <!--este elemento es hijo del div principal pero padre del parrafo--> 
+        <p>este parrafo es hijo del segundo div y hermano del segundo parrafo</p>
+        <p>este parrafo es hermano del primer parrafo y hijo del segundo div</p>
+    </div>
+</div>
+~~~
+
+En este caso hay muchos parámetros y métodos que se aplican directamente a los **childs** y que nos permiten tanto acceder a estos, como hacer cambios en los mismos.
+
+---
+
+### Parámetros de los hijos
+
+*estos parámetros pueden ser:*
+
++ **`.firstChild`** y **`.lastChild`** (no lo recomiendo) nos permiten acceder **a el primer o ultimo hijo de un elemento respectivamente** ya sea elemento o no.
+
+  *pero antes debemos tomar algo en cuenta:*
+
+  ~~~html
+  <div class="padre">
+  	<p>Esto es un parrafo hijo</p>
+  </div>
+  ~~~
+
+  Si llamamos uno de estos parámetros (en un **`console.log`**), nos mostrara un mensaje del "tipo de dato" `#text` **esto es por que cuenta el espacio que hay entre el `<div>` y el `<p>`**.
+
+  *Para arreglar debemos hacer lo siguiente:*
+
+  ~~~html
+  <div class="padre"><p>Esto es un parrafo hijo</p>
+  </div>
+  <!--o-->
+  <div class="padre">
+      <p>Esto es un parrafo hijo</p></div>
+  ~~~
+
+  **Ahí mostrara el mensaje correctamente** `<p>Esto es un parrafo hijo</p>`.
+
+  ---
+
++ **`.firstElementChild`** y **`.lastElementChild`** nos permiten acceder **al primer elemento que sea hijo de un elemento padre** osea que no contará el elemento que no tenga etiqueta.
+
+  *por ejemplo:*
+
+  ~~~html
+  <div class="padre">
+      Este texto no se tomará en cuenta por no tener etiquetas
+  	<p>Este parrafo si se tomara en cuenta por usar etiquetas</p>
+  </div>
+  ~~~
+
+  ---
+
++ **`.childNodes`** nos permite acceder a **todos los nodos que sean hijos de un elemento** organizándolos en un **`NodeList`** incluyendo por ejemplo "el texto dentro de una etiqueta" u otros contenidos.
+
+  ---
+
++ **`children`** nos permite acceder a **todos los elementos hijo de un elemento padre** organizándolos en un **`NodeList`** pero solo mostrando la etiqueta y no el contenido de la misma.
+
+---
+
+### Métodos para los hijos
+
+*estos métodos son:*
+
++ **`.appendChild()`** nos permite añadir un elemento como hijo de otro, especialmente al que le apliquemos la función.
+
+  *ejemplo:*
+
+  ~~~javascript
+  //supongamos que en html tenemos <div class="divisor"></div>
+  const padre = document.querySelector(".divisor"); //llamamos nuestro elemento padre
+  let item = document.createElement("p"); //creamos el elemento hijo
+  
+  //padre.appendChild(hijo);
+  padre.appendChild(item); //añadimos a nuestro padre su elemento hijo
+  ~~~
+
+  *nuestro html quedaría así:*
+
+  ~~~html
+  <div class="divisor">
+      <p></p>
+  </div>
+  ~~~
+
+  ---
+
++ **`.replaceChild()`** nos permite reemplazar un elemento hijo de su respectivo padre.
+
+  *un ejemplo de uso seria:*
+
+  ~~~javascript
+  //supongamos que tenemos los mismos elementos anteriormente mencionados
+  //pero el parrafo lo tenemos añadido en html directamente
+  const padre = document.querySelector(".divisor"); //llamamos nuestro elemento padre
+  const hijo = document.querySelector(".hijoP"); //llamamos el elemento hijo (parrafo)
+  
+  let nuevoHijo = document.createElement("h1"); //creamos el nuevo elemento
+  
+  //padre.replaceChild(hijoNuevo, hijoViejo);
+  padre.replaceChild(nuevoHijo, hijo); //hacemos el remplazo
+  ~~~
+
+  **Esto lo que hace seria:**
+
+  ~~~html
+  <!--pasar de esto-->
+  <div>
+      <p></p>
+  </div>
+  
+  <!--a esto-->
+  <div>
+      <h1></h1>
+  </div>
+  ~~~
+
+  ---
+
++ **`.removeChild()`** nos permite eliminar un elemento hijo de su respectivo padre.
+
+  *un ejemplo de uso seria:*
+
+  ~~~javascript
+  const padre = document.querySelector(".divisor"); //llamamos nuestro elemento padre
+  const hijo = document.querySelector(".hijoP"); //llamamos el elemento hijo (parrafo)
+  
+  //el ejemplo de sintaxis no es necesario
+  padre.removeChild(hijo); //eliminamos el elemento hijo de su padre
+  ~~~
+
+  **Al final de esto nos quedaría:**
+
+  ~~~html
+  <div>
+  </div>
+  ~~~
+
+  ---
+
++ **`.hasChildNodes()`** nos devuelve true o false dependiendo de **si un elemento tiene un hijo o no**.
+
+  *ejemplo:*
+
+  ~~~javascript
+  const elementoSinHijos = document.querySelector(".divisor1"); //llamamos un elemento
+  const padreConHijos = document.querySelector(".divisor2"); //llamamos un padre
+  
+  //suponiendo que la constante "elementoSinHijos" en efecto NO tiene hijos
+  let prueba1 = elementoSinHijos.hasChildNodes(); //esto nos retornara un false
+  
+  //suponiendo que la vonstante "padreConHijos" SI tiene hijos
+  let prueba2 = padreConHijos.hasChildNodes(); //esto nos retornara un true 
+  ~~~
+
+---
+
+### Parámetros de los padres
+
+*en este caso son muchos, pero los principales que utilizaremos son:*
+
++  **`.parentElement`** busca y muestra **el elemento padre** de un elemento (**busca las etiquetas html**) y su sintaxis es **`hijo.parentElement`**
++ **`.parentNode`** busca y muestra **el nodo padre** de un elemento (**sin importar si es o no una etiqueta html**) y su sintaxis es **`hijo.parentNode`**
+
+**Entre estos dos recomiendo usar principalmente el primero dado que en muy pocas ocasiones un elemento tiene como algo que no sea una etiqueta html**
+
+---
+
+### Parámetros de los hermanos
+
+*como en los padres e hijos, los hermanos también tienen parámetros y estos son:*
+
++ **`.nextSibling`** busca y muestra **el nodo hermano que viene después del hijo al que le aplicamos el parametro** (**incluyendo los nodos**) y su sintaxis es **`hijo.nextSibling`**
+
+  ---
+
++ **`.previousSibling`** busca y muestra **el nodo hermano que viene antes del hijo al que le aplicamos el parametro** (**incluyendo los nodos**) y su sintaxis es **`hijo.previousSibling`**
+
+  ---
+
++ **`.nextElementSibling`** busca y muestra **el elemento hermano que viene después del hijo al que le aplicamos el parámetro** (**solo los que tengan etiquetas**) y su sintaxis es **`hijo.nextElementSibling`**
+
+  ---
+
++ **`.previousElementSibling`** busca y muestra **el elemento hermano que viene antes del hijo al que le aplicamos el parámetro** (**solo los que tengan etiquetas**) y su sintaxis es **`hijo.previousElementSibling`**
+
+---
+
+## Closets
+
+Esta función es relativamente especial, se aplica a los nodos principalmente y nos permite "seleccionar" **el "padre" mas cercano si estos comparten una clase**.
+
+*por ejemplo:*
+
+~~~html
+<div class="div">
+    DIV 1
+    <div class="div">
+        DIV 2
+        <div class="div">
+            DIV 3
+            <p class="hijo">parrafo hijo</p>
+        </div>
+    </div>
+</div>
+~~~
+
+*si ahora hacemos:*
+
+~~~javascript
+const hijo = querySelector(".hijo"); //llamamos nuestro elemento hijo (el parrafo)
+
+console.log(hijo.closets(".div")) //muestra el primer "padre" con la clase "div"
+~~~
+
+**En este caso el div que llamara sera  el que tiene escrito **`DIV 3` dado que es el padre mas cercano.
+
+---
