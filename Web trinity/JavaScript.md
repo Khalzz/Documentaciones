@@ -2317,6 +2317,6 @@ const hijo = querySelector(".hijo"); //llamamos nuestro elemento hijo (el parraf
 console.log(hijo.closets(".div")) //muestra el primer "padre" con la clase "div"
 ~~~
 
-**En este caso el div que llamara sera  el que tiene escrito **`DIV 3` dado que es el padre mas cercano.
+**En este caso el div que llamara sera  el que tiene escrito** `DIV 3` dado que es el padre mas cercano.
 
 ---
