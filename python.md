@@ -119,7 +119,11 @@ Pero, puedes evitar romperte la cabeza buscando cosas demás si sabes comentar t
 ~~~python
 #esta es una linea comentada y se usa escribiendo un "#" antes del comentario
 
-"""esto es un comentario multi linea,bastante util en caso que envez de solo querer comentar una linea, quieras comentar algo en especifico de tu codigo como una explicacion de que hace"""
+"""
+esto es un comentario multi linea,
+bastante util en caso que envez de solo querer comentar una linea,
+quieras comentar algo en especifico de tu codigo como una explicacion de que hace
+"""
 ~~~
 
 Cabe recordar que los comentarios no afectan al código por lo que puedes escribirlos en casi cualquier lado sin afectar al mismo.
