@@ -1,5 +1,7 @@
 # C#
 
+**Documentación hecha por Rodrigo Seguel**
+
 C# (c sharp) es un lenguaje de programación multiparadigma (pero principalmente orientado a objetos) multi-propósito el cual funciona principalmente con el **framework .NET** aunque también es compatible con otros, como Xamarin para creación de aplicaciones móviles nativas multi-plataforma o con Unity para la creación de videojuegos .
 
 Este nace el 2001 de mano de Microsoft como una opción que pudiera competir con c++ tanto como con java de por si, **de hecho el "#" de su nombre viene de agregar otros ++ a los que ya tiene c++ y esto lo usaban para "decir" que c# es una versión mas fuerte de c++ (aun que sus usos no sean ni mínimamente similares en algunos casos)**.

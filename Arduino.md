@@ -262,7 +262,9 @@ ejemplo: `datoX = datoY` en este caso el "=" es el operador de asignación
 
 #### Operadores lógicos
 
-**Los operadores lógicos se dividen en 3 tipos principales y para verlos los comparare con los mismos operadores pero del lenguaje c# aun que también se usan en otros lenguajes de la misma manera.**
+Cuando trabajemos con condicionales habrán momentos donde querremos hacer "comparaciones" entre dos valores en las mismas condicionales o incluso validar dos al mismo tiempo.
+
+**Los operadores lógicos se dividen en 3 tipos principales y para verlos los comparare con los mismos operadores pero del lenguaje Python aun que también se usan en otros lenguajes de la misma manera.**
 
 ##### Conjugación lógica
 

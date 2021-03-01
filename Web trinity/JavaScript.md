@@ -36,6 +36,52 @@ datos sacados de [la siguiente fuente](https://en.wikipedia.org/wiki/Programming
 
 ## Indice
 
+<<<<<<< HEAD
++ [Primeros pasos en Javascript](#Primeros-pasos-en-Javascript)
+
+  + [Conocimientos previos](#Conocimientos-previos)
+  + [Crear Proyecto](#Crear-Proyecto)
+  + [Comentarios](#Comentarios)
+  + [Hola mundo](#Hola-mundo)
++ [Variables y tipos de datos](#Variables-y-tipos-de-datos)
+
+  + [Declarar variables](#Declarar-variables)
+  + [Tipos de datos](#Tipos de datos)
+    + [Tipos de datos (primitivos)](#Tipos-de-datos-(primitivos))
+
+    + [Tipos de datos (objetos)](#Tipos-de-datos-(objetos))
+      + [Array](#Array)
+      + [Math](#Math)
+      + [Funciones](#Funciones)
+      + [Objetos](#Objetos)
+  + [Métodos o funciones de datos](#Métodos-o-funciones-de-datos)
+    + [Funciones de string](#Funciones-de-string)
+    + [Funciones de arrays](#Funciones-de-arrays)
+  + [Entradas de datos](#Entradas-de-datos)
++ [Operadores](#Operadores)
+  + [Operadores aritméticos](#Operadores-aritméticos)
+  + [Operadores de asignación](#Operadores-de-asignación)
+  + [Operadores de comparación](#Operadores-de-comparación)
+  + [Operadores logicos](#Operadores-lógicos)
+    + [Conjugación lógica](#Conjugación-lógica)
+    + [Disyunción lógica](#Disyunción-lógica)
+    + [Negación lógica](#Negación-lógica)
++ []()
+  + []()
+  + []()
+  + []()
+
++ []()
+  + []()
+    + []()
+  + []()
+    + []()
+    + []()
+  + []()
++ []()
+
+=======
+>>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
 ---
 
 # Primeros pasos en Javascript
@@ -565,6 +611,8 @@ let componentesPc = {
 componentesPc[ram]; //nos dara el valor de la "clave ingresada"
 //luego podemos iterar con el dato ingresandolo en un alert o lo que sea
 ~~~
+<<<<<<< HEAD
+=======
 
 ---
 
@@ -578,6 +626,7 @@ Las funciones son bloques de código que nos permiten "particionar nuestro códi
 
 Son todos los "objetos" creados tomando en cuenta el paradigma de **programación orientada a objetos**, este tema es mas avanzado así que **puedes verlo en [esta parte de la documentación](#Programación-orientada-a-objetos)**
 
+>>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
 ---
 
 #### Math
@@ -661,6 +710,21 @@ const numeroPi = Math.PI; //esto le otorga a la constante, el valor de pi (aprox
 
 ---
 
+<<<<<<< HEAD
+#### Funciones
+
+Las funciones son "bloques de código" que nos permiten "particionar nuestro código" así ejecutando ciertas lineas en el momento que nosotros lo decidamos y podemos añadirlo a una variable, **por ahora este es un tema algo mas avanzado, pero entramos en profundidad a el en [esta parte de la documentación](#Funciones)**
+
+---
+
+#### Objetos
+
+Son todos los "objetos" creados tomando en cuenta el paradigma de **programación orientada a objetos**, este tema es mas avanzado así que **puedes verlo en [esta parte de la documentación](#Programación-orientada-a-objetos)**
+
+---
+
+=======
+>>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
 ## Métodos o funciones de datos
 
 Todos los tipos de datos tienen en especifico "funciones" o "métodos" que nos permiten interactuar con los mismos en base a el valor que tienen y como se muestra este.
@@ -804,7 +868,11 @@ Es un tipo de operador que manipula datos de forma "matemática", estos datos us
 
 ---
 
+<<<<<<< HEAD
+### Operadores de asignación
+=======
 ### Operadores de asignación (básicos)
+>>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
 
 Es un tipo de operador que permite asignar información de un dato a otro, ya sea para editarlos, mostrar que estos son el mismo dato, entre otros tipos de acciones que se pueden hacer con estos operadores
 
@@ -2317,6 +2385,165 @@ const hijo = querySelector(".hijo"); //llamamos nuestro elemento hijo (el parraf
 console.log(hijo.closets(".div")) //muestra el primer "padre" con la clase "div"
 ~~~
 
+<<<<<<< HEAD
+**En este caso el div que llamara sera  el que tiene escrito **`DIV 3` dado que es el padre mas cercano.
+
+---
+
+# Window
+
+A la hora de trabajar en nuestras paginas puede que en lugar de interactuar con los elementos de la pagina (como lo hace el **DOM**) queramos interactuar con la pagina en si **o con otras paginas ya existentes** mediante el código.
+
+Para esto usaremos el objeto **`window`** y de hecho este no solo contiene los elementos ya mencionados, también posee el historial y el elemento **`document`** (o el **`DOM`**) en su interior.
+
+**Técnicamente, entre todos los objetos de javascript el objeto window es el con mayor jerarquía.**
+
+---
+
+## Métodos de Window
+
+Al igual que el **DOM** y otros objetos de Javascript, el "Window" en si posee muchos métodos/funciones, no haremos una revisión completa a estos, sino veremos los mas importantes y que quizá, mas llegues a usar.
+
+**Debes recordar que en el caso de este objeto sus métodos se escriben `window.método()`** de forma similar al DOM.
+
+---
+
+### Open
+
+Puede que en algun momento de nuestro desarrollo necesitemos que nuestro usuario abra otras paginas, ya sea para por ejemplo, ser enviado a otra pagina como a nuestro GitHub u otras muchas paginas extra que ya existan de por si.
+
+esto podemos hacerlo con un hipervínculo en html, pero este recomiendo sea llamado por medio de Javascript.
+
+*Lo podemos usar de las siguientes formas:*
+
+~~~javascript
+window.open("https://estaPaginaEsTotalmenteFalsa.com"); 
+// esto abrira la pagina en una nueva ventana
+~~~
+
+*O también:*
+
+~~~javascript
+window.open("https://estaPaginaEsTotalmenteFalsa.com", "_self");
+// esto abrira la pagina en la misma ventana
+~~~
+
+Ademas podemos usar el **`window.open()`** para referirnos a otra "Window" de la siguiente forma:
+
+~~~javascript
+let ventana = window.open("https://estaPaginaEsTotalmenteFalsa.com");
+// ahora la variable "ventana" hace referencia a una "window" especifica
+// esto la abre al mismo tiempo que crea la variable
+~~~
+
+---
+
+### Close 
+
+También puede que necesitemos cerrar una ventana en si, esto lo logramos con el método **`close()`**.
+
+*Su sintaxis es la siguiente:*
+
+~~~javascript
+window.close(); // esto cerrara la ventana actual
+~~~
+
+Ademas podemos usar la variable **`closed`** que nos permite verificar por medio de un booleano si la ventana esta cerrada o no.
+
+*Su sintaxis es la siguiente:*
+
+~~~javascript
+window.closed; // si la pagina esta abierta devolvera false, de lo contrario dara true
+~~~
+
+**Si queremos usar estas en otras ventanas podemos referenciarlas con el método `open()` como mostramos en el ejemplo anterior y usar esa "referencia" junto a estas**
+
+*ejemplo:*
+
+~~~javascript
+let ventana = window.open("https://estaPaginaEsTotalmenteFalsa.com");
+// ahora la variable "ventana" hace referencia a una "window" especifica
+
+ventana.close(); // cierra la pagina especificamente mencionada
+ventana.closed; // segun el ejemplo deberia dar true
+~~~
+
+---
+
+### Stop
+
+El stop nos permite "**parar la carga de la pagina**" y así dejar a la misma sin cargar al 100% y a nivel mas especifico, simula que presionamos el botón "detener la carga" mientras la pagina se esta cargando.
+
+*Su sintaxis es la siguiente:*
+
+~~~javascript
+window.stop(); //detenemos la carga de la pagina
+~~~
+
+---
+
+### Alert
+
+Si queremos mostrar una "alerta" en nuestra pagina web podemos usar el método **`alert()`**.
+
+Anteriormente este se usaba de la siguiente manera:
+
+~~~javascript
+window.alert("texto de la alerta");
+~~~
+
+Pero actualmente no es necesario referenciar al "window", de hecho hoy en día se usa principalmente:
+
+~~~javascript
+alert("texto de alerta");
+~~~
+
+De hecho otro tema importante **si el método a usar no requiere de hace referencia a otra ventana, podemos directamente usar solo el nombre del método, sin necesidad de llamar el objeto `window`**.
+
+---
+
+### print
+
+Este abre la  "ventana de **imprimir**" que como dice su nombre, nos permite imprimir el contenido de la pagina en si.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+print(); //abre la ventana de imprimir
+~~~
+
+---
+
+### prompt
+
+Con **`prompt`** generamos una "alerta" similar al método "alert" solo que en este caso este tendremos un espacio donde podremos ingresar texto.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+prompt("texto que ira en el prompt");
+~~~
+
+---
+
+### Confirm
+
+Este nos permite abrir un cuadro de dialogo similar al **`alert` y `prompt`** solo qeu en este caso nos dara 2 botones uno de **aceptar** y otro de **cancelar**.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+confirm("texto que ira en el confirm");
+~~~
+
+---
+
+## Screen y Scroll 
+
+
+
+=======
 **En este caso el div que llamara sera  el que tiene escrito** `DIV 3` dado que es el padre mas cercano.
 
 ---
+>>>>>>> 44ad559f08146a0ec9f68298d403af722163e039

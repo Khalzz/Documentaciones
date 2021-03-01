@@ -12,7 +12,7 @@ kotlin de por si es un lenguaje simple que nos permite trabajar tanto en celular
 
 Ya con esta base podemos iniciar con el aprendizaje de kotlin, recuerda que esta  documentación esta pensada como un "recordatorio del lenguaje" pero también se puede usar como una guía para novatos en el lenguaje.
 
-Kotlin al ser un lenguaje enfocado a android su ide específicamente es **Android Studio** pero también podemos trabajar con el por medio de **intelliJ idea** de hecho android studio es un **fork** de este mismo
+Kotlin al ser un lenguaje enfocado a android su ide específicamente es **Android Studio** pero también podemos trabajar con el por medio de **intelliJ idea** de hecho android studio es un **fork** de este mismo.
 
 ---
 

@@ -271,8 +271,6 @@ Para operar con números de forma constante requeriremos de hacer operaciones ma
 |    /     |    división    |
 |    %     |     modulo     |
 
-El modulo suele dar por ejemplo el "sobrante" de una división.
-
 También esta el operador de igualdad `=` este nos permite por ejemplo añadir datos a una variable, aun que en este caso no lo tomaremos como un operador numérico pues no se usa a la hora de hacer operaciones matemáticas en rust.
 
 ---
@@ -711,4 +709,7 @@ Estas reglas son:
 
 ---
 
+<<<<<<< HEAD
+=======
 l
+>>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
