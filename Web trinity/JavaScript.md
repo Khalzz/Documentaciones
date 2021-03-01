@@ -36,52 +36,6 @@ datos sacados de [la siguiente fuente](https://en.wikipedia.org/wiki/Programming
 
 ## Indice
 
-<<<<<<< HEAD
-+ [Primeros pasos en Javascript](#Primeros-pasos-en-Javascript)
-
-  + [Conocimientos previos](#Conocimientos-previos)
-  + [Crear Proyecto](#Crear-Proyecto)
-  + [Comentarios](#Comentarios)
-  + [Hola mundo](#Hola-mundo)
-+ [Variables y tipos de datos](#Variables-y-tipos-de-datos)
-
-  + [Declarar variables](#Declarar-variables)
-  + [Tipos de datos](#Tipos de datos)
-    + [Tipos de datos (primitivos)](#Tipos-de-datos-(primitivos))
-
-    + [Tipos de datos (objetos)](#Tipos-de-datos-(objetos))
-      + [Array](#Array)
-      + [Math](#Math)
-      + [Funciones](#Funciones)
-      + [Objetos](#Objetos)
-  + [Métodos o funciones de datos](#Métodos-o-funciones-de-datos)
-    + [Funciones de string](#Funciones-de-string)
-    + [Funciones de arrays](#Funciones-de-arrays)
-  + [Entradas de datos](#Entradas-de-datos)
-+ [Operadores](#Operadores)
-  + [Operadores aritméticos](#Operadores-aritméticos)
-  + [Operadores de asignación](#Operadores-de-asignación)
-  + [Operadores de comparación](#Operadores-de-comparación)
-  + [Operadores logicos](#Operadores-lógicos)
-    + [Conjugación lógica](#Conjugación-lógica)
-    + [Disyunción lógica](#Disyunción-lógica)
-    + [Negación lógica](#Negación-lógica)
-+ []()
-  + []()
-  + []()
-  + []()
-
-+ []()
-  + []()
-    + []()
-  + []()
-    + []()
-    + []()
-  + []()
-+ []()
-
-=======
->>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
 ---
 
 # Primeros pasos en Javascript
@@ -611,8 +565,6 @@ let componentesPc = {
 componentesPc[ram]; //nos dara el valor de la "clave ingresada"
 //luego podemos iterar con el dato ingresandolo en un alert o lo que sea
 ~~~
-<<<<<<< HEAD
-=======
 
 ---
 
@@ -626,7 +578,6 @@ Las funciones son bloques de código que nos permiten "particionar nuestro códi
 
 Son todos los "objetos" creados tomando en cuenta el paradigma de **programación orientada a objetos**, este tema es mas avanzado así que **puedes verlo en [esta parte de la documentación](#Programación-orientada-a-objetos)**
 
->>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
 ---
 
 #### Math
@@ -710,21 +661,6 @@ const numeroPi = Math.PI; //esto le otorga a la constante, el valor de pi (aprox
 
 ---
 
-<<<<<<< HEAD
-#### Funciones
-
-Las funciones son "bloques de código" que nos permiten "particionar nuestro código" así ejecutando ciertas lineas en el momento que nosotros lo decidamos y podemos añadirlo a una variable, **por ahora este es un tema algo mas avanzado, pero entramos en profundidad a el en [esta parte de la documentación](#Funciones)**
-
----
-
-#### Objetos
-
-Son todos los "objetos" creados tomando en cuenta el paradigma de **programación orientada a objetos**, este tema es mas avanzado así que **puedes verlo en [esta parte de la documentación](#Programación-orientada-a-objetos)**
-
----
-
-=======
->>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
 ## Métodos o funciones de datos
 
 Todos los tipos de datos tienen en especifico "funciones" o "métodos" que nos permiten interactuar con los mismos en base a el valor que tienen y como se muestra este.
@@ -868,11 +804,7 @@ Es un tipo de operador que manipula datos de forma "matemática", estos datos us
 
 ---
 
-<<<<<<< HEAD
-### Operadores de asignación
-=======
 ### Operadores de asignación (básicos)
->>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
 
 Es un tipo de operador que permite asignar información de un dato a otro, ya sea para editarlos, mostrar que estos son el mismo dato, entre otros tipos de acciones que se pueden hacer con estos operadores
 
@@ -2385,8 +2317,7 @@ const hijo = querySelector(".hijo"); //llamamos nuestro elemento hijo (el parraf
 console.log(hijo.closets(".div")) //muestra el primer "padre" con la clase "div"
 ~~~
 
-<<<<<<< HEAD
-**En este caso el div que llamara sera  el que tiene escrito **`DIV 3` dado que es el padre mas cercano.
+**En este caso el div que llamara sera  el que tiene escrito** `DIV 3` dado que es el padre mas cercano.
 
 ---
 
@@ -2539,11 +2470,3 @@ confirm("texto que ira en el confirm");
 ---
 
 ## Screen y Scroll 
-
-
-
-=======
-**En este caso el div que llamara sera  el que tiene escrito** `DIV 3` dado que es el padre mas cercano.
-
----
->>>>>>> 44ad559f08146a0ec9f68298d403af722163e039
