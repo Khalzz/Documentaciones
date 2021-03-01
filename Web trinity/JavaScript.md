@@ -35,6 +35,48 @@ datos sacados de [la siguiente fuente](https://en.wikipedia.org/wiki/Programming
 ---
 
 ## Indice
++ [Primeros pasos en Javascript](#Primeros-pasos-en-Javascript)
+
+  + [Conocimientos previos](#Conocimientos-previos)
+  + [Crear Proyecto](#Crear-Proyecto)
+  + [Comentarios](#Comentarios)
+  + [Hola mundo](#Hola-mundo)
++ [Variables y tipos de datos](#Variables-y-tipos-de-datos)
+
+  + [Declarar variables](#Declarar-variables)
+  + [Tipos de datos](#Tipos de datos)
+    + [Tipos de datos (primitivos)](#Tipos-de-datos-(primitivos))
+
+    + [Tipos de datos (objetos)](#Tipos-de-datos-(objetos))
+      + [Array](#Array)
+      + [Math](#Math)
+      + [Funciones](#Funciones)
+      + [Objetos](#Objetos)
+  + [Métodos o funciones de datos](#Métodos-o-funciones-de-datos)
+    + [Funciones de string](#Funciones-de-string)
+    + [Funciones de arrays](#Funciones-de-arrays)
+  + [Entradas de datos](#Entradas-de-datos)
++ [Operadores](#Operadores)
+  + [Operadores aritméticos](#Operadores-aritméticos)
+  + [Operadores de asignación](#Operadores-de-asignación)
+  + [Operadores de comparación](#Operadores-de-comparación)
+  + [Operadores logicos](#Operadores-lógicos)
+    + [Conjugación lógica](#Conjugación-lógica)
+    + [Disyunción lógica](#Disyunción-lógica)
+    + [Negación lógica](#Negación-lógica)
++ []()
+  + []()
+  + []()
+  + []()
+
++ []()
+  + []()
+    + []()
+  + []()
+    + []()
+    + []()
+  + []()
++ []()
 
 ---
 
