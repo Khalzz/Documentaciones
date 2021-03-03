@@ -1334,12 +1334,12 @@ El scope es una "característica" de javascript que se define por **ser el "cont
   
   function numerica(){
       //si llamamos la variable numero
-      alert(numero) //este hace referencia a la variable numero y su valor es 3
+      alert(numero) //este hace referencia a la variable numero y su valor es 2
   }
   
   function numerica2(){
       //si llamamos la variable numero
-      alert(numero) //este hace referencia a la misma variable y denuevo es 3
+      alert(numero) //este hace referencia a la misma variable y denuevo es 2
   }
   ~~~
 
@@ -1353,13 +1353,13 @@ El scope es una "característica" de javascript que se define por **ser el "cont
   //estos son scope de funcion
   function frutas(){
       let fruta = "pera"
-      //si llamamos la variable numero
+      //si llamamos la variable fruta
       alert(fruta) //este mostrara el valor pera
   }
   
   function frutas2(){
       let fruta = "manzana"
-      //si llamamos la variable numero
+      //si llamamos la variable fruta
       alert(fruta) //este mostrara el valor manzana
   }
   
@@ -2792,15 +2792,216 @@ De hecho ya vimos un evento de mouse que utilizaremos gran parte del tiempo, esp
 
 Aun que hay muchos otros eventos de mouse, como por ejemplo:
 
-| Evento    | Definición                                                   |
-| --------- | ------------------------------------------------------------ |
-| click     | Lee cuando el usuario da clic sobre un elemento              |
-| bdlclick  | Lee cuando el usuario da doble clic sobre un elemento        |
-| mouseover | Lee cuando el usuario posiciona el cursor sobre el elemento o uno de sus hijos |
-| mouseout  | Lee cuando el usuario mueve el cursor fuera del elemento o uno de sus hijos |
-|           |                                                              |
-|           |                                                              |
-|           |                                                              |
-|           |                                                              |
-|           |                                                              |
+| Evento      | Definición                                                   |
+| ----------- | ------------------------------------------------------------ |
+| click       | Lee cuando el usuario da clic izquierdo sobre un elemento    |
+| bdlclick    | Lee cuando el usuario da doble clic sobre un elemento        |
+| mouseover   | Lee cuando el usuario posiciona el cursor sobre el elemento o uno de sus hijos |
+| mouseout    | Lee cuando el usuario mueve el cursor fuera del elemento o uno de sus hijos |
+| contextmenu | Lee cuando damos clic derecho sombre un elemento             |
+| mousemove   | Lee cuando el mouse se mueve mientras esta sobre un elemento |
+| mouseleave  | Lee cuando el mouse se mueve fuera de un elemento (la ejecución de este se repite) |
+| mousedown   | Lee cuando presionas el clic sobre un elemento (solo cuando el botón baja) |
+| mouseup     | Lee cuando se suelta el clic sobre un elemento (solo cuando el botón sube) |
 
+---
+
+## Eventos de teclado
+
+Similar a los eventos de mouse, puede que para alguno de nuestros desarrollos necesitemos de "leer eventos del teclado".
+
+*Los eventos de teclado mas usados son:*
+
+| Eventos  | Definición                                                |
+| -------- | --------------------------------------------------------- |
+| keydown  | Lee cuando se presiona una tecla.                         |
+| keypress | Lee cuando se presiona una tecla y luego esta es soltada. |
+| keyup    | Lee cuando se suelta una tecla.                           |
+
+**Estos funcionan principalmente en un espacio de escritura de texto como un "input"**.
+
+**Para ver las características del evento podemos hacer lo siguiente:**
+
+~~~javascript
+elemento.addEventListener("keydown",(e)=>{
+    console.log(e); 
+   	// mostramos toda la información del evento y buscamos con que trabajar
+});
+~~~
+
+---
+
+## Eventos de interfaz
+
+También como es obvio, hay eventos que dependen enteramente de lo que ocurre en la interfaz, desde la carga de un elemento, hasta un error cuando esto no se logra concretar junto a estos hay muchos otros eventos que ocurren enteramente en esta misma.
+
+*Estos eventos son:*
+
+| Evento       | Definición                                                   |
+| ------------ | ------------------------------------------------------------ |
+| error        | Lee cuando un elemento multimedia no carga correctamente.    |
+| load         | Lee cuando un elemento carga de forma exitosa.               |
+| beforeunload | Lee el momento antes de que un elemento se descargue.        |
+| unload       | Lee el momento en el que la pagina se descarga.              |
+| resize       | Lee cuando se cambia el tamaño de vista del documento.       |
+| scroll       | Lee cuando se hace scroll en un elemento que lo permita.     |
+| select       | Lee cuando el usuario selecciona algun texto de tipo input o text area. |
+
+**Estos pueden funcionar de 2 maneras distintas:**
+
++ **Seleccionando el elemento**:
+
+  ~~~javascript
+  const elemento = querySelector(".elemento");
+  
+  elemento.addEventListener("load",()=>{
+      console.log("el evento se ha cargado exitosamente");
+      // en este caso leemos cuando "el elemento especificado" se carga exitosamente
+  });
+  ~~~
+
+  ---
+
++ **Elemento general (el document)**
+
+  ~~~javascript
+  addEventListener("load", ()=>{
+  	console.log("la pagina se ha cargado exitosamente");
+      // este lee cuando el "document" o la pagina entera se ha cargado exitosamente
+  });
+  ~~~
+
+---
+
+# Temporizadores
+
+En mas de algún momento me ha ocurrido que quiero hacer un "conteo" en javascript para por ejemplo **esperar antes de ejecutar alguna acción**.
+
+Esto lo logramos con los temporizadores, estos son funciones que nos permiten llamar a otras funciones (o hacer estas dentro del mismo) y que tienen como tema principal que estas ocurren tras un tiempo especifico o usan el tiempo de distintas formas para ejecutar esta acción.
+
+*Los temporizadores pueden ser:*
+
++ **setTimeout();**
+
+  Nos permite crear un temporizador que hará un conteo y cuando el mismo llegue a 0 ejecutara una función.
+
+  *Su sintaxis es la siguiente:*
+
+  ~~~javascript
+  // setTimeOut(función,tiempo);
+  // y se puede escribir de 2 formas distintas
+  
+  // forma 1 (con una función ya existente)
+  const saludar = ()=>{
+      console.log("Hola, como estas?");
+  }
+  
+  setTimeout(saludar, 2000); //la función se ejecuta despues de 2 segundos.
+  // la función no requiere de parentesis y el tiempo va en milisegundos
+  //------------------------------------------------------------------------------------
+  // forma 2 (creando la función directamente)
+  setTimeout(()=>{
+      console.log("Hola, como estas?");
+  }, 2000);
+  ~~~
+
+  **Ambas formas hacen lo mismo**.
+
+  ---
+
++ **clearTimeout();**
+
+  Nos permite "eliminar" el temporizador ya aplicado si es que este esta "anclado" a una variable o constante.
+
+  *Ejemplo:*
+
+  ~~~javascript
+  const temporizador = setTimeout(saludar, 2000);
+  
+  clearTimeout(temporizador);
+  // tanto el temporizador como la función nunca se ejecutaran.
+  ~~~
+
+  ---
+
++ **setInterval();**
+
+  Este nos permite **repetir una acción dejando una "pestaña de tiempo" entre cada intervalo**.
+
+  *Su sintaxis es la siguiente:*
+
+  ~~~javascript
+  // setInterval(funcion, tiempo)
+  // este puede funciónar de las 2 mismas maneras que el setTimeout();
+  setInterval(()=>{
+      console.log("Hola");
+  }, 2000);
+  // esto mostrara el mensaje "Hola" cada 2 segundos en un bucle infinito
+  ~~~
+
+  ---
+
++ **clearInterval();**
+
+  Este nos permite **eliminar el intervalo ya creado** o mejor dicho "cortar" el bucle del mismo y funciona de igual manera que el **`clearTimeout();`**.
+
+  *Ejemplo:*
+
+  ~~~javascript
+  const intervalo = setInterval(saludar, 2000);
+  
+  clearInterval(intervalo); // esto "rompe el bucle/intervalo"
+  ~~~
+
+---
+
+# Control de flujo y manejo de errores
+
+  A la hora de escribir código **hay muchas cosas que pueden salir mal** una gran cantidad de errores pueden surgir de nuestro sistema sea cual sea nuestro nivel de conocimiento.
+
+  El saber encontrar y "manejar" estos errores es algo importante y lo podemos conseguir de distintas formas.
+
+---
+
+  ## Control de flujo
+
+  El control de flujo es lo que nos permiten "seleccionar" el orden en el que estas acciones se "ejecutaran" y hay distintos tipos de **"declaraciones"** que nos permiten mantener un buen control de flujos.
+
+  *Estos son:*
+
+  + **Declaraciones de bloque**:
+
+    Estos son los mas básicos y se caracterizan por usualmente tener la acción a ejecutar entre 2 llaves de la siguiente manera:
+
+    ~~~javascript
+    {
+        let numero = 1;
+        console.log(numero);
+    }
+    ~~~
+
+    Y esto nos permite hacer coasas como:
+
+    ~~~javascript
+    let numero = 1
+    {
+        let numero = 2;
+        console.log(numero) // este nos dara el numero = 2
+    }
+    console.log(numero); // este nos dara el numero = 1
+    ~~~
+
+    Y esto ocurre gracias a un concepto anteriormente visto el [scope](#scope) o alcance que permite que según su alcance podamos hacer 2 variables con el mismo nombre pero que sean considerados como valores distintos y sean aplicables solo o principalmente a los elementos que estén a su alcance.
+    
+    De hecho si hacemos lo siguiente por ejemplo:
+    
+    ~~~javascript
+    let numero = 1
+    let numero = 2
+    ~~~
+    
+    Si no los separamos teniendo uno dentro de llaves nos generara un error, dado que **no se puede "crear 2 veces la misma variable"**, si quisiéramos cambiar su valor deberíamos no usar el keyword `let`.
+    
+    ---
+    
++ 
