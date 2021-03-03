@@ -2512,3 +2512,295 @@ confirm("texto que ira en el confirm");
 ---
 
 ## Screen y Scroll 
+
+A la hora de trabajar con JavaScript puede que necesitemos hacer algunos calculos, por ejemplo: **la posicion del scroll** o **la posicion del navegador en la pantalla**.
+
+---
+
+### ScreenLeft & ScreenTop
+
+ScreenLeft y ScreenTop son "funciones/métodos" que nos retornaran el espacio que hay entre el borde de la ventana y el borde de la pantalla (dependiendo de si es top o left)
+
+*Sus sintaxis son las siguientes:*
+
+~~~javascript
+window.screenLeft(); // da el espacio entre el borde izquierdo de la ventana y de la pantalla
+
+window.screenTop(); // da el espacio entre el borde superior de la ventana y de la pantalla
+~~~
+
+**Si la ventana esta maximizada ambos nos retornaran `0`.**
+
+---
+
+### ScrollX & ScrollY 
+
+Estos nos devolverá el valor actual del scroll aplicado en la pagina ya sea en el eje X como en el eje Y dependiendo en el que utilicemos.
+
+*Sus sintaxis son las siguientes:*
+
+~~~javascript
+window.scrollX(); // nos da el scroll aplicado al eje x
+window.scrollY(); // nos da el scroll aplicado al eje y
+~~~
+
+---
+
+### Scroll
+
+Esta es una función/método que nos permite efectuar un scroll en base a unas coordenadas que le ingresemos **(estas siendo en pixeles)**.
+
+*Ejemplo:*
+
+~~~javascript
+// su sintaxis es: window.scroll(x,y);
+window.scroll(0,100); // la pragina hará scroll hacia el pixel 100 en el eje y
+~~~
+
+---
+
+### Location
+
+Las variables y función que contienen "Location" en si mismas nos devuelven la localización de el elemento que estemos buscando dependiendo de el que utilicemos.
+
+*Ejemplo:*
+
+~~~javascript
+window.location.href; // nos devuelve donde esta localizado el archivo en nuestro ordenador
+window.location.hostname; // nos devuelve el nombre de dominio del servidor
+window.location.pathname; // nos devuelve en la parte del dominio que nos encontramos
+window.location.protocol; // nos devuelve el protocolo de la pagina (http o https)
+
+window.location.assign(); // nos permite cargar un nuevo documento
+// si hacemos
+window.location.assign("https://youtube.com"); // va a cargar la pagina de youtube
+~~~
+
+**Pero hay algo interesante que podemos hacer con `window.location.href;` y es lo siguiente**.
+
+Si en nuestro html por ejemplo tenemos un elemento con un id como `id = "identificador"` podemos hacer un hipervinculo que hara scroll hasta ese elemento especifico en la pagina.
+
+*Lo hacemos de la siguiente manera:*
+
+~~~javascript
+window.location.href = "#identificador" // esto buscara el elemento con ese id
+// luego hará scroll hasta ese elemento
+~~~
+
+---
+
+# Chrome Developer Tools
+
+A la hora de desarrollar nuestro codigo puede que tengamos varios recursos que medir.
+
++ Los elementos html y css
++ El funcionamiento del codigo javascript
++ El rendimiento de la pagina
++ La seguridad de nuestra web
++ ETC...
+
+Por suerte Chrome nos permite acceder a estos datos **y no solo chrome** de hecho tanto **Chrome, Chromium y Firefox** tienen estas opciones y estos son los mas usados para el desarrollo web (ademas de ser de los buscadores web mas usados).
+
+**Cabe resaltar que estos buscadores son los que yo se que tienen estas opciones, dado que hay muchos buscadores que igualmente poseen estas opciones, solo que son menos utilizados**.
+
+Y recuerden, aun que mencione **Chrome Developer Tools** estas "herramientas" se encuentran en varios buscadores, yo solo estoy generalizando con las herramientas que se encuentran en **Google Chrome** y **Chromium**.
+
+---
+
+## ¿Como accedo a estas herramientas?
+
+De hecho el entrar a estas es algo que ya mencione al inicio de esta documentación, con tal de dar clic derecho en cualquier  parte de la pagina y seleccionar la opción **`inspect`** o **`inspeccionar`**, lo mismo lo logras presionando **`F12`** o **`ctrl`** + **`shift`** + **`i`**.
+
+Cuando se abra la ventana de "herramientas" veras en la parte superior muchas "opciones" y estas son:
+
++ **Elements**
+
+  Es la opción que se abre por defecto al acceder a las opciones de desarrollador, aqui se ven tanto los elementos html junto a los de css.
+
+  **También podemos editar estos elementos, pero volverán a la normalidad al recargar la **
+
+  **pagina**.
+
+  ---
+
++ **Console**
+
+  Es la segunda opción en la lista y nos permite acceder a la consola de desarrollador de Javascript y hacer pruebas de código o incluso hacer pruebas de forma muy básica.
+
+  ---
+
++ **Resources**
+
+  Abreviada con el nombre "Sources" nos permite acceder a los archivos de la pagina, sus archivos html, los estilos en css o el código en javascript, todo a nuestro alcance y de hecho nos permite editar estos mismos archivos y también nos sirve para aplicar/guardar los cambios que apliquemos a estos mismos archivos.
+
+  **Técnicamente funciona como un editor de código integrado en el navegador (al menos en la pestaña "page")**
+
+  También posee una pestaña llamada "snippets" la cual nos permite "guardar" lineas de código a las que podremos acceder y ejecutar **especialmente importante a la hora de hacer pruebas**.
+
+  ---
+
++ **Network**
+
+  Esta nos permite acceder a información bastante útil a la hora de  probar el rendimiento de nuestra pagina, especialmente referente a la conexión.
+
+  **Debo mencionar que para que esta pestaña muestre elementos debe estar abierta antes del inicio de la pagina o recargar la pagina tras su apertura**.
+
+  *En esta pestaña podemos ver los siguientes datos:*
+
+  + Nombre de elemento (Name).
+  + Tipo de elemento (Type).
+  + El archivo/documento que inicia este elemento (Initiator).
+  + El tamaño del elemento (Size).
+  + El tiempo que tardo en cargarse (Time).
+
+  Junto a una linea de tiempo que nos permite ver cuanto y en que momento de la carga se inicia cada elemento.
+
+  **Arriba de esta misma linea de tiempo nos permiten seleccionar los "tipos" archivos que queramos revisar**.
+
+  ---
+
++ **Preformance**
+
+  Es la pestaña que nos permite ver el funcionamiento de la pagina y tomando en cuenta los recursos que utiliza la misma, específicamente los recursos que la misma pagina ocupa mientras la pagina funciona.
+
+  Para esto esa pestaña nos entrega 2 opciones:
+
+  + Empezar a grabar (recopila el rendimiento de la pagina desde que inicia la grabación, hasta que pares la misma grabación).
+  + Re-cargar y empezar a grabar (recopila el rendimiento de la pagina desde que esta empieza a cargar hasta que la misma carga finaliza).
+
+  En ambos casos nos mostrara varios gráficos mostrando el uso de recursos de nuestro computador.
+
+---
+
+# Eventos
+
+Los eventos son las acciones que constantemente ocurren dentro de el sistema programado.
+
+Desde dar clic, hacer scroll o interactuar de cualquier forma en la misma pagina, todo esto cuenta como diferentes eventos.
+
+Estos de por si solos son inútiles, pero su utilidad se presenta cuando estos eventos accionan algún efecto seleccionado/programado por nosotros.
+
+*Un ejemplo directo podría ser:* **Dar clic en un botón (evento) envía un mensaje que dice "hola" (acción)** .
+
+---
+
+## On Event Handler 
+
+Como ya mencionamos anteriormente un evento es una "acción" que de por si sola no es muy útil, pero que esto cambia si la misma nos da una reacción en nuestro sistema.
+
+Un ejemplo de esto se muestra desde nuestro html y es de hecho algo que utilizaremos muy constantemente.
+
+*Ejemplo:*
+
+~~~html
+<p onclick="accion();" class="p">este es un párrafo</p>
+~~~
+
+En este caso vemos tres cosas en las que hay que enfocarse:
+
++ Tenemos un párrafo con el texto "*este es un párrafo*" con un nombre de clase el cual es "p".
++ Esperamos a un evento **este siendo dar clic en el párrafo**.
++ Este evento acciona la función de Javascript, esta siendo: **`Accion();`**.
+
+En si los **On Event Handler** son "manejadores" de eventos que inician con la palabra **On** y especialmente se escriben: **`On` + `Event`** como ya mostramos en este ejemplo con el: **`onclick`**. 
+
+**Aun que actualmente se recomienda utilizar otro método para acceder a estos eventos y son los:**
+
+---
+
+## Listeners
+
+Los listeners son otra forma de esperar por eventos solo que directamente se aplican desde el archivo de Javascript.
+
+*su sintaxis es la siguiente:*
+
+~~~javascript
+// para hacer el ejemplo mas fácil accederemos al mismo párrafo antes creado.
+const parrafo = document.querySelector(".p");
+
+//en este caso debemos suponer que tenemos una función llamada "saludar"
+function saludar() {
+    alert("Hola");
+}
+
+// elelmento.addEveltListener("evento a escuchar", funcionParaEjecutar)
+parrafo.addEventListener("click", saludar);
+~~~
+
+**Importante aclarar que al llamar  a una función, esta no puede ser una función flecha, debe ser una común dado que las funciones flecha no se ejecutaran con un `eventListener`**.
+
+Otra cosa que podemos hacer para "utilizar una función flecha en un eventListener" es lo siguiente:
+
+~~~javascript
+parrafo.addEventListener("click", (e) => { // se le suele añadir "e" como "evento"
+    //aqui ingresamos nuestra función
+});
+~~~
+
+También podemos eliminar un "EventListener" por medio de nuestro código haciéndolo de la siguiente manera:
+
+~~~javascript
+parrafo.removeEventListener("click", saludar); // asi eliminamos la función de su evento
+~~~
+
+---
+
+## Flujo de eventos
+
+A la hora de trabajar con eventos puede que ocurra algo como lo siguiente:
+
+~~~html
+<div>
+    <button></button>
+</div>
+~~~
+
+Si queremos aplicar eventos tanto en el divisor como en el botón, no presentaremos mayor problema si accionamos solo el contenedor, pero esto si afectara cuando intentemos presionar el botón.
+
+Al hacer esto lo que ocurrirá es que se ejecutara la acción del botón y luego se ejecutara la acción del contenedor dado y esto es generado por el flujo de eventos.
+
+El flujo de eventos se divide en 2:
+
++ Event bubbling (se ejecutara primero el elemento hijo (el botón dentro del div) y luego el contenedor (el div)) **por defecto**.
+
++ Event Capturing (Se ejecutara primero el elemento padre para luego ser ejecutado el elemento hijo)
+
+  *para esto configuramos nuestro "EventListener" de la siguiente manera:*
+
+  ~~~javascript
+  elemento.addEventListener("evento",función,true); // añadimos un true al final
+  // esto debe aplicarse en el contenedor padre que querramos ejecutar primero
+  ~~~
+
+**y para que esto no se "propague" o no se ejecute luego otros elementos debemos en efecto "parar la propagación"**.
+
+Esto lo logramos añadiendo `stopPropagation();` a la función flecha que accione nuestro EventListener de la siguiente manera:
+
+~~~javascript
+elemento.addEventListener("evento", (e)=>{
+    e.stopPropagation(); // accedemos a nuestro evento y paramos la propagación
+});
+~~~
+
+---
+
+## Eventos del mouse
+
+Como ya vimos, los eventos pueden ser múltiples interacciones del usuario y de hecho muchas de estas se suelen ejecutar con el mismo mouse.
+
+De hecho ya vimos un evento de mouse que utilizaremos gran parte del tiempo, específicamente el evento **`click`** que lee cuando damos en efecto un clic sobre el elemento especifico.
+
+Aun que hay muchos otros eventos de mouse, como por ejemplo:
+
+| Evento    | Definición                                                   |
+| --------- | ------------------------------------------------------------ |
+| click     | Lee cuando el usuario da clic sobre un elemento              |
+| bdlclick  | Lee cuando el usuario da doble clic sobre un elemento        |
+| mouseover | Lee cuando el usuario posiciona el cursor sobre el elemento o uno de sus hijos |
+| mouseout  | Lee cuando el usuario mueve el cursor fuera del elemento o uno de sus hijos |
+|           |                                                              |
+|           |                                                              |
+|           |                                                              |
+|           |                                                              |
+|           |                                                              |
+
