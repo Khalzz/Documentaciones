@@ -2980,17 +2980,19 @@ Esto lo logramos con los temporizadores, estos son funciones que nos permiten ll
     }
     ~~~
 
-    Y esto nos permite hacer coasas como:
+    **Estos bloques siempre serán ejecutados, ya que no poseen una condición para la ejecución de los mismos**.
 
+    Y esto nos permite hacer cosas como:
+    
     ~~~javascript
     let numero = 1
     {
         let numero = 2;
         console.log(numero) // este nos dara el numero = 2
     }
-    console.log(numero); // este nos dara el numero = 1
+console.log(numero); // este nos dara el numero = 1
     ~~~
-
+    
     Y esto ocurre gracias a un concepto anteriormente visto el [scope](#scope) o alcance que permite que según su alcance podamos hacer 2 variables con el mismo nombre pero que sean considerados como valores distintos y sean aplicables solo o principalmente a los elementos que estén a su alcance.
     
     De hecho si hacemos lo siguiente por ejemplo:
@@ -3004,4 +3006,84 @@ Esto lo logramos con los temporizadores, estos son funciones que nos permiten ll
     
     ---
     
-+ 
++ **Declaraciones de control de flujo:**
+
+  Como ya mencione, las declaraciones de bloque se ejecutan si o si aun que no siempre seran los mas efectivos dado que en ocasiones querremos que estos bloques se ejecuten **solo cuando una condición se cumpla**.
+
+  De hecho estos ya los vimos, son en efecto las condicionales **`if`**, **`for`**, **`while`** y sus variantes como los **`else`** y **`else if`**.
+
+  A demas hay una en especial que nos permite accionar un codigo en caso de que algo previsto ocurra, efectuando una accion a cada caso posible de lo que nos ocurra en el mismo codigo.
+
+  Es similar a un if, solo que en este caso revisaremos todas las posibilidades de una condición.
+
+  **Para esto usamos la condición `switch`**.
+
+---
+
+## Condicional switch
+
+La condicional switch sera nuestra "declaracion de control de flujo" y la utilizamos para hacer multiples comparaciones a una misma condicion.
+
+*Su sintaxis es la siguiente:*
+
+~~~javascript
+switch(expr) {
+    case 1:
+    //aqui va tu codigo
+    break
+    case 2:
+    //aqui va tu codigo
+    break
+	case 3:
+    //aqui va tu codigo
+    break
+}
+~~~
+
+Esto requiere de una expresión que es similar a una condición solo que por ejemplo, en lugar de ser "`fruta == manzana`" solo hacemos referencia al nombre de la variable.
+
+*Por ejemplo:*
+
+~~~javascript
+// si queremos hacer lo siguiente con if se veria de esta forma
+
+let fruta = "manzana";
+
+if (fruta == "manzana") { // este es true por lo que si se ejecutara
+    alert("Es una manzana");
+} else if (fruta == "pera") { // este es false, no se ejecutara
+    alert("Es una pera");
+} else if (fruta == "platano") { // este es false, no se ejecutara
+    alert("Es un platano");
+}
+~~~
+
+Esto es realmente apto y funciona, pero a veces no es lo mas efectivo (en el caso de nuestro ejemplo lo es, pero esto es solo un vago ejemplo de lo que podemos hacer).
+
+*Mientras que con switch se vería de la siguiente manera:*
+
+~~~javascript
+let fruta = "manzana"
+
+switch(fruta) {
+    case "manzana": // en caso que la variable sea igual a "manzana"
+    alert("es una manzana"); // ejecutar codigo
+    break; // romper "caso"
+    case "pera": // en caso que la variable sea igual a "pera"
+    alert("es una pera"); // ejecutar codigo
+    break; // romper "caso"
+    case "platano": // en caso que la variable sea igual a "platano"
+    alert("es un platano"); // ejecutar codigo
+    break; // romper "caso"
+    default: // en caso que no se compruebe ni un caso (similar al else)
+    alert("no se que fruta es"); // ejecutar el codigo
+    break; // romper "caso"
+}
+~~~
+
+Ambos métodos harían lo mismo y de hecho en este caso el `if` funcionaria mejor, solo que el switch se utiliza en otras ocasiones cuando es mas necesario, como principalmente hacer pruebas o manejar errores.
+
+---
+
+
+
