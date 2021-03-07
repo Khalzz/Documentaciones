@@ -3085,5 +3085,113 @@ Ambos métodos harían lo mismo y de hecho en este caso el `if` funcionaria mejo
 
 ---
 
+## Excepciones
 
+También, puede que en varios momentos presenciemos múltiples errores durante nuestro desarrollo, desde que nuestra sintaxis este mal o que nuestras variables estén mal instanciadas, muchos de estos errores nos saldrán constantemente y puede ser frustrante tratar con ellos si realmente no conocemos que los genera.
 
+La verdad no son algo en lo que nos enfocaremos mucho, de hecho simplemente haré menciones a algunos temas en general pero esto es una introducción para otro tema de mayor importancia.
+
+**En general estas exepciones se dividen en 3 tipos distintos:**
+
++ Excepciones EcmaScript: Son los errores y excepciones que están añadidos de forma intrínseca a JavaScript, estos los puedes encontrar [aqui](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects).
+
++ Excepciones "DOMExeption" y "DOMError": Son los errores y excepciones que nos pueden aparecer al trabajar con el DOM de nuestra pagina
+
+---
+
+## Try... Catch
+
+Tomando en cuenta estos errores que nos irán ocurriendo podemos iterar en torno a un bloque de código el cual **puede o no generar errores** y así efectuar una acción en torno a si este error ocurre o no.
+
+*Su sintaxis es la siguiente:*
+
+~~~javascript
+try {
+    // bloque de código a probar
+} catch (error) { // si este error ocurre
+    console.log("ha ocurrido un error") //se ejecuta este bloque de codigo
+}
+~~~
+
+Tecnicamente nos permite probar un bloque de odigo y si el mismo nos genera algun error, podemos generar una acción contra el mismo **y de hecho podemos reaccionar de mas de una forma** dado que el mismo `try... catch` puede anidarse al igual que las condiciónales y los bucles.
+
+*Por ejemplo:*
+
+~~~javascript
+try {
+    // bloque de código a probar
+} catch (error) { // si hay un error de referencia
+    alert("hay un error de referencia");
+} catch (syntaxError) { // si hay un error de sintaxis
+    alert("hay un error de sintaxis");
+}
+    
+~~~
+
+El tipo de error que ingresamos, tanto su nombre como cuando ocurre lo debemos ingresar siempre en camelCase pero con la inicial en minuscula al igual que las variables.
+
+Estos errores como ya mencionamos podemos encontrarlos [aqui](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects).
+
+**Pero también debo mencionar que los `try... catch` se dividen en 2 tipos especificos:**
+
++ Excepciones condicionales: Son los `try... catch` que dentro de su `catch` poseen una condicional que indica si se aplicara o no nuestro `catch` en la ejecución de nuestro código.
+
+  *por ejemplo:*
+
+  ~~~javascript
+  try {
+      // bloque de código
+  } catch (error) {
+      if (errores == "activados") {
+          alert("tienes un error");
+      }
+  }
+  ~~~
+
+  ---
+
++ Excepciones incondicionales: Son las que ya vimos, osea son `try... catch` que dentro de su `catch` no poseen una condicional que la haga funcionar.
+
+  *por ejemplo:*
+
+  ~~~javascript
+  try {
+      // bloque de código
+  } catch (error) {
+      alert("tienes un error");
+  }
+  ~~~
+
+  ---
+
+  **Ademas tenemos otra parte del `try... catch` que nos puede servir** y este es el `finally`.
+
+  El finally nos permite ejecutar un bloque de código pase lo que pase en nuestra ejecución, se active un error o no y este mismo tendrá prioridad por sobre el `try` y el `catch`.
+
+  *su sintaxis es la siguiente:*
+
+  ~~~javascript
+  try {
+      // bloque de codigo que puede tener un error
+  } catch(error) {
+      alert("tienes un error"); // respuesta al error
+  } finally {
+      // bloque de codigo que se ejecutara si o si
+  }
+  ~~~
+
+  A demás debo complementar con la keyword `throw`.
+
+  **Esta nos permite "lanzar un mensaje de error" en base al texto que le ingresemos**.
+
+  *por ejemplo:*
+
+  ~~~javascript
+  try {
+      // bloque de codigo
+  }	catch(error) {
+      throw "Ups, vuelve a intentarlo" //si hay un error, este codigo sera lanzado
+  }
+  ~~~
+
+  
