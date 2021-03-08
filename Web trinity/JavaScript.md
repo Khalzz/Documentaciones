@@ -3113,24 +3113,9 @@ try {
 }
 ~~~
 
-Tecnicamente nos permite probar un bloque de odigo y si el mismo nos genera algun error, podemos generar una acción contra el mismo **y de hecho podemos reaccionar de mas de una forma** dado que el mismo `try... catch` puede anidarse al igual que las condiciónales y los bucles.
+Tecnicamente nos permite probar un bloque de código y si el mismo nos genera algun error, podemos generar una acción contra el mismo. 
 
-*Por ejemplo:*
-
-~~~javascript
-try {
-    // bloque de código a probar
-} catch (error) { // si hay un error de referencia
-    alert("hay un error de referencia");
-} catch (syntaxError) { // si hay un error de sintaxis
-    alert("hay un error de sintaxis");
-}
-    
-~~~
-
-El tipo de error que ingresamos, tanto su nombre como cuando ocurre lo debemos ingresar siempre en camelCase pero con la inicial en minuscula al igual que las variables.
-
-Estos errores como ya mencionamos podemos encontrarlos [aqui](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects).
+**Antes de continuar debo advertir que los `try... catch` no se pueden anidar**.
 
 **Pero también debo mencionar que los `try... catch` se dividen en 2 tipos especificos:**
 
@@ -3194,4 +3179,6 @@ Estos errores como ya mencionamos podemos encontrarlos [aqui](https://developer.
   }
   ~~~
 
+  ---
+  
   
