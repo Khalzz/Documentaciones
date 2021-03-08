@@ -3115,6 +3115,8 @@ try {
 
 Tecnicamente nos permite probar un bloque de código y si el mismo nos genera algun error, podemos generar una acción contra el mismo. 
 
+**El nombre "error" dentro del parentesis del `catch` es un nombre que podemos cambiar totalmente, por lo que podemos en cualquier momento cambiar ese nombre, de hecho los nombres por defecto que suelen tener es `error` y `e`**.
+
 **Antes de continuar debo advertir que los `try... catch` no se pueden anidar**.
 
 **Pero también debo mencionar que los `try... catch` se dividen en 2 tipos especificos:**
