@@ -657,7 +657,7 @@ numeroRandom = Math.round(numeroRandom); //redondeamos el valor al entero mas ce
 numeroRandom = Math.floor(numeroRandom)
 ~~~
 
-Este ultimo es el mas util si lo que buscamos es que los valores elegidos no se admitan en el conteo, dado que este va  a aproximar hacia el numero mas bajo, pero ademas podemos hacer:
+Este ultimo es el mas útil si lo que buscamos es que los valores elegidos no se admitan en el conteo, dado que este va  a aproximar hacia el numero mas bajo, pero ademas podemos hacer:
 
 ~~~javascript
 let numeroRandom = Math.round(Math.random() * 100))
@@ -3012,7 +3012,7 @@ console.log(numero); // este nos dara el numero = 1
 
   De hecho estos ya los vimos, son en efecto las condicionales **`if`**, **`for`**, **`while`** y sus variantes como los **`else`** y **`else if`**.
 
-  A demas hay una en especial que nos permite accionar un codigo en caso de que algo previsto ocurra, efectuando una accion a cada caso posible de lo que nos ocurra en el mismo codigo.
+  A demás hay una en especial que nos permite accionar un código en caso de que algo previsto ocurra, efectuando una acción a cada caso posible de lo que nos ocurra en el mismo código.
 
   Es similar a un if, solo que en este caso revisaremos todas las posibilidades de una condición.
 
@@ -3181,6 +3181,49 @@ Tecnicamente nos permite probar un bloque de código y si el mismo nos genera al
   }
   ~~~
 
-  ---
+---
+
+# Callbacks
+
+Las funciones en si como ya sabemos suelen tener diversos parámetros, estos en especifico pueden ser tanto números enteros, float, strings, entre otros.
+
+Pero algo que quizá no esperabas es que también puedes añadir una función como parámetro en otra función **y esto es en efecto un CallBack**.
+
+**Específicamente, esta función como parámetro se añade al ejecutar la funcion** por ejemplo:
+
+~~~javascript
+function nombre(callback) { // el nombre "callback" puedes cambiarlo
+    callback("Rodrigo") // asignamos un parametro a la función que llamaremos
+}
+
+function decirNombre(n) { // hacemos una función normal con un parametro simple
+    console.log("Hola, mi nombre es " + n) // accion de la función
+}
+
+// llamamos nuestra primera función y como parametro le damos la segunda
+nombre(decirNombre);
+~~~
+
+Osea que la orden de ejecución seria el siguiente:
+
+1. Ejecutamos la función `nombre()` y como callback le damos la función `decirNombre`.
+2. La función `nombre()` le añadirá el dato `"Rodrigo"` como parámetro a la función que llamemos.
+3. La función `decirNombre()` accede al parámetro que le dimos en la función `nombre()`.
+
+**Al ejecutarse nos debería dar el mensaje `Hola, mi nombre es Rodrigo` en la consola**
+
+Otro tema a tomar en cuenta es que las funciones pueden ser normales como las use yo o pueden ser funciones flecha como ya hemos visto anteriormente.
+
+---
+
+
+
   
+
+  
+
+  
+
+  
+
   
