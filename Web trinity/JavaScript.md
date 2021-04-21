@@ -3189,26 +3189,34 @@ Las funciones en si como ya sabemos suelen tener diversos parámetros, estos en 
 
 Pero algo que quizá no esperabas es que también puedes añadir una función como parámetro en otra función **y esto es en efecto un CallBack**.
 
-**Específicamente, esta función como parámetro se añade al ejecutar la funcion** por ejemplo:
+**Específicamente, esta función como parámetro se añade al ejecutar la función por ejemplo:
 
 ~~~javascript
-function nombre(callback) { // el nombre "callback" puedes cambiarlo
-    callback("Rodrigo") // asignamos un parametro a la función que llamaremos
+// una funcion X pasa como parametro de una función Y, para cuando se ejecute la funcion Y este ejecutara la funcion X
+function x() { //creamos una funcion
+    console.log('Hola');
 }
 
-function decirNombre(n) { // hacemos una función normal con un parametro simple
-    console.log("Hola, mi nombre es " + n) // accion de la función
+function y(callback) { //creamos nuestra funcion y como parametro añadimos el callback
+    callback(); // esto hace referencia a la funcion que ingresamos y la ejecuta (el nombre del parametro puede cambiar
 }
 
-// llamamos nuestra primera función y como parametro le damos la segunda
-nombre(decirNombre);
+y(x); //asi ejecutamos la funcion y, la cual hace callback a una función x
 ~~~
 
-Osea que la orden de ejecución seria el siguiente:
+y si queremos **añadir parámetros a nuestras funciones callback** podemos hacer lo siguiente:
 
-1. Ejecutamos la función `nombre()` y como callback le damos la función `decirNombre`.
-2. La función `nombre()` le añadirá el dato `"Rodrigo"` como parámetro a la función que llamemos.
-3. La función `decirNombre()` accede al parámetro que le dimos en la función `nombre()`.
+~~~javascript
+function darMensaje(nombre) { // creamos la funcion con un parametro a rellenar
+    console.log('Hola, mi nombre es ', nombre);
+}
+
+function darNombre(callback) { 
+    callback('Rodrigo'); // accedemos a nuestro callback y le damos nuestra funcion a llamar
+}
+
+darNombre(darMensaje) //ejecutamos la funcion callback y le ingresamos la funcion a ejecutar
+~~~
 
 **Al ejecutarse nos debería dar el mensaje `Hola, mi nombre es Rodrigo` en la consola**
 
@@ -3216,14 +3224,92 @@ Otro tema a tomar en cuenta es que las funciones pueden ser normales como las us
 
 ---
 
+# promesas
 
+Las promesas son parte no solo importante del manejo de funciones y los callbacks en JavaScript, sino específicamente son una parte fundamental y necesaria para este mismo trabajo.
 
-  
+Antes de continuar deben recordar que:
 
-  
++ Síncrono (es en este caso un código que se ejecuta en orden, con cada iteración ocurriendo luego de la anterior)
++ Asíncrono (es en este caso un código que se ejecuta **solo cuando sea necesario** y que puede ejecutar 1 o mas procesos al mismo tiempo)
 
-  
+En general, las promesas suelen tener una explicación un poco rara de explicar, para ello acudiré a una analogía para facilitar su entendimiento.
 
-  
++ **Imagina que tu y tu compañero de piso planean hacer la cena esta noche.**
++ tu planeas hacer tu "sopa especial".
++ Al mismo tiempo tienes ganas de comer tacos del camión de comida cercano.
++ Le preguntas a tu compañero de piso "**Hey, ¿podrías bajar al camión de comida a por unos tacos?**".
++ Cuando el esta a punto de irse le dices
+  + "No hay motivo para quedarme esperando hasta que vuelvas para preparar la mesa, entonces **¿podrías prometer que al llegar me avisaras, para así empezar a preparar la sopa**?".
+  + "También **hazme saber si tienes algún problema como que no encuentras el camión o no les quedan tacos para la noche, así en lugar de hacer la sopa me pondré a preparar pasta en su lugar**".
++ Tu amigo dice "Seguro, **lo prometo. ahora saldré y te enviare un mensaje en el momento que haga falta**".
++ Terminaste de preparar la mesa y ahora solo queda hacer la sopa pero... ¿y los tacos? podríamos decir que **el estado de los tacos esta en "pendiente" hasta que recibes el mensaje de tu amigo**.
++ **Si** cuando recibes el mensaje este indica que "afirmativamente hay tacos", ya solo deberías esperar a tu amigo **la promesa se habrá cumplido**, ahora puedes proceder a hacer la sopa.
++ **De lo contrario** si el mensaje dice que no han encontrado tacos, **la promesa habrá sido rechazada** y ahora debes cocinar pasta en lugar de la sopa.
 
-  
+  Ahora solo separemos los temas y hagamos una comparación entre la analogía y la realidad.
+
+| Escenario                                                    | JavaScript                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Tu amigo.                                                    | Promesa.                                                     |
+| Mientras tu amigo va por los tacos tu procedes a trabajar en preparar la mesa. | (Esto es en JS algo llamado "operación asíncrona", ósea que se pueden ejecutar dos o mas operaciones al mismo tiempo). |
+| Tu amigo te menciona si es que habrán o no tacos para la cena. | Esto en JS se le conoce como "valor devuelto de una promesa (Promise return value)" |
+| Si tu amigo **consigue los tacos**                           | La "promesa se ha cumplido"                                  |
+| Si tu amigo **no consigue los tacos**                        | La "promesa se ha rechazado"                                 |
+| Empezar a hacer la sopa                                      | Es un callback de "éxito" (success callback) la funcion callback se ejecuta cuando el valor devuelto por la promesa es **exitoso**. |
+| Hacer pasta                                                  | Es un callback de "fracaso" (failure callback) la funcion callback se ejecuta cuando el valor devuelto por la promesa es **rechazado**. |
+
+Pero igualmente...
+
+## ¿Que es una promesa?
+
+En términos mas prácticos una promesa se define como "un objeto simple en javascript" que siempre esta en uno de los siguientes estados:
+
++ pendiente (pending) es su valor inicial, esta a la espera para ver si su dato devuelto es exitoso o rechazado.
++ exitoso (fullfilled) significa que la operación se a completado exitosamente.
++ rechazado (rejected) significa que la operación ha fallado.
+
+---
+
+## ¿Por que usar promesas?
+
+  En realidad es un tema bastante fácil, este se utiliza principalmente por ser **un método mucho mas sencillo de trabajar con "código asíncrono" que los callbacks** y así evitamos algo que en el mundo de JavaScript se le conoce como **"Callback hell"**.
+
+---
+
+## Sintaxis
+
+Y ahora para crear una promesa seguimos la siguiente sintaxis de ejemplo:
+
+~~~javascript
+// creamos la inistancia de nuestra promesa
+const promesa = new Promise((resuelto, rechazado) => { // los parametros de la promesa son callbacks 
+// usualmente los parametros son (resolve, rejected) pero pueden tener otros nombres
+    // comparamos los casos y ejecutamos segun nuestra logica
+    if (1==1) {
+        resuelto();
+    } else {
+        rechazado();
+    }
+    // en este caso el verdadero es "resuelto" y este se ejecutara
+})
+
+// funcion para el parametro "resuelto"
+const exitoso = () => {
+    console.log('la promesa se ha resuelto exitosamente');
+}
+
+// funcion para el parametro "rechazado"
+const fallado = () => {
+    console.log('la promesa ha fallado');
+}
+
+promesa.then(exitoso); // asocia una funcion al parametro "resuelto" de la promesa
+promesa.catch(fallado); // asocia una funcion al parametro "rechazado" de la promesa
+~~~
+
+Y de esta misma forma podemos luego enviar datos de una función a otra por medio de sus parámetros y deben recordar lo siguiente:
+
++ **`promesa.then(funcion)`**: asocia una función al parámetro "resuelto" si este es en efecto ejecutado por la promesa.
++ **`promesa.catch(funcion)`**: asocia una función al parámetro "rechazado" si este es en efecto ejecutado por la promesa.
+
