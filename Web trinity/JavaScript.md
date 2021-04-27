@@ -42,11 +42,10 @@ datos sacados de [la siguiente fuente](https://en.wikipedia.org/wiki/Programming
   + [Comentarios](#Comentarios)
   + [Hola mundo](#Hola-mundo)
 + [Variables y tipos de datos](#Variables-y-tipos-de-datos)
-
   + [Declarar variables](#Declarar-variables)
   + [Tipos de datos](#Tipos de datos)
     + [Tipos de datos (primitivos)](#Tipos-de-datos-(primitivos))
-
+  
     + [Tipos de datos (objetos)](#Tipos-de-datos-(objetos))
       + [Array](#Array)
       + [Math](#Math)
@@ -95,7 +94,7 @@ Para poder empezar con esta documentación, recomiendo tener como mínimo:
 
 Dado que todos estos "lenguajes/tecnologías" van de la mano a la hora de hacer nuestro desarrollo web.
 
-Ademas anteriormente mencione:
+Además anteriormente mencione:
 
 >JavaScript es un lenguaje de programación interpretado, orientado a objetos, basado en prototipos y con un tipado débil pero dinámico.
 >
@@ -121,9 +120,9 @@ Pero para entenderlo primero les haré saber algunos conceptos importantes para 
 
   ---
 
-+ **El `;` es opcional** en muchos lenguajes de programación de requiere de un `;` al finalizar cada linea de código que no sean contenedores (condicionales, bucles, funciones, entre otros...).
++ **El `;` es opcional** en muchos lenguajes de programación de requiere de un `;` al finalizar cada línea de código que no sean contenedores (condicionales, bucles, funciones, entre otros...).
 
-  En el caso de javaScript esto es opcional **pero igualmente se recomienda usar el mismo `;` al terminar lineas de código que requieran de este** puesto que esto ayuda a que los buscadores viejos tengan compatibilidad con el JavaScript que hemos escrito.
+  En el caso de javaScript esto es opcional **pero igualmente se recomienda usar el mismo `;` al terminar líneas de código que requieran de este** puesto que esto ayuda a que los buscadores viejos tengan compatibilidad con el JavaScript que hemos escrito.
 
   *Por ejemplo seria lo mismo escribir:*
 
@@ -246,7 +245,7 @@ Aquí mostraremos 3 tipos de "Hola Mundo" que me interesan ver y estos serian:
   alert("Hola Mundo!!!"); //este texto podemos cambiarlo por lo que queramos
   ~~~
 
-  Este es mas fácil de percibir que el anterior ademas de ser algo que "el usuario normal debería ver".
+  Este es mas fácil de percibir que el anterior además de ser algo que "el usuario normal debería ver".
   
 + **Mostrar elemento en el html** nos permite "añadir" un elemento a html usando `document.write()`
 
@@ -373,9 +372,11 @@ Pero en general lo tipos de datos primitivos son:
   alert(numero1 + numero2); //se crea una alerta que en este caso nos imprime 12
   ~~~
 
-  Esto ocurre por que al ser lineas de texto **no se suman, se concatenan**.
+  Esto ocurre por que al ser líneas de texto **no se suman, se concatenan**.
   
   Otra forma de concatenar es con el uso de `${}` y cambiando las comillas `("")` por backticks `(``)`, esto nos permite "insertar" un dato en mitad de un string con el que estemos trabajando.
+  
+  La tecla para hacer backticks puede variar según tu teclado, pero al menos en el mío es presionando `ALT GR` + `}`
   
     *por ejemplo:*
   
@@ -384,6 +385,7 @@ Pero en general lo tipos de datos primitivos son:
     
   console.log(`Hola ${nombre}!!! como estas??`); //Hola Rodrigo!!! como estas??  
   //en lugar de hacer "hola" + nombre + "!!! como estas???" tecnicacmente hacen lo mismo
+  //tambien funcionaria si hacemos calculos matematicos
   ~~~
   
   ---
@@ -392,7 +394,7 @@ Pero en general lo tipos de datos primitivos son:
 
   Este mismo puede tener distintos tipos de valores:
 
-  + **Números enteros** los **negativos y positivos sin decimales**
+  + **Números enteros**: los **negativos y positivos sin decimales**
 
     *ejemplo:*
 
@@ -403,7 +405,7 @@ Pero en general lo tipos de datos primitivos son:
 
     ---
 
-  + **Números decimales** los **negativos y positivos con decimales**
+  + **Números decimales**: los **negativos y positivos con decimales**
 
     *ejemplo:*
 
@@ -532,7 +534,7 @@ Esto ocurre por que al "unir las variables" en realidad no se enlazan como en ot
 
 ### Tipos de datos (objetos)
 
-En javascript, todo tipo de dato que no es un **tipo de dato primitivo** se le considera objeto, dado que requiere de otros valores para funcionar y que esos valores en su mayoria son **datos primitivos**.
+En javascript, todo tipo de dato que no es un **tipo de dato primitivo** se le considera objeto, dado que requiere de otros valores para funcionar y que esos valores en su mayoría son **datos primitivos**.
 
 Estos son por ejemplo: arrays, objetos en si, funciones, entre otros tipos de datos.
 
@@ -540,7 +542,7 @@ Estos son por ejemplo: arrays, objetos en si, funciones, entre otros tipos de da
 
 #### Arrays
 
-Los array (o arreglos) entran en un tipo de dato que podemos llamar "objetos" y es forma en la que podemos unir varios datos en uno mismo, similar a una lista, solo que en este caso podemos acceder a ellos por un indice.
+Los array (o arreglos) entran en un tipo de dato que podemos llamar "objetos" y es forma en la que podemos unir varios datos en uno mismo, similar a una lista, solo que en este caso podemos acceder a ellos por un índice.
 
 *declarar un array:*
 
@@ -549,7 +551,7 @@ Los array (o arreglos) entran en un tipo de dato que podemos llamar "objetos" y 
 let array = ["dato 1", "dato 2", "dato 3"] //los datos pueden ser de tipo mixto
  ~~~
 
-Y para acceder a esos datos , los seleccionaremos con un "indice" que va desde el 0 hasta el mayor numero de datos que hay en el array.
+Y para acceder a esos datos , los seleccionaremos con un "índice" que va desde el 0 hasta el mayor numero de datos que hay en el array.
 
 *por ejemplo:*
 
@@ -591,7 +593,7 @@ miArray.unshift("durazno") //el array ahora es ["durazno", "manzana", "platano",
 miArray.shift() //el array ahora es ["manzana", "platano", "pera"] el () no hace nada
 ~~~
 
-Otro tema importante son los **Arrays Asociativos** osea, arrays que en vez de solo ser accesibles por un indice, podemos acceder a ellos de forma similar a los diccionarios en otros lenguajes **haciendo un tipo de "clave" que reverencie ese valor**.
+Otro tema importante son los **Arrays Asociativos** osea, arrays que en vez de solo ser accesibles por un índice, podemos acceder a ellos de forma similar a los diccionarios en otros lenguajes **haciendo un tipo de "clave" que reverencie ese valor**.
 
 *ejemplo de uso:*
 
@@ -612,7 +614,7 @@ componentesPc[ram]; //nos dara el valor de la "clave ingresada"
 
 #### Funciones
 
-Las funciones son bloques de código que nos permiten "particionar nuestro código" así ejecutando ciertas lineas en el momento que nosotros lo decidamos, **por ahora este es un tema algo mas avanzado, pero entramos en profundidad a el en [esta parte de la documentación](#Funciones)**
+Las funciones son bloques de código que nos permiten "particionar nuestro código" así ejecutando ciertas líneas en el momento que nosotros lo decidamos, **por ahora este es un tema algo mas avanzado, pero entramos en profundidad a el en [esta parte de la documentación](#Funciones)**
 
 ---
 
@@ -657,7 +659,7 @@ numeroRandom = Math.round(numeroRandom); //redondeamos el valor al entero mas ce
 numeroRandom = Math.floor(numeroRandom)
 ~~~
 
-Este ultimo es el mas útil si lo que buscamos es que los valores elegidos no se admitan en el conteo, dado que este va  a aproximar hacia el numero mas bajo, pero ademas podemos hacer:
+Este ultimo es el mas útil si lo que buscamos es que los valores elegidos no se admitan en el conteo, dado que este va  a aproximar hacia el numero mas bajo, pero además podemos hacer:
 
 ~~~javascript
 let numeroRandom = Math.round(Math.random() * 100))
@@ -753,7 +755,7 @@ Al igual que los strings puede que requieras hacer algunos cambios en los array 
 | **`.reverse()`** |       Invierte el orden de los datos dentro del array.       |
 | **`.unshift()`** | agrega uno o mas elementos al array y nos retorna el largo nuevo del mismo. |
 |  **`.sort()`**   | Nos permite "ordenar" los datos de un array según su valor.  |
-| **`.splice()`**  | Nos permite eliminar varios elementos consecutivamente (indice Inicial, numero de datos a borrar después de este) aun que **también nos deja añadir datos**. |
+| **`.splice()`**  | Nos permite eliminar varios elementos consecutivamente (índice Inicial, numero de datos a borrar después de este) aun que **también nos deja añadir datos**. |
 |  **`.join()`**   | Une todos los datos de el array en un string con el que podemos luego iterar. |
 |  **`.slice()`**  | Nos entrega los elementos que seleccionamos (el numero donde empieza, fin) ojo hay que recordar que el fin no cuenta. |
 
@@ -866,7 +868,7 @@ ejemplo: `datoX = datoY` en este caso el "=" es el operador de asignación
 
 ### Operadores de comparación
 
-Estos nos permiten hacer comparaciones en base a dos datos y que **como resultado nos entrege un true si equivalen lo mismo o un false si no**.
+Estos nos permiten hacer comparaciones en base a dos datos y que **como resultado nos entregue un true si equivalen lo mismo o un false si no**.
 
 *ejemplo de uso:*
 
@@ -961,7 +963,7 @@ A la hora de ejecutar nuestro código es probable que queramos "comprobar datos"
 
 Esto lo logramos con las **condicionales**.
 
-Las condicionales son "comprobadores" que en base a ciertas **"condiciones"** ven si ejecutaran el codigo que tendrán entre llaves `{}`.
+Las condicionales son "comprobadores" que en base a ciertas **"condiciones"** ven si ejecutaran el código que tendrán entre llaves `{}`.
 
 *su sintaxis es la siguiente*
 
@@ -980,7 +982,7 @@ Y hay tres tipos de condicionales:
 
 El if es la primera condicional que debemos utilizar siempre (dado que las demás requieren de este para funcionar).
 
-La función de un if seria en base a la frase "**`si` (condición) es verdadera {ejecutar el código aqui}**".
+La función de un if seria en base a la frase "**`si` (condición) es verdadera {ejecutar el código aquí}**".
 
 *funciona de la siguiente forma:*
 
@@ -1038,13 +1040,13 @@ if (numero === 1) { //esta condicion es falsa
 
 # Bucles
 
-Los bucles son similares a las condicionales, solo que en este caso **si la condicional (de algunos) nos da true** va a ejegutar ese codigo de forma infinita **o hasta que hagamos que ese bucle se rompa**.
+Los bucles son similares a las condicionales, solo que en este caso **si la condicional (de algunos) nos da true** va a ejecutar ese código de forma infinita **o hasta que hagamos que ese bucle se rompa**.
 
 ---
 
 ## Bucle while
 
-Este es el mas similar a las condicionales originales, ya que **mientras una condicion se cumpla**, el bloque de código dentro de este se repetira.
+Este es el mas similar a las condicionales originales, ya que **mientras una condición se cumpla**, el bloque de código dentro de este se repetirá.
 
 *su sintaxis es la siguiente:*
 
@@ -1054,7 +1056,7 @@ while (condicion) {
 }
 ~~~
 
-Recomiendo siempre que usemos el while, buscar llegar al final del mismo con break, rompiendo la condicion u con otras sentencias, dado que los bucles infinitos nos pueden generar problemas de rendimiento.
+Recomiendo siempre que usemos el while, buscar llegar al final del mismo con break, rompiendo la condición u con otras sentencias, dado que los bucles infinitos nos pueden generar problemas de rendimiento.
 
 *un buen ejemplo de uso puede ser:*
 
@@ -1136,7 +1138,7 @@ for (let i = 0; i < 6; i++) { //la variable i  aumentara de 1 en 1 hasta ser may
 }
 ~~~
 
-Otra de las **palabras clave** que nos serviran al trabajar con bucles es el `continue;`, este nos permite "saltarnos" un ciclo del bucle.
+Otra de las **palabras clave** que nos servirán al trabajar con bucles es el `continue;`, este nos permite "saltarnos" un ciclo del bucle.
 
 *ejemplo de uso:*
 
@@ -1153,9 +1155,9 @@ for (let i = 0; i <=5; i++) {
 
 ### Bucle for in
 
-El bucle `for in` funciona muy diferente a el for normal y de hecho funciona muchisimo mas distinto que en otros lenguajes.
+El bucle `for in` funciona muy diferente a el for normal y de hecho funciona muchísimo mas distinto que en otros lenguajes.
 
-Este aparte de requerir un array en el que iterar, ademas requiere de menos datos que ingresar en el mismo y debemos saber que este **itera sobre el nombre de el dato o el indice del dato**.
+Este aparte de requerir un array en el que iterar, además requiere de menos datos que ingresar en el mismo y debemos saber que este **itera sobre el nombre de el dato o el índice del dato**.
 
 *su sintaxis es la siguiente:*
 
@@ -1195,7 +1197,7 @@ for (let frutas of miArray) {
 
 ## Labeled
 
-Cuando trabajemos con bucles es probable que querramos hacer referencias a un bucle en especifico, ya sea por que queremos romper un bucle anidado o algo asi, referenciar estos bucles puede ser muy util.
+Cuando trabajemos con bucles es probable que queramos hacer referencias a un bucle en especifico, ya sea por que queremos romper un bucle anidado o algo así, referenciar estos bucles puede ser muy útil.
 
 El label nos permite añadirle un tipo de "identificador" a nuestros bucles con los que iterar a la hora de usar `continue` o un `break`.
 
@@ -1270,7 +1272,7 @@ let numeros = suma(); //asignamos el valor de la funcion a una variable
 
 ----
 
-## Parametros
+## Parámetros
 
 Los parámetros son una parte un poco mas avanzada de las funciones , a la hora de trabajar con ellas solo podemos usar valores que estén **dentro de la misma función** pero en caso de que los datos se crearan de forma externa a la misma, hay una forma de "introducirlos en la función".
 
@@ -1285,7 +1287,7 @@ function mensaje(nombreNuevoDeVariable){ //aqui van todos los parametros de la f
 mensaje("hola amigo, como te encuentras"); //esto mostrara el mensaje de forma exitosa
 ~~~
 
-Lo que aquí podemos ver es que en los paréntesis `()` de la función al declararla va un "parámetro", este sera **el nuevo nombre que tendrá un dato dentro de la función** por lo que solo podremos interactuar con ella dependiendo del nombre que ingresemos en ese paréntesis.
+Lo que aquí podemos ver es que en los paréntesis `()` de la función al declararla va un "parámetro", este será **el nuevo nombre que tendrá un dato dentro de la función** por lo que solo podremos interactuar con ella dependiendo del nombre que ingresemos en ese paréntesis.
 
 Otra cosa a tomar en cuenta es que hay que ingresar esos datos en la función, por lo que a la hora de "hacerla funcionar" o llamarla debemos añadir el dato original con el que se trabajara **en el ejemplo es `variableFueraDeFuncion`** y dentro de la función la misma se llama `nombreNuevoDeVariable`.
 
@@ -1303,7 +1305,7 @@ function suma(numero, numeroDos){
 suma(1,2); //esto nos entregara como resultado el numero 3
 ~~~
 
-**esto en ciertos casos puede no ser necesario usar parametros dado que en javascript es totalmente valido hacer esto:**
+**esto en ciertos casos puede no ser necesario usar parámetros dado que en javascript es totalmente valido hacer esto:**
 
 ~~~javascript
 let nombre = "Rodrigo";
@@ -1321,11 +1323,11 @@ decirNombre();
 
 ## Scope
 
-El scope es una "característica" de javascript que se define por **ser el "contexto actual de ejecucion" en el que una variable es declarada y donde esta puede ser tanto accedida como utilizada**
+El scope es una "característica" de javascript que se define por **ser el "contexto actual de ejecución" en el que una variable es declarada y donde esta puede ser tanto accedida como utilizada**
 
 *de por si hay 2 tipos de scope:*
 
-+ **scope global** osea que su valor puede ser accedido desde cualquier parte del código
++ **scope global** ósea que su valor puede ser accedido desde cualquier parte del código
 
   *ejemplo:*
 
@@ -1410,7 +1412,7 @@ El scope es una "característica" de javascript que se define por **ser el "cont
 
 ## Arrow functions
 
-Las arrow functions son una "forma" de crear funciones la cual nos permite "ahorrarnos lineas de código" dado que este esta sujeto a varias reglas que nos pueden acortar la escritura de la misma.
+Las arrow functions son una "forma" de crear funciones la cual nos permite "ahorrarnos líneas de código" dado que este esta sujeto a varias reglas que nos pueden acortar la escritura de la misma.
 
 *su sintaxis básica es la siguiente:*
 
@@ -1437,7 +1439,7 @@ Pero esta esta sujeta a múltiples reglas que nos pueden ser muy útiles, como l
 
   ---
 
-+ **si el bloque de codigo que ejecuta la funcion tiene una sola linea podemos dejar toda la funcion en una sola linea de la siguiente forma**:
++ **si el bloque de código que ejecuta la función tiene una sola línea podemos dejar toda la función en una sola línea de la siguiente forma**:
 
   ~~~javascript
   const decirHola = () => {alert('Hola!!!, como te encuentras');}
@@ -1445,7 +1447,7 @@ Pero esta esta sujeta a múltiples reglas que nos pueden ser muy útiles, como l
 
   ---
   
-+ **si el mismo código tiene una sola linea, las llaves `{}` son opcionales y podemos acortar mas nuestra linea de código así:**
++ **si el mismo código tiene una sola línea, las llaves `{}` son opcionales y podemos acortar mas nuestra línea de código así:**
 
   ~~~javascript
   const decirHola = () => alert('Hola!!!, como te encuentras');
@@ -1453,7 +1455,7 @@ Pero esta esta sujeta a múltiples reglas que nos pueden ser muy útiles, como l
 
   ---
 
-+ **Si queremos devolver un valor con un `return`, no hará falta usar esta palabra clave, dado que el `return` se aplica automáticamente**
++ **Si queremos devolver un valor con un `return`, no hará falta usar esta palabra clave, dado que el `return` se aplica automáticamente cuando este no lleve llaves `{}`.**
 
   *ejemplo:*
 
@@ -1469,7 +1471,7 @@ Pero esta esta sujeta a múltiples reglas que nos pueden ser muy útiles, como l
   
   //seria lo mismo hacer:
   //ejemplo 2
-  const suma = (valor1, valor2) => valor1 + valor2
+  const suma = (valor1, valor2) => valor1 + valor2 //esto seguira funcionando si usamos (valor1 + valor2) para mas orden
   alert(suma(numero, numero2)); //llamamos la funcion (su valor es 3)
   ~~~
 
@@ -1484,7 +1486,7 @@ La programación orientada a objetos es un "paradigma" que nos permite particion
 **Y en general la POO se define por 4 pilares fundamentales y estos son**:
 
 + Encapsulamiento (Es la capacidad de ocultar datos y o permitir que estos iteren en otros objetos
-+ abstraccion (Expresa las caracteristicas especiales de un objeto (y que lo diferencia de otro))
++ abstracción (Expresa las características especiales de un objeto (y que lo diferencia de otro))
 + herencia (La capacidad de que un objeto "herede" el funcionamiento y datos de otro)
 + polimorfismo (La capacidad de que estos datos "heredados" se puedan editar en el objeto nuevo)
 
@@ -1514,11 +1516,50 @@ class persona {
 let yo = new persona('Rodrigo', 17, 1.78);
 ~~~
 
-En las primeras lineas creamos un objeto con una **función constructora** que nos permite entregarle valores a nuestro objeto, al terminar el objeto creamos una variable y esta debe:
+En las primeras líneas creamos un objeto con una **función constructora** que nos permite entregarle valores a nuestro objeto, al terminar el objeto creamos una variable y esta debe:
 
 + usar la palabra `new` para definir que se esta basando en una clase.
 + mencionar el nombre de la clase a la que se referencia como molde.
 + entregar los datos en los paréntesis de el objeto instanciado.
+
+Si de lo contrario queremos crear un objeto ya desde el código y interactuar con este solo debemos instanciarlo de una forma mas simple, como por ejemplo:
+
+~~~javascript
+const mascota = { //el metodo que uso para hacer un objeto es similar al de las funciones arrow
+    nombre:'pepe' //dentro del objeto en si en lugar de usar "=" usamos ":" a no ser que sea en una funcion como un constructor
+    edad:17
+    vivo:true
+}
+
+//para llamar el objeto y en especifico un elemento del objeto usamos objeto.elemento
+console.log(mascota.nombre);
+
+//para añadir un dato nuevo hacemos objeto.datoNuevo = valor
+mascota.id = '203455';
+~~~
+
+Ambas formas son similares de estructurar un objeto pero distintas en sintaxis, el ocupar uno u otro esta a tu merced y necesidad.
+
+También sobre los datos que ingresemos en nuestros objetos, hay muchas formas de acceder a estos y principalmente son:
+
+~~~javascript
+//creamos un objeto
+const mascota = {
+    nombre:'pepe'
+    edad:17
+    vivo:true
+}
+
+//llamamos el valor nombre en una constante
+const nombreMascota = mascota.nombre; //el nombre de la constante es nombreMascota
+
+//pero tambien podemos hacerlo de la siguiente forma
+const {nombre} = mascota; //const {datoDeObjeto} = objeto en este caso el nombre de la constante es "nombre"
+//si hacemos {nombre, edad,etc...} podemos llamar mas de un valor
+
+//y en el segundo caso para mostrar el nombre de la mascota debemos usar
+console.log(nombre);
+~~~
 
 ---
 
@@ -1711,7 +1752,7 @@ Como ya mencionamos **para abrir la consola en google chrome, chromium o en fire
 
 ## Métodos de registro
 
-A la hora de trabajar con la consola hay muchos métodos que quizá queramos usar, ya sea para mostrar mensajes o avisar de alguna forma que la pagina esta fallando, siempre hay algúna función que nos pueden facilitar la vida.
+A la hora de trabajar con la consola hay muchos métodos que quizá queramos usar, ya sea para mostrar mensajes o avisar de alguna forma que la pagina esta fallando, siempre hay alguna función que nos pueden facilitar la vida.
 
 **la sintaxis de los métodos que interactúan con la consola es `console.metodo(parametros)`**.
 
@@ -1914,7 +1955,7 @@ También puede que mas que buscar el elemento a utilizar queramos cambiar uno de
 
   **Debemos tomar en cuenta que en especial las etiquetas html comparten un conjunto de atributos que podemos editar.**
 
-Para acceder a estos podemos hacerlo de multiples formas, como:
+Para acceder a estos podemos hacerlo de múltiples formas, como:
 
 ~~~javascript
 const elemento = document.querySelector(".input");
@@ -2038,7 +2079,7 @@ elemento.classList.add("ejemplo") //asi llamamos un metodo de classList
 | :---------------: | :----------------------------------------------------------: |
 |   **`.add()`**    | nos permite añadir una clase al elemento con el nombre ingresado en su parámetro. |
 |  **`.remove()`**  | nos permite remover la clase del elemento con el mismo nombre que su parámetro. |
-|   **`.item()`**   | nos permite acceder a una clase por un indice numérico ingresado en el parámetro. |
+|   **`.item()`**   | nos permite acceder a una clase por un índice numérico ingresado en el parámetro. |
 | **`.contains()`** | revisa si nuestro elemento posee la clase ingresada en el parámetro (y da true o false). |
 |  **`.toggle()`**  | revisa si nuestro elemento posee una clase (si es así la elimina, si no la crea). |
 | **`.replace()`**  | nos permite remplazar una clase por otra ("claseVieja", "claseNueva") |
@@ -2073,7 +2114,7 @@ También como es obvio puede que queramos crear varios elementos los cuales irá
 
 Para esto tenemos varios métodos los cuales son:
 
-+ **`.createElement()`** Nos permite crear un elemento con el nombre de la etiqueta que ingresemos en sus parametros **estos siempre deben ir todo en mayúsculas o todo en minúsculas**.
++ **`.createElement()`** Nos permite crear un elemento con el nombre de la etiqueta que ingresemos en sus parámetros **estos siempre deben ir todo en mayúsculas o todo en minúsculas**.
 
   *ejemplo:*
 
@@ -2107,7 +2148,7 @@ Para esto tenemos varios métodos los cuales son:
 
   ---
 
-+ **`.createDocumentFragment()`** nos permite crear lo que se conoce como "fragmentos" osea piezas de nuestro nuevas de nuestro html con tanto datos nuevos como simplemente de distintos tipos.
++ **`.createDocumentFragment()`** nos permite crear lo que se conoce como "fragmentos" ósea piezas de nuestro nuevas de nuestro html con tanto datos nuevos como simplemente de distintos tipos.
 
   **Esto por ejemplo se suele usar bastante en casos como notepads donde para ver una lista de las notas que vamos creando debe cada una ser un fragmento nuevo con datos nuevos**.
 
@@ -2316,11 +2357,11 @@ En este caso hay muchos parámetros y métodos que se aplican directamente a los
 
 *como en los padres e hijos, los hermanos también tienen parámetros y estos son:*
 
-+ **`.nextSibling`** busca y muestra **el nodo hermano que viene después del hijo al que le aplicamos el parametro** (**incluyendo los nodos**) y su sintaxis es **`hijo.nextSibling`**
++ **`.nextSibling`** busca y muestra **el nodo hermano que viene después del hijo al que le aplicamos el parámetro** (**incluyendo los nodos**) y su sintaxis es **`hijo.nextSibling`**
 
   ---
 
-+ **`.previousSibling`** busca y muestra **el nodo hermano que viene antes del hijo al que le aplicamos el parametro** (**incluyendo los nodos**) y su sintaxis es **`hijo.previousSibling`**
++ **`.previousSibling`** busca y muestra **el nodo hermano que viene antes del hijo al que le aplicamos el parámetro** (**incluyendo los nodos**) y su sintaxis es **`hijo.previousSibling`**
 
   ---
 
@@ -2359,7 +2400,7 @@ const hijo = querySelector(".hijo"); //llamamos nuestro elemento hijo (el parraf
 console.log(hijo.closets(".div")) //muestra el primer "padre" con la clase "div"
 ~~~
 
-**En este caso el div que llamara sera  el que tiene escrito** `DIV 3` dado que es el padre mas cercano.
+**En este caso el div que llamara será el que tiene escrito** `DIV 3` dado que es el padre mas cercano.
 
 ---
 
@@ -2383,7 +2424,7 @@ Al igual que el **DOM** y otros objetos de Javascript, el "Window" en si posee m
 
 ### Open
 
-Puede que en algun momento de nuestro desarrollo necesitemos que nuestro usuario abra otras paginas, ya sea para por ejemplo, ser enviado a otra pagina como a nuestro GitHub u otras muchas paginas extra que ya existan de por si.
+Puede que en algún momento de nuestro desarrollo necesitemos que nuestro usuario abra otras paginas, ya sea para por ejemplo, ser enviado a otra pagina como a nuestro GitHub u otras muchas paginas extra que ya existan de por si.
 
 esto podemos hacerlo con un hipervínculo en html, pero este recomiendo sea llamado por medio de Javascript.
 
@@ -2401,7 +2442,7 @@ window.open("https://estaPaginaEsTotalmenteFalsa.com", "_self");
 // esto abrira la pagina en la misma ventana
 ~~~
 
-Ademas podemos usar el **`window.open()`** para referirnos a otra "Window" de la siguiente forma:
+Además podemos usar el **`window.open()`** para referirnos a otra "Window" de la siguiente forma:
 
 ~~~javascript
 let ventana = window.open("https://estaPaginaEsTotalmenteFalsa.com");
@@ -2421,7 +2462,7 @@ También puede que necesitemos cerrar una ventana en si, esto lo logramos con el
 window.close(); // esto cerrara la ventana actual
 ~~~
 
-Ademas podemos usar la variable **`closed`** que nos permite verificar por medio de un booleano si la ventana esta cerrada o no.
+Además podemos usar la variable **`closed`** que nos permite verificar por medio de un booleano si la ventana esta cerrada o no.
 
 *Su sintaxis es la siguiente:*
 
@@ -2501,7 +2542,7 @@ prompt("texto que ira en el prompt");
 
 ### Confirm
 
-Este nos permite abrir un cuadro de dialogo similar al **`alert` y `prompt`** solo qeu en este caso nos dara 2 botones uno de **aceptar** y otro de **cancelar**.
+Este nos permite abrir un cuadro de dialogo similar al **`alert` y `prompt`** solo que en este caso nos dará 2 botones uno de **aceptar** y otro de **cancelar**.
 
 *su sintaxis es la siguiente:*
 
@@ -2513,7 +2554,7 @@ confirm("texto que ira en el confirm");
 
 ## Screen y Scroll 
 
-A la hora de trabajar con JavaScript puede que necesitemos hacer algunos calculos, por ejemplo: **la posicion del scroll** o **la posicion del navegador en la pantalla**.
+A la hora de trabajar con JavaScript puede que necesitemos hacer algunos cálculos, por ejemplo: **la posición del scroll** o **la posición del navegador en la pantalla**.
 
 ---
 
@@ -2578,7 +2619,7 @@ window.location.assign("https://youtube.com"); // va a cargar la pagina de youtu
 
 **Pero hay algo interesante que podemos hacer con `window.location.href;` y es lo siguiente**.
 
-Si en nuestro html por ejemplo tenemos un elemento con un id como `id = "identificador"` podemos hacer un hipervinculo que hara scroll hasta ese elemento especifico en la pagina.
+Si en nuestro html por ejemplo tenemos un elemento con un id como `id = "identificador"` podemos hacer un hipervinculo que hará scroll hasta ese elemento especifico en la pagina.
 
 *Lo hacemos de la siguiente manera:*
 
@@ -2599,7 +2640,7 @@ A la hora de desarrollar nuestro codigo puede que tengamos varios recursos que m
 + La seguridad de nuestra web
 + ETC...
 
-Por suerte Chrome nos permite acceder a estos datos **y no solo chrome** de hecho tanto **Chrome, Chromium y Firefox** tienen estas opciones y estos son los mas usados para el desarrollo web (ademas de ser de los buscadores web mas usados).
+Por suerte Chrome nos permite acceder a estos datos **y no solo chrome** de hecho tanto **Chrome, Chromium y Firefox** tienen estas opciones y estos son los mas usados para el desarrollo web (además de ser de los buscadores web mas usados).
 
 **Cabe resaltar que estos buscadores son los que yo se que tienen estas opciones, dado que hay muchos buscadores que igualmente poseen estas opciones, solo que son menos utilizados**.
 
@@ -2615,7 +2656,7 @@ Cuando se abra la ventana de "herramientas" veras en la parte superior muchas "o
 
 + **Elements**
 
-  Es la opción que se abre por defecto al acceder a las opciones de desarrollador, aqui se ven tanto los elementos html junto a los de css.
+  Es la opción que se abre por defecto al acceder a las opciones de desarrollador, aquí se ven tanto los elementos html junto a los de css.
 
   **También podemos editar estos elementos, pero volverán a la normalidad al recargar la **
 
@@ -2635,7 +2676,7 @@ Cuando se abra la ventana de "herramientas" veras en la parte superior muchas "o
 
   **Técnicamente funciona como un editor de código integrado en el navegador (al menos en la pestaña "page")**
 
-  También posee una pestaña llamada "snippets" la cual nos permite "guardar" lineas de código a las que podremos acceder y ejecutar **especialmente importante a la hora de hacer pruebas**.
+  También posee una pestaña llamada "snippets" la cual nos permite "guardar" líneas de código a las que podremos acceder y ejecutar **especialmente importante a la hora de hacer pruebas**.
 
   ---
 
@@ -2990,7 +3031,7 @@ Esto lo logramos con los temporizadores, estos son funciones que nos permiten ll
         let numero = 2;
         console.log(numero) // este nos dara el numero = 2
     }
-console.log(numero); // este nos dara el numero = 1
+    console.log(numero); // este nos dara el numero = 1
     ~~~
     
     Y esto ocurre gracias a un concepto anteriormente visto el [scope](#scope) o alcance que permite que según su alcance podamos hacer 2 variables con el mismo nombre pero que sean considerados como valores distintos y sean aplicables solo o principalmente a los elementos que estén a su alcance.
@@ -3008,7 +3049,7 @@ console.log(numero); // este nos dara el numero = 1
     
 + **Declaraciones de control de flujo:**
 
-  Como ya mencione, las declaraciones de bloque se ejecutan si o si aun que no siempre seran los mas efectivos dado que en ocasiones querremos que estos bloques se ejecuten **solo cuando una condición se cumpla**.
+  Como ya mencione, las declaraciones de bloque se ejecutan si o si aun que no siempre serán los mas efectivos dado que en ocasiones querremos que estos bloques se ejecuten **solo cuando una condición se cumpla**.
 
   De hecho estos ya los vimos, son en efecto las condicionales **`if`**, **`for`**, **`while`** y sus variantes como los **`else`** y **`else if`**.
 
@@ -3022,7 +3063,7 @@ console.log(numero); // este nos dara el numero = 1
 
 ## Condicional switch
 
-La condicional switch sera nuestra "declaracion de control de flujo" y la utilizamos para hacer multiples comparaciones a una misma condicion.
+La condicional switch será nuestra "declaración de control de flujo" y la utilizamos para hacer múltiples comparaciones a una misma condición.
 
 *Su sintaxis es la siguiente:*
 
@@ -3091,7 +3132,7 @@ También, puede que en varios momentos presenciemos múltiples errores durante n
 
 La verdad no son algo en lo que nos enfocaremos mucho, de hecho simplemente haré menciones a algunos temas en general pero esto es una introducción para otro tema de mayor importancia.
 
-**En general estas exepciones se dividen en 3 tipos distintos:**
+**En general estas excepciones se dividen en 3 tipos distintos:**
 
 + Excepciones EcmaScript: Son los errores y excepciones que están añadidos de forma intrínseca a JavaScript, estos los puedes encontrar [aqui](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects).
 
@@ -3113,13 +3154,13 @@ try {
 }
 ~~~
 
-Tecnicamente nos permite probar un bloque de código y si el mismo nos genera algun error, podemos generar una acción contra el mismo. 
+Técnicamente nos permite probar un bloque de código y si el mismo nos genera algún error, podemos generar una acción contra el mismo. 
 
-**El nombre "error" dentro del parentesis del `catch` es un nombre que podemos cambiar totalmente, por lo que podemos en cualquier momento cambiar ese nombre, de hecho los nombres por defecto que suelen tener es `error` y `e`**.
+**El nombre "error" dentro del paréntesis del `catch` es un nombre que podemos cambiar totalmente, por lo que podemos en cualquier momento cambiar ese nombre, de hecho los nombres por defecto que suelen tener es `error` y `e`**.
 
 **Antes de continuar debo advertir que los `try... catch` no se pueden anidar**.
 
-**Pero también debo mencionar que los `try... catch` se dividen en 2 tipos especificos:**
+**Pero también debo mencionar que los `try... catch` se dividen en 2 tipos específicos:**
 
 + Excepciones condicionales: Son los `try... catch` que dentro de su `catch` poseen una condicional que indica si se aplicara o no nuestro `catch` en la ejecución de nuestro código.
 
@@ -3137,7 +3178,7 @@ Tecnicamente nos permite probar un bloque de código y si el mismo nos genera al
 
   ---
 
-+ Excepciones incondicionales: Son las que ya vimos, osea son `try... catch` que dentro de su `catch` no poseen una condicional que la haga funcionar.
++ Excepciones incondicionales: Son las que ya vimos, ósea son `try... catch` que dentro de su `catch` no poseen una condicional que la haga funcionar.
 
   *por ejemplo:*
 
@@ -3151,7 +3192,7 @@ Tecnicamente nos permite probar un bloque de código y si el mismo nos genera al
 
   ---
 
-  **Ademas tenemos otra parte del `try... catch` que nos puede servir** y este es el `finally`.
+  **Además tenemos otra parte del `try... catch` que nos puede servir** y este es el `finally`.
 
   El finally nos permite ejecutar un bloque de código pase lo que pase en nuestra ejecución, se active un error o no y este mismo tendrá prioridad por sobre el `try` y el `catch`.
 
@@ -3312,4 +3353,37 @@ Y de esta misma forma podemos luego enviar datos de una función a otra por medi
 
 + **`promesa.then(funcion)`**: asocia una función al parámetro "resuelto" si este es en efecto ejecutado por la promesa.
 + **`promesa.catch(funcion)`**: asocia una función al parámetro "rechazado" si este es en efecto ejecutado por la promesa.
+
+---
+
+# Fetch api
+
+Esta promesa nos permite acceder a un API (Application Programming Interface) que son "un conjunto de reglas que definen y describen como una aplicación puede interactuar con otra además de entregarnos los mecanismos para llevar a cabo esta interacción" y consumir los datos que la conforman.
+
+Para esto usamos la siguiente sintaxis:
+
+~~~javascript
+//primero llamamos la api a utilizar
+fetch('https://pokeapi.co/api/v2/')//en la funcion añadimos el enlace de nuestro api (en este caso la pokeApi)
+
+//hacemos nuestra promesa
+	.then(respuesta => respuesta.json()) //dentro del then hay una funcion flecha reducida
+	//"respuesta" es un parametro y en la funcion se devuelve la respuesta en .json (dado que en este caso tiene ese formato)
+
+	.then(datos => {
+    	console.log(datos) //devuelve el json y en este caso podriamos acceder a otros parametros con por ejemplo "datos.results"
+	})
+
+	//para mostrar todos los resultados de la api podemos usar:
+	.then(data => {
+    	data.results.forEach(element => { //por cada elemento en el objeto "data" dentro de "results"
+        	console.log(element) //mostrar esos mismos elementos
+	    })
+	})
+	//en lugar del "console.log" que usamos para mostrar los datos
+~~~
+
+---
+
+
 
