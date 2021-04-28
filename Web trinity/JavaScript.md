@@ -610,6 +610,52 @@ componentesPc[ram]; //nos dara el valor de la "clave ingresada"
 //luego podemos iterar con el dato ingresandolo en un alert o lo que sea
 ~~~
 
+Como tema mas **avanzado** podemos aprender unos métodos específicos para los arrays como lo son: **map y filter**
+
+Empezando por el map, este nos permite crear un array nuevo en base a otro y aplicarle la edición de deseemos en base a una función, por ejemplo:
+
+~~~javascript
+//recorreremos un array de numeros con un ciclo "for in" que seria lo "comun" y los duplicaremos antes de mostrarlos en pantalla
+let numeros = [1,2,3,4] //creamos el array
+
+for (let i in numeros) { //repasamos los datos del array
+    numeros[i] = numeros[i] * 2 //multiplicamos los datos del array
+    console.log(numeros[i]) //mostramos en la consola los datos del array separados
+}
+~~~
+
+Pero como ya mencionamos, hay una forma mas facil de trabajar con esto y es con el método "map" que funciona de la siguietne forma:
+
+~~~javascript
+//creamos nuestro array
+let numeros = [1,2,3,4]
+
+//los llamamos con el metodo map
+let nuevoArray = numeros.map( (num) => { //el metodo map crea un array nuevo (como parametro usa una función flecha)
+    //num es un 
+    return num * 2
+})
+
+//al ser una función flecha esta se puede acortar de la siguiente forma
+let nuevoArray = numeros.map(num => num*2)
+
+console.log(nuevoArray) //en este caso y a diferencia de el ejemplo anterior no mostrara los datos, sino mostrara el array
+~~~
+
+Al menos en varios casos y principalmente en este mismo para mi, me parece una implementación mas limpia dado que no iteramos sobre el array en si, sino que creamos otro distinto para en efecto hacer los cambios, manteniendo la versión anterior pero igualmente **ambas formas son totalmente validas**.
+
+Además de esto esta el método **filter** cuya sintaxis es algo similar al map, solo que en este caso nos permite filtrar los datos que hay dentro de un array en base a una condición.
+
+Por ejemplo:
+
+~~~javascript
+let numeros = [1,2,3,4,5,6,7,8,9,10] //creamos nuestro array con numeros
+
+let nuevoArray = numeros.filter(num => num > 5) //filtramos SOLO los numeros mayores a 5
+
+console.log(nuevoArray) //mostramos en la consola el nuevo array
+~~~
+
 ---
 
 #### Funciones
@@ -1166,10 +1212,11 @@ let miArray = ["manzana", "pera", "platano", "piña", "durazno"]; //creamos arra
 
 //for nombreElementos in Array{}
 for (let frutas in miArray) {
-    //se crea una variable (en este caso con el nombre frutas)
-    //cada vez que el bucle se repita este tendra otro indice del array
+    //por cada fruta en el array se repetira el codigo dentro del loop
     //al llegar al ultimo se rompera el bucle
-    document.write(frutas); //se mostraran todos los indices del array asi = 01234
+    document.write(miArray[frutas]); //se mostraran todos los elementos del array
+    document.write(miArray) //si hacemos esto se mostrara el array entero 5 veces
+    document.write(frutas) //si hacemos esto se mostrara el indice de cada dato asi: 01234
 }
 ~~~
 
@@ -3356,32 +3403,73 @@ Y de esta misma forma podemos luego enviar datos de una función a otra por medi
 
 ---
 
-# Fetch api
+## Async & Await
 
-Esta promesa nos permite acceder a un API (Application Programming Interface) que son "un conjunto de reglas que definen y describen como una aplicación puede interactuar con otra además de entregarnos los mecanismos para llevar a cabo esta interacción" y consumir los datos que la conforman.
+Las promesas en si funcionan de forma asíncrona osea que se ejecutan al igual que todo el javascript, no en orden sino segun se llame el codigo a usar y al usar promesas puede que estas hagan que nuestras promesas tengan un mal funcionamiento.
 
-Para esto usamos la siguiente sintaxis:
+Pero aun sabiendo que JavaScript es prioritariamente asíncrono, podemos hacerlo relativamente síncrono, esperando a que una línea de código se ejecute **solo después de que la anterior terminara su cometido**.
+
+Para esto existe las funciones asíncronas (Async) y las esperas (Await) que nos permiten seleccionar una línea y que "espere" a la línea anterior antes de ejecutarse así misma.
+
+*Su sintaxis es la siguiente:*
 
 ~~~javascript
-//primero llamamos la api a utilizar
-fetch('https://pokeapi.co/api/v2/')//en la funcion añadimos el enlace de nuestro api (en este caso la pokeApi)
+//imaginemos que hacemos un "fetch" a una api (tecnicamente recibiremos una respuesta de una promesa)
 
-//hacemos nuestra promesa
-	.then(respuesta => respuesta.json()) //dentro del then hay una funcion flecha reducida
-	//"respuesta" es un parametro y en la funcion se devuelve la respuesta en .json (dado que en este caso tiene ese formato)
+//para usar el await siempre debemos hacer antes una funcion "async" de la siguiente manera
+const nombreFuncion = async() => {} //en este caso es una función flecha
 
-	.then(datos => {
-    	console.log(datos) //devuelve el json y en este caso podriamos acceder a otros parametros con por ejemplo "datos.results"
-	})
-
-	//para mostrar todos los resultados de la api podemos usar:
-	.then(data => {
-    	data.results.forEach(element => { //por cada elemento en el objeto "data" dentro de "results"
-        	console.log(element) //mostrar esos mismos elementos
-	    })
-	})
-	//en lugar del "console.log" que usamos para mostrar los datos
+async function nombreFuncion() {} //en este caso es una funcion comun
 ~~~
+
+Y como ya he mencionado, para utilizar el Await debe este estar dentro de una función Async y al mismo debemos posicionarlo antes de una función, de la siguiente forma:
+
+~~~javascript
+const funcion = async() => {
+    try {
+    	const respuesta = await fetch('https://pokeapi.co/api/v2/') // intentamos recibir información de una promesa por medio de un try
+    	const datos = await respuesta.json() // llamamos los datos de la respuesta y los dejamos en formato json
+    } catch (error) {
+        console.log(error) // si la llamada al api falla, nos lanzara un error en la consola
+    }
+}
+~~~
+
+de hecho
+
+---
+
+# Fetch api
+
+Esta **promesa** nos permite acceder a los datos de un API (Application Programming Interface) que son "un conjunto de reglas que definen y describen como una aplicación puede interactuar con otra además de entregarnos los mecanismos para llevar a cabo esta interacción" y consumir los datos que la conforman.
+
+Para esto usamos la siguiente sintaxis :
+
+~~~javascript
+fetch("url/de/la/api") //y como este es una promesa puede someterse a un await
+~~~
+
+un ejemplo practico de este seria:
+
+~~~javascript
+// en este caso en si la api es "pokeapi"
+const funcion = async() => { // hacemos una función asincrona
+    try {
+    	const respuesta = await fetch('https://pokeapi.co/api/v2/pokemon'); //intentamos recibir información por medio de un try
+    	const datos = await respuesta.json(); // llamamos los datos de la respuesta y los dejamos en formato json
+        console.log(datos) //interactuamos con los datos retornados (en este caso los mostramos en la consola)
+    } catch (error) {
+        console.log(error); // si la llamada al api falla, nos lanzara un error en la consola
+    }
+}
+
+// luego solo ejecutamos la función
+funcion();
+~~~
+
+Esto nos permite llamar el api y si quisiéramos podríamos interactuar de otras formas con los datos como ya vimos con el ejemplo del `console.log(datos)` que añadí.
+
+Otro tema notable es el factor de que en este caso y aun tratándose de promesas **no use las funciones `then()` y `catch()` dado a que la función asíncrona y la espera del "await", nos ahorran el uso de este** y sin olvidar el uso del try & catch. 
 
 ---
 
