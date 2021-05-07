@@ -6,11 +6,11 @@ Rust es mágico, este es un lenguaje multi-propósito y multi-paradigma que pued
 
 Este lenguaje salido el 2015 busca el ser un lenguaje con grandes capacidades similar a c o c++ pero con una sintaxis mas sencilla, de hecho este lenguaje lo conocí gracias al ser el numero 1 como la tecnología mas amada por programadores en stack overflow en su encuesta del año 2017, 2018, 2019 y 2020.
 
-Y este al ser un lenguaje complejo como c y c++ ademas de ser multi propósito, nos permite usarlo tanto en **desarrollo de sistemas** (sistemas operativos, programas y apps, juegos ademas de muchos otros "sistemas"), **desarrollo web**, entre otros.
+Y este al ser un lenguaje complejo como c y c++ además de ser multi propósito, nos permite usarlo tanto en **desarrollo de sistemas** (sistemas operativos, programas y apps, juegos además de muchos otros "sistemas"), **desarrollo web**, entre otros.
 
 Cabe recalcar que esta documentación la basare en el orden que se puede encontrar en la documentación oficial del lenguaje y otras documentaciones similares.
 
-Ademas esta documentación acepta que algunos conceptos los conoces de forma mínima.
+Además esta documentación acepta que algunos conceptos los conoces de forma mínima.
 
 ---
 
