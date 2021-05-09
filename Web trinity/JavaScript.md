@@ -34,7 +34,7 @@ datos sacados de [la siguiente fuente](https://en.wikipedia.org/wiki/Programming
 
 ---
 
-## Indice
+## Índice
 + [Primeros pasos en Javascript](#Primeros-pasos-en-Javascript)
 
   + [Conocimientos previos](#Conocimientos-previos)
@@ -258,7 +258,6 @@ Aquí mostraremos 3 tipos de "Hola Mundo" que me interesan ver y estos serian:
   document.write("<h1>esto es un header</h1>") //especificamos la etiqueta a añadir
   ~~~
 
-  
 
 **Otra función bastante útil es `prompt()` que al igual que el `input()` de otros lenguajes nos permite recibir datos de parte de el usuario con una ventana similar a la de "alerta"**.
 

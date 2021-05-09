@@ -355,7 +355,7 @@ when(pais){
 }
 ~~~
 
-En este caso, como la variable equivale a "Chile" se mostrara en la consola el mensaje `el idioma es español`, pero ademas podemos añadir mas datos a una respuesta, por ejemplo
+En este caso, como la variable equivale a "Chile" se mostrara en la consola el mensaje `el idioma es español`, pero además podemos añadir mas datos a una respuesta, por ejemplo
 
 ~~~kotlin
 //determinamos una variable o constante en la que trabajar
@@ -433,8 +433,8 @@ algunas cosas extra de los arrays son las siguientes:
 
 + también podemos añadir mas de una vez los datos que están en el array y no generara error, en su defecto estos funcionaran de forma correcta y se mostrara nuevamente el dato repetido en el array.
 + También podemos añadir mas de un dato a el array usando: `nombreArray.addAll(listOf("hola","buenos dias"))`
-+ Ademas podemos usar la función add para añadir un dato directo envés de una variable o constante
-+ Para llamar un dato especifico debemos hacerlo por su indice, por ejemplo si queremos imprimir un dato debemos crear una variable o constante que este igualada a `nombreArray[indice]` el indice va desde el 0 hasta el numero de datos que tengamos en el mismo.
++ Además podemos usar la función add para añadir un dato directo envés de una variable o constante
++ Para llamar un dato especifico debemos hacerlo por su índice, por ejemplo si queremos imprimir un dato debemos crear una variable o constante que este igualada a `nombreArray[indice]` el índice va desde el 0 hasta el numero de datos que tengamos en el mismo.
 + Para modificar un dato de el array debemos usar `nombreArray(indiceElemento,"dato nuevo")`
 + Para remover un dato de el array debemos usar `nombreArray.removeAt(indiceElemento)`
 + Para ver todas las acciones que podemos hacer con el array debemos escribir `nombreArray.` y tras eso se abrirá una "ventana" con todo lo que podemos hacer con el mismo.
@@ -443,9 +443,9 @@ algunas cosas extra de los arrays son las siguientes:
 
 ### Maps
 
-Los maps (o también llamados diccionarios) son otro tipo de colección, estos funcionan de forma especial ya que no guardan los datos de forma "ordenada" osea que no puedes acceder a sus datos por un "indice" como pasaba con los array, en este caso los diccionarios se dividen en 2 datos.
+Los maps (o también llamados diccionarios) son otro tipo de colección, estos funcionan de forma especial ya que no guardan los datos de forma "ordenada" o sea que no puedes acceder a sus datos por un "índice" como pasaba con los array, en este caso los diccionarios se dividen en 2 datos.
 
-Estos datos son `clave:valor` con la particularidad de que como ya dijimos, no se puede acceder a un dato usando un indice, sino llamándolo por su clave o por el valor
+Estos datos son `clave:valor` con la particularidad de que como ya dijimos, no se puede acceder a un dato usando un índice, sino llamándolo por su clave o por el valor
 
 Un ejemplo de sintaxis básica es el siguiente:
 
@@ -565,7 +565,7 @@ como ya dije, kotlin nos permite trabajar con lo que es la programación orienta
 
 ### Funciones
 
-En la programación orientada a objetos a las funciones se les llama métodos y sirven para darle funcionalidad a los mismos, pero también sirven para hacer otras funcionalidades en el mismo codigo perse
+En la programación orientada a objetos a las funciones se les llama métodos y sirven para darle funcionalidad a los mismos, pero también sirven para hacer otras funcionalidades en el mismo código en si.
 
 Estas mismas son parte **importante!!** de el código, nos permiten hacer acciones de forma mas compleja incluso mas si los unimos con todo lo antes ya visto.
 
@@ -577,7 +577,7 @@ fun nombreFuncion(){
 }
 ~~~
 
-una parte necesaria de kotlin (pormenor a la hora de programar en intelliJ), es que para usar este código requerimos constantemente de una "función main"que debemos crear la cual es nuestra "función principal" y donde estará el código que usaremos ademas de el llamado de otras funciones.
+una parte necesaria de kotlin (pormenor a la hora de programar en intelliJ), es que para usar este código requerimos constantemente de una "función main"que debemos crear la cual es nuestra "función principal" y donde estará el código que usaremos además de el llamado de otras funciones.
 
 ~~~kotlin
 fun main(){
@@ -586,7 +586,7 @@ fun main(){
 }
 ~~~
 
-Para llamar esa función y ejecutar lo que hay dentro de si misma, debemos escribir la siguiente linea en nuestra función principal:
+Para llamar esa función y ejecutar lo que hay dentro de si misma, debemos escribir la siguiente línea en nuestra función principal:
 
 ~~~kotlin
 fun main(){
@@ -594,7 +594,7 @@ fun main(){
 }
 ~~~
 
-Y entre el paréntesis van los parámetros de la misma, osea los datos que espera la función que sean devueltos a la hora de usar la misma.
+Y entre el paréntesis van los parámetros de la misma, o sea los datos que espera la función que sean devueltos a la hora de usar la misma.
 
 Un ejemplo directo de esto es el siguiente:
 
@@ -607,9 +607,9 @@ fun diMiNombre(nombre:String){ //el parametro rodrigo se une a la variable "nomb
 }
 ~~~
 
-también podemos agregar mas parámetros a una función separándolos por una coma ademas de cambiar ese "String" por otro ya que este es solo el tipo de dato que vamos a retornar.
+también podemos agregar mas parámetros a una función separándolos por una coma además de cambiar ese "String" por otro ya que este es solo el tipo de dato que vamos a retornar.
 
-también usaremos la linea "return" que sirve para terminar una función ademas de devolver un valor de por ejemplo algún calculo o acción hecha en la misma función, un ejemplo seria el siguiente:
+también usaremos la línea "return" que sirve para terminar una función ademas de devolver un valor de por ejemplo algún calculo o acción hecha en la misma función, un ejemplo seria el siguiente:
 
 ~~~kotlin
 fun main(){
@@ -642,9 +642,9 @@ class MainActivity : AppCompatActivity(){
 
 Como vemos hay una clase principal llamada main activity donde esta toda la función directa de nuestra actividad principal/pagina principal.
 
-pero aparte de esa misma podemos crear otras, estas deben ser creadas en la misma carpeta de el codigo principal.
+pero aparte de esa misma podemos crear otras, estas deben ser creadas en la misma carpeta de el código principal.
 
-1. damos clic derecho en la carpeta donde estaba nuestro codigo
+1. damos clic derecho en la carpeta donde estaba nuestro código
 2. elegimos la opción `new`
 3. seleccionamos la opción `kotlin file/class`
 4. seleccionamos `class` y le damos un nombre a la clase
@@ -657,7 +657,7 @@ class NombreClase{
 }
 ~~~
 
-pero este tiene una particularidad diferente a los otros lenguajes y es que envez de poner las variables en la clase, para poner esos datos debemos abrir parentesis luego del nombre de la clase y ahi poner todo, por ejemplo:
+pero este tiene una particularidad diferente a los otros lenguajes y es que envés de poner las variables en la clase, para poner esos datos debemos abrir paréntesis luego del nombre de la clase y ahí poner todo, por ejemplo:
 
 ~~~kotlin
 class NombreClase(dato: String){ //en este caso guardamos un dato string llamado dato
@@ -715,11 +715,11 @@ sujeto.saludo()
 
 ## Interfaces gráficas 
 
-Kotlin es un lenguaje que como ya dijimos funciona principalmente en android y puede anclarse a java, pero estos en efecto para poder mostrar la aplicación perse siendo esta la "interfaz gráfica"
+Kotlin es un lenguaje que como ya dijimos funciona principalmente en android y puede anclarse a java, pero estos en efecto para poder mostrar la aplicación en si siendo esta la "interfaz gráfica"
 
-esto se logra con un lenguaje llamado **XML** (lenguaje de marcado extendido) que al igual a html nos permite añadir datos y otras cosas a nuestras aplicaciones, ademas de permitirnos el elegir donde y de que forma ingresaremos estas partes/datos en nuestra interfaz
+esto se logra con un lenguaje llamado **XML** (lenguaje de marcado extendido) que al igual a html nos permite añadir datos y otras cosas a nuestras aplicaciones, además de permitirnos el elegir donde y de que forma ingresaremos estas partes/datos en nuestra interfaz
 
-Al crear nuestro proyecto con una "empty activity" en la carpeta **>res >layout** se creara un archivo con nombre **`activity_main.xml`** aquí irán las cosas  dentro de nuestra "pantalla principal" ya sean botones, texto, el color del fondo, etc. pero ademas hay otros del mismo que nos permiten ingresar cosas como lo serian por ejemplo el archivo **`AndroidManifest.xml`** dentro de la carpeta `manifests` aquí van las opciones de el programa de por si, por ejemplo la opción de si queremos la barra superior que muestra el titulo de la app entre otras opciones bastante útiles.
+Al crear nuestro proyecto con una "empty activity" en la carpeta **>res >layout** se creara un archivo con nombre **`activity_main.xml`** aquí irán las cosas  dentro de nuestra "pantalla principal" ya sean botones, texto, el color del fondo, etc. pero además hay otros del mismo que nos permiten ingresar cosas como lo serian por ejemplo el archivo **`AndroidManifest.xml`** dentro de la carpeta `manifests` aquí van las opciones de el programa de por si, por ejemplo la opción de si queremos la barra superior que muestra el titulo de la app entre otras opciones bastante útiles.
 
 ---
 
@@ -894,7 +894,7 @@ class MainActivity : AppCompatActivity() {
 }
 ~~~
 
-Ahí podemos poner tanto codigos que cambien el texto de un dato, o muchísimas otras cosas que nos permiten interactuar con nuestra aplicación.
+Ahí podemos poner tanto códigos que cambien el texto de un dato, o muchísimas otras cosas que nos permiten interactuar con nuestra aplicación.
 
 ---
 
@@ -1006,7 +1006,7 @@ Cabe recordar que ese ".getStringExtra" se puede cambiar por ".getIntExtra" o ot
 
 ### Mensaje de alerta
 
-En nuestras apps pueden haber "mensajes de seguridad" "mensajes de error"  entre otros tipos, estos se llaman "cuadros de dialogo" o "mensajes de alerta", en mi caso el método para hacer estas requiere de código java aun que reitero, este sera el método que usare pues es el que conozco.
+En nuestras apps pueden haber "mensajes de seguridad" "mensajes de error"  entre otros tipos, estos se llaman "cuadros de dialogo" o "mensajes de alerta", en mi caso el método para hacer estas requiere de código java aun que reitero, este será el método que usare pues es el que conozco.
 
 Para esto necesitamos la función `AlertDialog` junto a otros datos que están en la función main.
 
