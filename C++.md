@@ -14,6 +14,10 @@ Actualmente C++ es uno de los lenguajes de programación mas populares, aun que 
 
 + [Primeros pasos en C++](#Primeros-pasos-en-C++)
   + [Conocimientos previos](#Conocimientos-previos)
+  + [Instalando C++](#Instalando-C++)
+  + [Hola Mundo](#Hola-Mundo)
++ [Como funciona C++](Como-funciona-C++)
++ 
 
 ---
 
@@ -455,3 +459,276 @@ Y las funciones pueden ser llamadas de múltiples formas (todas estas deben ser 
 Como ya alguno se habrá dado cuenta nuestra función "**main**" tiene un tipo de dato **int** antes de su nombre, eso significa que ¿debe retornar algún valor?, pues **no**.
 
 En la función main no es necesario usar un return dado que esta es especial y técnicamente lo que hace es "retornar un 0 automáticamente" mientras que en todas las funciones (que no sea **main** ni sean un **void**) necesitamos retornar algún valor para que estas funcionen sin generar errores.
+
+---
+
+# Header files
+
+Hagamos una revisión de nuestro hola mundo.
+
+~~~c++
+#include <iostream>
+
+int main()
+{
+    std::cout << "Hola Mundo";
+}
+~~~
+
+De todo lo que se presenta ahí, hay solo 1 tema que aun no hemos revisado y esta presente en la primera línea, hablo de los **header files**.
+
+Los **header files** son archivos de c++ a los que referenciamos desde nuestro código, estos contienen ciertas funciones y en ciertos casos, sirven para hacer un código mas limpio.
+
+De hecho como podemos ver en el "Hola Mundo", usando la línea `#include <iostream>` lo que hacemos es **llamar a todas las funciones que se encuentran dentro de un archivo con el nombre "iostream"** y de hecho, podemos hacer nuestros propios **header files**.
+
+Pero antes imagina que tienes 2 archivos de c++:
+
+~~~c++
+// archivo 1
+#include <iostream>
+
+int main()
+{
+}
+~~~
+
+~~~c++
+// archivo 2
+int suma(int numero1, int numero2)
+{
+    return numero1 + numero2;
+}
+~~~
+
+Como podemos ver, un archivo es nuestro main y otro tiene una función, lo que ocurre es que si queremos acceder a esa funcón desde nuestro archivo main, debemos "instanciar la función" dentro de nuestro main.
+
+eso lo hacemos escribiendo solo los "datos superiores de la función" en nuestro archivo main, de la siguiente forma:
+
+~~~c++
+// archivo 1
+#include <iostream>
+
+int suma(int numero1, int numero2);
+
+int main()
+{
+}
+~~~
+
+Esto significa que podemos acceder a esta función en especifico, pero este método tiene un problema y es que si queremos acceder a varias funciones o no queremos copiar y pegar todo eso en los demás archivos que lo requieran podemos finalmente **hacer un header file**.
+
+Y de hecho hacer un **header file** es bastante fácil y al menos en Visual Studio 2019 (el IDE que utilizo) solo requiere de hacer los siguientes pasos:
+
+1. Ve a la pestaña "Solution Explorer" y da clic derecho en la carpeta **"Header Files"** (también se puede en source pero por temas de orden es mejor la anterior).
+2. Das clic en `Add > New Item` y seleccionas la opción **Header File.**
+3. Le añades un nombre y cliqueas la opción "**Add**".
+
+Tras esto se creara un archivo con extensión `.h` (imaginemos que su nombre es **`sumando.h`**) con lo siguiente:
+
+~~~c++
+#pragma once // esto le dice al compilador que compruebe que este archivo se llame solo 1 vez por archivo
+~~~
+
+Luego de tener el archivo creado aquí tendremos que "**instanciar**" las funciones que llamaremos con nuestro **header file** y basándonos en el ejemplo que di, debemos hacerlo de la siguiente forma:
+
+~~~c++
+#pragma once
+
+int suma(int numero1, int numero2);
+~~~
+
+Y para llamar esa función en nuestro archivo main debemos añadir el header file con `#include` de la siguiente manera:
+
+~~~c++
+#include <iostream>
+#include "sumando.h"
+
+int main()
+{
+    suma(1,4); // ahora podemos acceder sin problemas a esa función y las demas que deseemos añadir
+}
+~~~
+
+---
+
+# Operadores
+
+A la hora de trabajar con datos de distintos tipos es muy probable que tengamos la necesidad de iterar entre ellos de ciertas formas como: sumando, asignando o comparando. 
+
+Formas de iterar que se generan gracias a los distintos operadores que el lenguaje nos entrega.
+
+---
+
+## Operadores aritméticos
+
+Los operadores aritméticos son los que nos permiten hacer cálculos matemáticos básicos.
+
+| Operador |          Descripción          |
+| :------: | :---------------------------: |
+|    +     |             Suma              |
+|    -     |             Resta             |
+|    *     |        Multiplicación         |
+|    /     |           División            |
+|    %     | Modulo (sobrante de división) |
+|    =     |          Asignación           |
+|    ++    |            Sumar 1            |
+|    --    |           Restar 1            |
+
+En si los básicos son estos pero tengo que mencionar algo en el caso de los operadores `--` y `++`.
+
+Si intentamos hacer lo siguiente:
+
+~~~c++
+int main()
+{
+    int numero = 0;
+	std::cout << numero++; // este valor seguira siendo 0
+}
+~~~
+
+Esto ocurre dado que tanto estos operadores como los de asignación se deben aplicar antes de usarse, por ejemplo:
+
+~~~c++
+int main()
+{
+    int numero = 0;
+    numero++ // le sumamos 1
+	std::cout << numero; // este valor seguira siendo 1
+}
+~~~
+
+Y hablando sobre los operadores de asignación, son los siguientes:
+
+| Operador |                         Descripción                          |
+| :------: | :----------------------------------------------------------: |
+|    =     |                  Asignar un dato a un valor                  |
+|    +=    |                      Suma en asignación                      |
+|    -=    |                     Resta en asignación                      |
+|    *=    |                 Multiplicación en asignación                 |
+|    /=    |                    División en asignación                    |
+|    %=    |                     Modulo en asignación                     |
+|   <<=    | Asignar desplazamiento a la izquierda (se vera mas adelante) |
+|   >>=    | Asignar desplazamiento hacia la derecha (se vera mas adelante) |
+|    &=    |       Asignar "AND" entre bits (se vera mas adelante)        |
+|    ^=    |       Asignar "XOR" entre bits (se vera mas adelante)        |
+|   \|=    |        Asignar "OR" entre bits (se vera mas adelante)        |
+
+Todos estos funcionan cuando queremos operar sobre el mismo elemento, por ejemplo:
+
+~~~c++
+int main()
+{
+    short numero = 0; // si quisieramos sumarle 1 a la variable podriamos hacer numero = numero + 1, o tambien:
+    numero += 1; // esto nos permite acortar la linea en base a ese operador
+}
+~~~
+
+---
+
+## Operadores condicionales
+
+Como ya mencione, cuando trabajamos con datos una de las formas de iterar entre ellos es haciendo comparaciones mejor llamadas "condicionales", pero ya llegaremos a eso.
+
+Los operadores lógicos nos permiten comparar 2 datos de distintas formas y tras esto nos devuelven el valor **true** si esta condición es verdadera y **false** si ocurre lo contrario.
+
+Estos operadores son:
+
+| operador |  definición   |
+| :------: | :-----------: |
+|   `==`   |     igual     |
+|   `!=`   |   no igual    |
+|   `>`    |   mayor que   |
+|   `>`    |   menor que   |
+|   `>=`   | mayor o igual |
+|   `<=`   | menor o igual |
+
+Y de por si podemos hacer varias cosas con estos, cosas como:
+
+~~~c++
+// añadirlos a una variable que reciba un booleano
+bool verdadero = (1 == 1); // el valor de esto es true
+bool falso = (1 != 1); // el valor de esto es falso
+
+// en condicionales
+if (1 == 1)
+{
+    // ejecutar codigo
+}
+~~~
+
+Este ultimo lo veremos un poco mas adelante.
+
+---
+
+## Operadores Lógicos
+
+Los operadores lógicos nos permiten sacar un valor booleano en base a 2 condiciones y su estado, estos los utilizaremos principalmente a la hora de usar condicionales y nos permiten trabajar de forma mas sencilla utilizando mas de 1 condición.
+
+Técnicamente su uso se basa en la siguiente sintaxis: `(condicion1) operador (condicional2)` y dependiendo del valor de los condicionales (y el operador) se determinara un valor (**true** o **false**).
+
+**Antes de continuar, tengo que mencionar algo importante, para hacer mas "fácil" esta documentación, los operadores lógicos los ingresare junto a su misma versión en python**, podrás verlo mas adelante, pero con eso ya dicho.
+
+Los operadores lógicos se dividen en:
+
+### Conjugación lógica
+
+el operador de conjugación es `and` y sirve para evaluar si el valor o condición del lado izquierdo **y** el del lado derecho se cumplen.
+
+| C++  | Conjugación | Python |
+| :--: | :---------: | :----: |
+|  &&  |      y      |  and   |
+
+Este operador se puede mencionar como **multiplicación lógica**.
+
+| condición 1 | conjugación | condición 2 | resultado |
+| :---------: | :---------: | :---------: | :-------: |
+|  false(0)   |    &&(*)    |  false(0)   | false(0)  |
+|  false(0)   |    &&(*)    |   true(1)   | false(0)  |
+|   true(1)   |    &&(*)    |  false(0)   | false(0)  |
+|   true(1)   |    &&(*)    |   true(1)   |  true(1)  |
+
+---
+
+### Disyunción lógica
+
+El operador de disyunción es `or` y sirve para evaluar si el valor o condición del lado izquierdo **o** el del lado derecho se cumplen.
+
+| C++  | disyunción | python |
+| :--: | :--------: | :----: |
+| \|\| |     o      |   or   |
+
+Este operador se puede mencionar como **unión o suma lógica**.
+
+| condición 1 | conjugación | condición 2 | resultado |
+| :---------: | :---------: | :---------: | :-------: |
+|  false(0)   |   \|\|(+)   |  false(0)   | false(0)  |
+|  false(0)   |   \|\|(+)   |   true(1)   |  true(1)  |
+|   true(1)   |   \|\|(+)   |  false(0)   |  true(1)  |
+|   true(1)   |   \|\|(+)   |   true(1)   |  true(1)  |
+
+---
+
+### Negación lógica
+
+El operador de negación es `not` se encarga de **transformar** booleanos de true a false y viceversa
+
+| C++  | Negación | python |
+| :--: | :------: | :----: |
+|  !   |    no    |  not   |
+
+Este operador funciona así:
+
+| negación | booleano | resultado |
+| :------: | :------: | :-------: |
+|    !     |   true   |   false   |
+|    !     |  false   |   true    |
+
+---
+
+# Condicionales
+
+Las condicionales son en efecto parte fundamental a la hora de escribir código.
+
+
+
+
