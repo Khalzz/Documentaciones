@@ -220,7 +220,7 @@ Y de una forma menos técnica **la función main es como la puerta de entrada cu
 
 ## <<
 
-Como ya notaron (**al menos en el std::cout <<**) a diferencia de otros lenguajes de programación que para llamar las funciones utilizan `print("texto")` en C++ utilizamos `std::cout << "texto";` y quiero hacer un notable enfasis en el signo `<<`.
+Como ya notaron (**al menos en el std::cout <<**) a diferencia de otros lenguajes de programación que para llamar las funciones utilizan `print("texto")` en C++ utilizamos `std::cout << "texto";` y quiero hacer un notable énfasis en el signo `<<`.
 
 El signo `<<` lo que en este caso hace es ejecutarse como una "función" en si mismo, de hecho seria como hacer esto:
 
@@ -285,7 +285,7 @@ O sea que:
 10000001 esto equivale a -1
 ~~~
 
-Por lo que en el caso de tener un numero de 8 bits **por defecto** el rango va desde **-128, hasta 127** y hago un enfasis en **por defecto** dado que tambien podemos usar ese bit como un valor numérico en lugar de un signo y es usando **`unsigned`** al definir nuestras variables, de la siguiente forma:
+Por lo que en el caso de tener un numero de 8 bits **por defecto** el rango va desde **-128, hasta 127** y hago un enfasis en **por defecto** dado que también podemos usar ese bit como un valor numérico en lugar de un signo y es usando **`unsigned`** al definir nuestras variables, de la siguiente forma:
 
 ~~~c++
 unsigned char numero = 0; // este es un numero de 8 bits
@@ -299,8 +299,6 @@ También podemos ver el tamaño de un tipo de dato en Bytes usando la función `
 ~~~c++
 std::cout << sizeof(int); // esto nos deberia dar el valor 4
 ~~~
-
-
 
 Ahora si, los tipos de datos numéricos son los siguientes:
 
@@ -323,7 +321,7 @@ char variable = 'A'; // nos mostrara en la pantalla el char 'A' dado que este se
 char variable = 65; // nos mostrara en pantalla el char 'A' dado que llamamos especificamente ese valor numerico (el que representa la A)
 ~~~
 
-Esto ocurre específicamente por que al mostrarlo en la consola con `std::cout <<` este se encargara de leer los bits del char y hacer una evaluación sobre la necesidad, si se usa de forma aritmética (en sumas, restas u otras operaciones) seguirá siendo un numero, pero al querer mostrarlo en pantalla.
+Esto ocurre específicamente por que al mostrarlo en la consola con `std::cout <<` este se encargara de leer los bits del **char** y hacer una evaluación sobre la necesidad, si se usa de forma aritmética (en sumas, restas u otras operaciones) seguirá siendo un numero, pero al querer mostrarlo en pantalla.
 
 Entonces:
 
@@ -500,7 +498,7 @@ int suma(int numero1, int numero2)
 }
 ~~~
 
-Como podemos ver, un archivo es nuestro main y otro tiene una función, lo que ocurre es que si queremos acceder a esa funcón desde nuestro archivo main, debemos "instanciar la función" dentro de nuestro main.
+Como podemos ver, un archivo es nuestro main y otro tiene una función, lo que ocurre es que si queremos acceder a esa función desde nuestro archivo main, debemos "instanciar la función" dentro de nuestro main.
 
 eso lo hacemos escribiendo solo los "datos superiores de la función" en nuestro archivo main, de la siguiente forma:
 
@@ -729,6 +727,174 @@ Este operador funciona así:
 
 Las condicionales son en efecto parte fundamental a la hora de escribir código.
 
+Estas nos permiten ejecutar (o no) un bloque de código **en base a una condición o booleano**, así permitiéndonos controlar el flujo lógico de nuestro código y estos se dividen en los siguientes:
+
+---
+
+## Condicional If
+
+La condicional "**if**" es la "principal" de todas las existentes, sin esta las demás no pueden existir (excepto en el caso de los bucles).
+
+*Su sintaxis es la siguiente:*
+
+~~~c++
+// si (una condicion o booleano) es "True"
+if (condición o booleano)
+{
+    //ejecutar bloque de codigo
+}
+~~~
+
+Con lo de "condición o booleano" me refiero al factor de que en los "**if***" puedes hacer lo siguiente:
+
+~~~c++
+// ejemplo con condicional
+if (1 == 1)
+{
+    std::cout << "la condición se cumple";
+}
+
+// ejemplo con booleano
+if (true) // si añadimos una variable booleana verdadera, no hace falta hacer (variable == true), solo debemos llamar la variable
+{
+    std::cout << "la condición se cumple";
+}
+~~~
+
+---
+
+## Condicional Else if
+
+Los "**else if**" son una continuación directa del if (si es que la condición de este no se cumple) y nos va a funcionar como un "plan b" a la hora de trabajar con condicionales, de hecho el "**else if**" no funcionara si no tenemos antes de este un if al que este anidado.
+
+*Su sintaxis es la siguiente:*
+
+~~~c++
+if (1 != 1) // en este caso hare un if con una condición "false"
+{
+	// ejecutar bloque de codigo
+}
+else if (condición o booleano)
+{
+    // ejecutar código
+}
+~~~
+
+De hecho en temas de su "condición o booleano" admite los mismos tipos de datos que el if y de las mismas formas.
+
+**Un dato importante es que el condicional "else if" es el único que se puede repetir mas de 1 vez a diferencia de los "if" o "else"**.
+
+---
+
+## Condicional Else
+
+Este es ya "nuestro ultimo plan" y nos permite ejecutar un bloque de código (**en caso que ni una condicional anterior "if o else if" tiene un valor "true"**) y a diferencia de estos anteriores **este no requiere de una condición**
+
+*Su sintaxis es la siguiente:*
+
+~~~c++
+if (1 != 1) // en este caso hice un if con una condición "false"
+{
+	// ejecutar bloque de codigo
+}
+else if (2 != 2) // en este caso hice un else if con una condición "false"
+{
+    // ejecutar código
+}
+else
+{
+    // ejecutar código
+}
+~~~
+
+----
+
+# Bucles
+
+Imaginemos que quieres mostrar en pantalla el texto "Hola!!!", tarea fácil, ¿no?, solo seria usar `std::cout << "Hola!!!";` y no habría problema, pero...
+
+**Que ocurre si queremos hacerlo 100 veces**, podríamos simplemente copiar y pegar la misma línea 100 veces (no lo hagas) o usar bucles.
+
+Los bucles tienen una función similar a las condicionales y es que ambos ejecutan un bloque de código según cierta instrucción o condición, a excepción que los bucles **repiten  ese bloque de código hasta que nosotros lo hagamos detenerse**.
+
+Hay 2 bucles en c++ **y debes recordar que el uso de uno u otro depende mas de lo que necesites**.
+
+---
+
+## Bucle for
+
+El bucle for es el "mas controlable de todos", este nos permite **ejecutar el bucle en base a un "conteo"**, esto lo logramos con la siguiente sintaxis:
+
+~~~c++
+// for (variable nueva; condición que hará nuestro bucle romperse (cuando sea false); edicion a aplicar)
+for (int i == 0; i < 100; i++)
+{
+    std:cout << "Hola!!!" << std::endl;
+}
+~~~
+
+En este ejemplo:
+
+1. Como variable nueva hacemos un "int" con el valor 0 (puede ser cualquier valor inicial mientras sea el mismo tipo de dato).
+2. Como condición añadí (i < 100)  y el bucle se repetirá hasta que esto sea falso.
+3. Como "editor" añadí (i++) ósea que cada vez que se repita el código se le sumara 1 a la variable i
+
+Entonces **cuando la variable "i" tenga un valor menor a 100, nuestro bucle dejara de repetirse**
+
+Incluso podemos hacer un contador imprimiendo el valor de **`i`** de la siguiente forma:
+
+~~~c++
+for (int i == 0; i < 100; i++)
+{
+    std:cout << i << std::endl;
+}
+~~~
+
+Pero quizá te diste cuenta de algo y es que cuando imprimimos el **"Hola!!!"** este se mostro 100 veces en pantalla, mientras que en el caso que imprimimos el contador, este llego hasta 99.
+
+Esto es por un tema muy especifico que tienen muchos lenguajes de programación y es que en muchos casos, a la hora de hacer conteos estos **siempre** empezaran por el 0, en este ultimo ejemplo no es que tengamos 99 números, **son 100** solo que el 0 esta añadido a ellos.
+
+---
+
+## Bucle while
+
+El bucle while es mas similar a una condicional que el bucle "for".
+
+Los bucles while se caracterizan por ser en efecto un bloque de código que se repetirá **hasta que una condición sea falsa** de hecho su sintaxis es la siguiente:
+
+~~~c++
+while (condición o booleano)
+{
+    // bloque de código a ejecutar
+}
+~~~
+
+Y si, al igual que el if, también puede recibir un "true" o "false" como condición.
+
+Este en si es mas "inseguro" dado que debemos poner mas atención en el bucle en si para no hacerlo "infinito", por ejemplo:
+
+~~~c++
+// si quisieramos hacer un bucle que muestr un mensaje de forma infinita podriamos hacer eso
+while (true) // podemos cambiarlo por otra condición
+{
+    std::cout << "Hola!!!" << std::endl; // este mensaje se mostrara infinitamente
+}
+~~~
+
+mientras que para ser mas precavidos podríamos "imitar" la forma en la que funciona un "for", por ejemplo:
+
+~~~c++
+int count = 0; // creamos una variable con valoro inicial 0
+while (count < 100) // nuestro bucle se debe repetir hasta que la variable sea mayor o igual a 100
+{
+	std::cout << "Hola!!!" << std::endl; 
+	count++; // le sumamos 1 al contador (para intentar hacer "false" la condición)
+}
+~~~
+
+Esto nos permitirá mostrar en pantalla 100 veces el mensaje "Hola!!!" como hicimos anteriormente y con solo algunos cambios, podríamos hacer que muestre el valor actual de la variable "count" cada vez que el bucle se repita, así haciendo un contador.
+
+---
 
 
 
