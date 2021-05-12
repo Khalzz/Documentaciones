@@ -60,6 +60,41 @@ Tras tener todo esto instalado podemos comenzar a editar nuestro código.
 
 ---
 
+## Configuración de proyectos
+
+A la hora de iniciar un nuevo proyecto hay unas cuantas configuraciones que por comodidad debemos hacer a nuestros proyectos, estas quizá no serán notables al inicio, pero notablemente nos hará mas fácil el "control" en la "estructura de nuestros proyectos".
+
+Para empezar añadiremos algunos parámetros especiales a nuestros proyectos (estos se deben añadir tras crear el proyecto como recomendación).
+
+Para eso debemos seguir los siguientes pasos:
+
+1. Tras haber creado nuestro proyecto debemos fijarnos en la pestaña "**Solution Explorer**".
+2. Damos clic derecho en el icono con el nombre de nuestro proyecto (usualmente suele ser el primero de  todos los archivos que aparecen) y seleccionamos la opción "**Propiedades**" (también podemos presionar **`alt`** + **`enter`**).
+3. En la pestaña "**Configuration**" seleccionamos la opción **"All Configurations"** y en la pestaña **"Platform"** seleccionamos **"All Platforms"**.
+4. Luego de esto buscamos las siguientes opciones:
+   + Output Directory: añadimos **`$(SolutionDir)bin\$(Platform)\$(Configuration)\`**
+   + Intermediate Directory: añadimos **`$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\`**
+
+Estas ultimas opciones nos permiten seleccionar la forma en la que las carpetas de nuestro proyecto se estructuraran.
+
+Y hablando sobre la estructura de nuestros proyectos, este es un tema que puede complicarnos en algún punto, cuando creamos un archivo con estas configuraciones se estructurara de la siguiente forma:
+
++ `nombre del proyecto` (carpeta principal)
+  + `bin` (carpetas intermediarias y builds)
+  + **`nombre del proyecto`** (archivos del proyecto)
+    + `src` (código fuente)
+    + otros archivos (configuraciones del proyecto)
+  + `nombre del proyecto.sln` (archivo a abrir en visual studio)
+
+Recomiendo mantener esto añadiendo ciertas carpetas en la carpeta de "archivos del proyecto" (la carpeta resaltada), de hecho, en esta carpeta deberías tener las siguientes:
+
++ include (**header files** `.h` de carácter públicos)
++ src (código fuente privado y archivos `.h` internos)
++ test (donde tendremos nuestros códigos de "testing" si es que usaremos)
++ libs (donde tendremos las librerías, sean propias o de terceros)
+
+---
+
 ## Hola Mundo
 
 Antes de pasar al "Hola Mundo" daré los pasos para hacer un nuevo archivo de C++, estos pasos pueden variar en base a tu IDE de preferencia.
@@ -809,7 +844,7 @@ else
 
 ----
 
-# Bucles
+# Bucles 
 
 Imaginemos que quieres mostrar en pantalla el texto "Hola!!!", tarea fácil, ¿no?, solo seria usar `std::cout << "Hola!!!";` y no habría problema, pero...
 
@@ -894,7 +929,15 @@ while (count < 100) // nuestro bucle se debe repetir hasta que la variable sea m
 
 Esto nos permitirá mostrar en pantalla 100 veces el mensaje "Hola!!!" como hicimos anteriormente y con solo algunos cambios, podríamos hacer que muestre el valor actual de la variable "count" cada vez que el bucle se repita, así haciendo un contador.
 
----
+También existe otra "versión" del ciclo while, solo que este **ejecuta un bloque de código y luego comprueba la condicional**, este es mejor conocido como el bucle "**Do while**" 
 
+*Su sintaxis es la siguiente:*
 
+~~~c++
+do
+{
+  // bloque de codigo
+}
+while (condicion o booleano);
+~~~
 
