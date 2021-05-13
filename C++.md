@@ -941,3 +941,66 @@ do
 while (condicion o booleano);
 ~~~
 
+---
+
+## Sentencias de control de flujo
+
+Las sentencias de control de flujo son ciertas "Palabras clave" que nos permiten iterar sobre el flujo de nuestros bucles, estas sentencias son: **`continue`**, **`break`** y **`return`**.
+
+Primero iniciemos con **`continue`**, este nos permite **saltar a la siguiente iteración del bucle**, o sea:
+
+~~~c++
+// imagina que tenemos un bucle que muestra los numeros del 0 al 9 pero saltandose los numeros pares
+for (int i = 0; i < 10; i++)
+{
+    if (i%2 == 0) // si el modulo de i / 2 = 0 (osea el numero es par)
+    {
+        continue // se salta esta iteracion
+    }
+    else // si no
+    {
+     	std::cout << i << std::endl;   
+    }
+}
+~~~
+
+Esto nos permitirá comprobar si el valor de i es un numero par y de ser así este código **continuara** a la siguiente iteración.
+
+---
+
+El siguiente será **`break`** y este nos permite "**romper**" el bucle, o sea:
+
+~~~c++
+// imagina que tenemos un conteo infinito y queremos que este termine en el 49 (es un mal ejemplo pero servira)
+int i = 0; // creamos una variable con la que iterar
+while (true) // creamos el bucle infinito
+{
+    std::cout << i << std::endl; // mostramos en la consola un numero
+    i++; // sumamos 1 al numero que mostraremos en la consola
+    if (i == 50) // cuando el numero sea igual a 50
+    {
+        break; // romper el bucle
+    }
+}
+~~~
+
+El bucle tras romperse continuara ejecutando lo que este fuera del bucle en si.
+
+---
+
+El ultimo es **`return`** y de hecho este es el único de estos ya mencionados que puede usarse también fuera de un bucle.
+
+La función de este es devolver un valor (cualquiera) dentro de una función, **al ocurrir esto, la función se cerrara (cerrando el programa en caso que este sea posicionado en el main)**, o sea:
+
+~~~c++
+int main()
+{
+    return 0; // este siempre debe ir acompañado de un dato para funcionar
+    std::cout << "Este texto no se mostrara en pantalla, dado que el return cerrara el programa antes";
+}
+~~~
+
+---
+
+# Pointers
+
