@@ -1002,5 +1002,112 @@ int main()
 
 ---
 
-# Pointers
+# Manejo de memoria
+
+A la hora de programar hay muchos temas de los que tenemos que preocuparnos y **el manejo de la memoria** puede ser uno de los mas importantes, en ella se almacenara todos los datos relacionados a nuestro código **cuando este se ejecute** y el procesador acudirá a ella para así ejecutar nuestro código y almacenar en la misma los datos que requieran ser guardados.
+
+Aun que hay muchos lenguajes que trabajan con la memoria de forma automática, en el caso de c++ el saber trabajar con esta **será esencial a la hora de hacer nuestro código lo mas eficaz posible**.
+
+Antes de continuar veamos como se estructura la memoria al menos para c++.
+
+Imagina una columna llena de casillas como la siguiente:
+
+| Índice | Memoria por casilla |
+| :----: | :-----------------: |
+|   0    |   1Byte (8 bits)    |
+|   1    |   1Byte (8 bits)    |
+|   2    |   1Byte (8 bits)    |
+|   3    |   1Byte (8 bits)    |
+|   4    |   1Byte (8 bits)    |
+|   5    |   1Byte (8 bits)    |
+|  ...   |         ...         |
+
+En este caso cada casilla tiene un valor de 1 Byte (8 bits) y nos permite almacenar información en ellos.
+
+*Según el ejemplo:*
+
++ Un dato de tipo **`bool`** utiliza una casilla (1 Byte)
++ Un dato de tipo **`Char`** utiliza una casilla (1 Byte)
++ Un dato de tipo **`Int`** utiliza cuatro casillas (4 Bytes)
++ Y así con otros tipos de datos...
+
+---
+
+## Referencias
+
+Las "referencias" (references como lo veras en otros lugares) son "**datos que referencian un espacio especifico de la memoria**".
+
+A la hora de crear variables e iterar con estas cada uno de esos datos se almacenan en distintas partes de la memoria, **incluso si tienen el mismo valor** y las referencias sirven como un "alias" para estas partes de la memoria.
+
+*Entonces:*
+
+~~~c++
+// si creamos una variable
+int a = 5; // digamos que este referencia 4 casillas de la memoria index(0,1,2,3)
+
+// y la referenciamos desde otra de forma normal
+int b = a; // en este caso, esta variable referencia otras 4 casillas distintas index(4,5,6,7)
+
+// en total estos datos usaran 8 Bytes de memoria
+~~~
+
+Pero para hacer que la segunda variable llame el mismo dato (en la misma posición de la memoria) debemos usar el operador **`&`**, este nos permitirá crear ese "alias" para referenciar esas "casillas".
+
+Debo mencionar que las referencias pueden tener 3 variantes que en su sintaxis son correctas y estas por ejemplo son:
+
++ **`int & b = a`**
++ **`int& b = a`**
++ **`int &b = a`**
+
+Y no habrán errores en ni uno de estos casos.
+
+*Por ejemplo:*
+
+~~~c++
+int a = 5; // digamos que este referencia 4 casillas de la memoria index(0,1,2,3)
+
+int &b = a; // al hacer esto otorgamos a la variable "b" en la memoria con posicion index(0,1,2,3)
+
+//entonces si llamamos a ambos datos
+std::cout << a << std::endl; // este llamara al dato almacenado en las casillas index(0,1,2,3)
+std::cout << b << std::endl; // este tambien llamara al dato almacenado en las casillas index(0,1,2,3) solo que lo llama por su alias
+~~~
+
+Entonces tanto **`a`** como **`b`** mencionan el mismo valor tanto como la misma posición en memoria, otro tema a mencionar es que en este caso si hacemos una edición en la variable **`a`** como en su referencia.
+
+*Por lo que si hacemos lo siguiente:*
+
+~~~c++
+int a = 5;
+int& b = a;
+
+a += 10; // esta edicion se aplicara tanto a la variable "a" como a su referencia
+
+//entonces si llamamos a ambos datos
+std::cout << a << std::endl; // este nos dara el valor 15
+std::cout << b << std::endl; // este igualmente nos dara el valor 15
+~~~
+
+**Un uso muy común de este es dentro de una función** específicamente **pasando datos a esta**.
+
+*Por ejemplo:*
+
+~~~c++
+void sumarUno(int& x) // cuando creamos el parametro, este sera una referencia a la posicion en la memoria
+{
+    x++ // sumamos 1 a la variable
+}
+
+int num = 2; // digamos que este valor hace referencia a index(2,3,4,5)
+sumarUno(num) // pasamos el dato a la variable
+~~~
+
+Estos tienen los siguientes pros:
+
++ Guarda memoria (para datos grandes)
++ Puede cambiar los datos en una función sin problemas
+
+Este ultimo es importante dado que como vieron en el ejemplo no hace falta usar un **"return"** para aplicar los cambios hechos dentro de la función.
+
+---
 
