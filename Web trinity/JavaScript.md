@@ -102,17 +102,17 @@ Además anteriormente mencione:
 
 Pero para entenderlo primero les haré saber algunos conceptos importantes para la programación en javascript que puede que no sean tan útiles aun, pero luego serán de brutal importancia en algunos casos.
 
-+ **javascript es un lenguaje interpretado** osea que este requiere de un "programa" que transforme el código de maquina con el que nuestro computador pueda trabajar, en este caso ese "programa" es **todo buscador web que lo use como estándar (google chrome, mozila firefox, edge, etc...)**.
++ **javascript es un lenguaje interpretado** o sea que este requiere de un "programa" que transforme el código de maquina con el que nuestro computador pueda trabajar, en este caso ese "programa" es **todo buscador web que lo use como estándar (google chrome, mozila firefox, edge, etc...)**.
 
   ---
 
-+ **Javascript es un lenguaje orientado a objetos** osea utiliza el sistema de orientación a objetos que es tan usado en otros lenguajes o incluso **indispensable en otros lenguajes** como lo es en C#, Java, C++ y muchos otros (este tema se va a profundizar mas tarde)
++ **Javascript es un lenguaje orientado a objetos** o sea utiliza el sistema de orientación a objetos que es tan usado en otros lenguajes o incluso **indispensable en otros lenguajes** como lo es en C#, Java, C++ y muchos otros (este tema se va a profundizar mas tarde)
 
-+ **Javascript es un lenguaje basado en prototipos** osea, haciendo referencia a el tema anterior, al trabajar con objetos usamos "clases" que definen lo que es un objeto, a la hora de hacer mas objetos en base a ese, no requeriremos de hacer mas clases, simplemente instanciar el objeto ya creado con los datos que usara.
++ **Javascript es un lenguaje basado en prototipos** o sea, haciendo referencia a el tema anterior, al trabajar con objetos usamos "clases" que definen lo que es un objeto, a la hora de hacer mas objetos en base a ese, no requeriremos de hacer mas clases, simplemente instanciar el objeto ya creado con los datos que usara.
 
   ---
 
-+ **Javascript es un lenguaje con tipado débil pero dinámico** osea que a diferencia de otros lenguajes, no debemos seleccionar el "tipo de dato" que ocupa una variable (ejemplo en c# `int numero = 1`) aquí solo colocamos unas palabras clave (las veremos mas adelante) y le podemos añadir cualquier tipo de dato a esta variable y esa misma "mutabilidad" es lo que le da el nombre de "dinámico".
++ **Javascript es un lenguaje con tipado débil pero dinámico** o sea que a diferencia de otros lenguajes, no debemos seleccionar el "tipo de dato" que ocupa una variable (ejemplo en c# `int numero = 1`) aquí solo colocamos unas palabras clave (las veremos mas adelante) y le podemos añadir cualquier tipo de dato a esta variable y esa misma "mutabilidad" es lo que le da el nombre de "dinámico".
 
   ---
 
@@ -562,7 +562,7 @@ alert(array[1]) //en este caso en una alerta veremos el segundo dato del array (
 alert(array[3]) //en este caso en una alerta veremos el cuarto dato del array (piña)
 ~~~
 
-Ademas podemos hacer otras cosas interesantes como:
+Además podemos hacer otras cosas interesantes como:
 
 ~~~javascript
 let miArray = ["manzana", "platano", "pera"]
@@ -592,7 +592,7 @@ miArray.unshift("durazno") //el array ahora es ["durazno", "manzana", "platano",
 miArray.shift() //el array ahora es ["manzana", "platano", "pera"] el () no hace nada
 ~~~
 
-Otro tema importante son los **Arrays Asociativos** osea, arrays que en vez de solo ser accesibles por un índice, podemos acceder a ellos de forma similar a los diccionarios en otros lenguajes **haciendo un tipo de "clave" que reverencie ese valor**.
+Otro tema importante son los **Arrays Asociativos** o sea, arrays que en vez de solo ser accesibles por un índice, podemos acceder a ellos de forma similar a los diccionarios en otros lenguajes **haciendo un tipo de "clave" que reverencie ese valor**.
 
 *ejemplo de uso:*
 
@@ -727,7 +727,7 @@ numeroAleatorio(0, 5) //nos dara un numero aleatorio entre el 0 y el 5
 
 ---
 
-**Ademas hay propiedades que equivalen a valores específicos usando la sintaxis `Math.propiedad`**.
+**Además hay propiedades que equivalen a valores específicos usando la sintaxis `Math.propiedad`**.
 
 *por ejemplo:*
 
@@ -757,8 +757,6 @@ Todos los tipos de datos tienen en especifico "funciones" o "métodos" que nos p
 ---
 
 ### Funciones de string
-
-
 
 Especialmente los string que de por si tienen muchos tipos de interacciones aplicables a ellos y usando la sintaxis **`variableString.funcion(propiedades);`**.
 

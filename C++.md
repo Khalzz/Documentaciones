@@ -177,7 +177,7 @@ El mensaje que nos dará es:
 >> Buenos Dias!!!Buenas Noches!!!
 ~~~
 
-Esto ocurre por que `std::cout` requiere que manualmente hagamos un salto de línea, principalmente utilizando un salto de linea y tenemos 2 métodos para hacerlo.
+Esto ocurre por que `std::cout` requiere que manualmente hagamos un salto de línea, principalmente utilizando un salto de línea y tenemos 2 métodos para hacerlo.
 
 + **Terminando la línea con un `<< std::endl;` al final de la lineal**, ósea que nuestro código quedaría así:
 
@@ -1110,4 +1110,119 @@ Estos tienen los siguientes pros:
 Este ultimo es importante dado que como vieron en el ejemplo no hace falta usar un **"return"** para aplicar los cambios hechos dentro de la función.
 
 ---
+
+## Pointers
+
+Si las referencias nos servían para para en efecto "**referenciar un dato en base a su posición en la memoria en lugar de basándonos en su variable**", los pointers nos permiten "apuntar" hacia una posición en la memoria y trabajar con los datos que esta referencia.
+
+Esto lo lograremos con el operador **`&`** para representar la posición en la memoria de un dato y el operador **`*`** para inicializar un pointer.
+
+~~~c++
+// de hecho si por ejemplo hacemos lo siguiente:
+int x = 10;
+std::cout << &x; // esto nos entregara la posicion/indice en memoria del dato (en hexadecimal) en mi caso es 008FFDE8
+~~~
+
+Ojo que el valor puede variar dado que el dato se define automáticamente en una posición que este desocupada de la memoria y para inicializar un pointer debemos hacer lo siguiente:
+
+~~~c++
+int x = 10; // creamos una variable con la que vamos a trabajar
+int *ptr = &x;
+
+// ahora al hacer
+std::cout << ptr; // esto llamara la posicion en memoria igualmente (008FFDE8)
+~~~
+
+El operador **`*`** puede estar presente de estas 3 formas:
+
++ **`int *ptr = &x;`**
++ **`int * ptr = &x;`**
++ **`int* ptr = &x;`**
+
+Ni una de estas generara error.
+
+Otra cosa importante a mencionar en cuanto a la sintaxis de los **pointers** es que un **int pointer** es diferente a un **int** común, por lo que si intentamos hacer algo como lo siguiente:
+
+~~~c++
+int x = 1;
+int *ptr = &x;
+
+bool dato = (ptr == x); // esto dara falso
+
+// por otro lado si hacemos:
+bool dato2 = (*ptr == x) // esto nos dara true dado que en este caso el "*" llama el valor dentro del pointer
+~~~
+
+---
+
+# Poo
+
+La programación orientada a objetos es un "paradigma de programación" (o sea es una forma de programar) y uno de los lenguajes que lanzo esto a la popularidad es c++, de hecho a pesar de ser una comparación incorrecta, se le suele mencionar a **C++** como un **C** con clases.
+
+Este paradigma nos permite la creación de "objetos" o clases que serán contenedores de tanto los datos que componen a nuestro objeto, como de las acciones que el mismo puede hacer (mejor llamados métodos).
+
+---
+
+## Clases
+
+Las clases las utilizaremos para representar los objetos que crearemos, esta puede verse como una "caja" llena de los datos que pertenecen al objeto en si, además de las "acciones" que este puede hacer en forma de funciones.
+
+La sintaxis "básica" de una clase se vería de la siguiente forma:
+
+~~~c++
+class nombreClase
+{
+    int x = 50;
+    void nombreMetodo() // tecnicamente un metodo es una funcion, solo que el nombre de "metodo" se le aplica al ser parte de un objeto
+    {
+        // bloque de codigo
+    }
+    // aqui iran tanto los datos del objeto, como sus metodos
+}; // las clases deben terminar si o si con un ";"
+
+// entonces:
+int main()
+{
+    // primero, para llamar una clase debemos inicializarla de la siguiente forma:
+    nombreClase nuevoNombreClase; // ahora para acceder a la clase usamos "nuevoNombreClase"
+    
+    // si queremos llamar los datos de la clase usaremos: nombreClase.dato y lo podremos usar por ejemplo asi:
+    std::cout << nuevoNombreClase.x << std::endl; // en este caso llamaremos el valor "50"
+    
+    // si queremos ejecutar un metodo de una clase utilizamos la siguiente sintaxis:
+    nuevoNombreClase.nombreMetodo();
+}
+~~~
+
+Un tema importante en este caso es el factor de que al llamar el dato **x** en el main, este nos dará error dado que estos datos por defecto son privados, o sea que solo son accesibles por los métodos del objeto.
+
+Pero podemos cambiar eso haciendo lo siguiente:
+
+~~~c++
+class nombreClase
+{
+    int z = 150; // este valor al estar afuera del "public" se quedara privado
+public:	
+    // todos los datos ingresados aqui seran publicos
+    int x = 50; 
+    int y = 100;
+};
+
+int main()
+{
+    nombreClase nuevoNombreClase;
+    
+	std::cout << nuevoNombreClase.x << std::endl; // este se mostrara de forma exitosa
+    std::cout << nuevoNombreClase.y << std::endl; // este se mostrara de forma exitosa
+    std::cout << nuevoNombreClase.z << std::endl; // este valor nos generara un error dado que su variable es privada
+}
+~~~
+
+Debo aclarar que lo mismo ocurrirá con los métodos si no están dentro de la keyword **`public:`**.
+
+---
+
+
+
+
 
