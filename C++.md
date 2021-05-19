@@ -285,6 +285,17 @@ int x = 5; // aqui hice una variable similar a la que hacemos referencia en el e
 std::cout << x; // esto mostrara en la pantalla el valor de x, o sea 5
 ~~~
 
+También podemos hacer constantes, datos similares a las variables solo que como dice su nombre **su valor será estático y no puede cambiar**.
+
+*la sintaxis de una constante es:*
+
+~~~c++
+// const tipoDeDato nombreDeConstante = valorDeVariable;
+const int x = 5;
+
+x = 15; // si intentamos cambiar el valor de la constante tendremos un error
+~~~
+
 ---
 
 ## Tipos de datos numéricos
@@ -1221,8 +1232,5 @@ int main()
 Debo aclarar que lo mismo ocurrirá con los métodos si no están dentro de la keyword **`public:`**.
 
 ---
-
-
-
 
 
