@@ -17,7 +17,9 @@ Actualmente C++ es uno de los lenguajes de programación mas populares, aun que 
   + [Instalando C++](#Instalando-C++)
   + [Hola Mundo](#Hola-Mundo)
 + [Como funciona C++](Como-funciona-C++)
-+ 
+  + [Include y declaraciones pre-procesadas](#Include-y-declaraciones-pre-procesadas)
+  + [Main](#Main)
++ [Variables y tipos de datos](#Variables-y-tipos-de-datos)
 
 ---
 
@@ -250,20 +252,6 @@ int main()
 Y si escribimos cosas fuera de esta función no se ejecutaran, a no ser que estas sean funciones, en ese caso ocurrirá lo mismo **a no ser que las llamemos dentro de nuestra función "main"**
 
 Y de una forma menos técnica **la función main es como la puerta de entrada cuando ejecutemos nuestro código**.
-
----
-
-## <<
-
-Como ya notaron (**al menos en el std::cout <<**) a diferencia de otros lenguajes de programación que para llamar las funciones utilizan `print("texto")` en C++ utilizamos `std::cout << "texto";` y quiero hacer un notable énfasis en el signo `<<`.
-
-El signo `<<` lo que en este caso hace es ejecutarse como una "función" en si mismo, de hecho seria como hacer esto:
-
-~~~c++
-std::cout.print("texto"); // recuerda que esto es un ejemplo, de hecho no funcióna en c++
-~~~
-
-Entonces al menos por ahora cuando veas el signo `<<` piensa en el como una función en especifico mas que en un operador, como es en otros lenguajes.
 
 ---
 
@@ -1213,7 +1201,7 @@ Pero podemos cambiar eso haciendo lo siguiente:
 class nombreClase
 {
     int z = 150; // este valor al estar afuera del "public" se quedara privado
-public:	
+public:	// podemos hacer lo contrario usando "private:"
     // todos los datos ingresados aqui seran publicos
     int x = 50; 
     int y = 100;
@@ -1229,8 +1217,201 @@ int main()
 }
 ~~~
 
-Debo aclarar que lo mismo ocurrirá con los métodos si no están dentro de la keyword **`public:`**.
+Debo aclarar que lo mismo ocurrirá con los métodos si no están dentro de la KeyWord **`public:`**.
+
+Otro tema que nos puede generar confusiones son los **Structs**, estos funcionan exactamente igual a las clases excepto que estos **por defecto definen sus datos y funciones como publicas**, ejemplo:
+
+~~~c++
+struct nombreStruct
+{
+    int z = 150; // este valor es publico
+private:
+    // todos los datos ingresados aqui seran privados
+    int x = 50; 
+    int y = 100;
+};
+~~~
+
+Y al igual que una clase común, puede almacenar funciones (métodos).
+
+Otro tema es que debemos recordar que los objetos son como un "molde", por lo que podemos "instanciar múltiples objetos con los mismos datos" pero con distintos valores, por ejemplo:
+
+~~~c++
+struct nombreStruct
+{
+    int num; // en este caso el valor sera nulo
+};
+
+int main()
+{
+    nombreStruct numero; // creamos el objeto "numero" en base al struct "numero"
+    nombreStruct numero2; // creamos el objeto "numero2" en base al struct "numero"
+    
+    numero.numero = 5; // el valor de "num" en "numero" es 5
+    numero.numero2 = 10; // el valor de "num2" en "numero" es 10
+} 
+~~~
 
 ---
 
+## Static
 
+El static es una "**KeyWord**" que cambia de utilidad dependiendo de donde este colocada, o mejor dicho dependiendo de su "contexto".
+
+*Estos pueden ser:*
+
++ Dentro de una clase o struct:
+
+  imagina que tenemos 1 clase con 2 datos en su interior:
+
+  ~~~c++
+  #include <iostream>
+  
+  class ejemplo
+  {
+  public:
+      int x;
+      int y;
+  
+      void print() // hacemos una funcion que mostrara en pantalla los datos de la clase
+      {
+          std::cout << x << ", " << y << std::endl;
+      }
+  };
+  
+  int main()
+  {
+      // iniciamos los objetos
+      ejemplo objeto1;
+      objeto1.x = 10;
+      objeto1.y = 20;
+      
+  	ejemplo objeto2;
+      objeto2.x = 30;
+      objeto2.y = 40;
+  
+      objeto1.print();// el valor de estos datos es (10, 20)
+      objeto2.print();// el valor de estos datos es (30, 40)
+  }
+  ~~~
+
+  En este caso hacemos una clase normal pero si usamos Static de la siguiente forma:
+
+  ~~~c++
+  #include <iostream>
+  
+  class ejemplo
+  {
+  public:
+      // añadimos la palabra static a los datos que lo usaran
+      static int x; 
+      static int y;
+  
+      void print() // hacemos una funcion que mostrara en pantalla los datos de la clase
+      {
+          std::cout << x << ", " << y << std::endl;
+      }
+  };
+  
+  // el primer cambio es que debemos referenciar los datos desde fuera de la clase y la funcion main asi:
+  int ejemplo::x;
+  int ejemplo::y
+  
+  int main()
+  {
+      ejemplo objeto1; // en este caso solo haremos cambios en 1 objeto
+      ejemplo objeto2;
+      objeto1.x = 10; 
+      objeto1.y = 20;
+      
+      objeto1.print();// el valor de estos datos es (10, 20)
+      objeto2.print();// el valor de estos datos es (10, 20)
+  }
+  ~~~
+
+  Esto ocurre dado que los "datos static" en una clase se aplican a todas las instancias de la clase, no importa si hacemos el cambio en el objeto 1 como en el 2, en ambos se aplicara el mismo cambio.
+
+  Y si queremos hacer lo mismo con una función, debemos hacer lo siguiente:
+
+  ~~~c++
+  #include <iostream>
+  
+  class ejemplo
+  {
+  public:
+      static void print() // añadimos "static a la funcion"
+      {
+          std::cout << "este es un mensaje" << std::endl;
+      }
+  };
+  
+  int main()
+  {
+      // iniciamos nuestros objetos pero tecnicamente no hace falta
+      ejemplo objeto1;
+      ejemplo objeto2;
+      
+      // en este caso solo hace falta llamar a la clase principal y a la funcion que queremos ejecutar
+      ejemplo::print();
+      ejemplo::print();
+  }
+  ~~~
+
+  **Recuerda que un método que sea static solo puede interactuar con valores que sean predefinidos como static**.
+
+  ---
+
++ Fuera de una clase o struct:
+
+  Imagina que tenemos 2 archivos de c++ distintos en la misma carpeta con los siguientes códigos:
+
+  ~~~c++
+  #include <iostream>
+  
+  // si definimos una variable o funcion aqui, esta sera visible desde el archivo principal
+  int numero = 5;
+  // si quisieramos llamar el otro valor exacto deberemos usar "extern int numero;"
+  
+  // archivo principal
+  int main()
+  {
+      std::cout << numero;
+  }
+  ~~~
+
+  Y el archivo secundario:
+
+  ~~~c++
+  // archivo secundario
+  
+  // si definimos una variable o funcion aqui, esta sera visible desde el archivo principal
+  int numero = 10;
+  ~~~
+
+  Por lo que si hacemos esto recibiremos un error diciendo que **se ha encontrado una o mas instancias del mismo dato**.
+
+  Para evitar esto utilizamos el Static que hace un valor privado específicamente para el archivo en si, por lo que si hacemos esto:
+
+    ~~~c++
+    #include <iostream>
+    
+    // si definimos una variable o funcion aqui, esta sera visible desde el archivo principal
+    int numero = 5; // este valor sera nuevo y no generara problemas al ser ejecutado
+    
+    // archivo principal
+    int main()
+    {
+        std::cout << numero; // nos dara el valor 5
+    }
+    ~~~
+
+    Y el archivo secundario:
+
+    ~~~c++
+    // archivo secundario
+    static int numero = 10; // esto solo sera accesible desde aqui
+    ~~~
+
+  Si intentamos llamar el dato con el ejemplo del "extern" teniendo un dato Static, este nos dará un error.
+
+  **Todo esto se aplica tanto a los datos, variables y constantes como a las funciones**
