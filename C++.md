@@ -861,7 +861,7 @@ El bucle for es el "mas controlable de todos", este nos permite **ejecutar el bu
 
 ~~~c++
 // for (variable nueva; condición que hará nuestro bucle romperse (cuando sea false); edicion a aplicar)
-for (int i == 0; i < 100; i++)
+for (int i = 0; i < 100; i++)
 {
     std:cout << "Hola!!!" << std::endl;
 }
@@ -878,7 +878,7 @@ Entonces **cuando la variable "i" tenga un valor menor a 100, nuestro bucle deja
 Incluso podemos hacer un contador imprimiendo el valor de **`i`** de la siguiente forma:
 
 ~~~c++
-for (int i == 0; i < 100; i++)
+for (int i = 0; i < 100; i++)
 {
     std:cout << i << std::endl;
 }
@@ -1415,3 +1415,171 @@ El static es una "**KeyWord**" que cambia de utilidad dependiendo de donde este 
   Si intentamos llamar el dato con el ejemplo del "extern" teniendo un dato Static, este nos dará un error.
 
   **Todo esto se aplica tanto a los datos, variables y constantes como a las funciones**
+
+---
+
+## Static local
+
+Un static local es un dato o función estática que se ingresa dentro del scope (los `{}`) de una función, condicional, clase, etc.. y que nos permite hacer referencia a un dato "que guardara un valor después de ser llamado".
+
+por ejemplo, digamos que queremos hacer lo siguiente:
+
+~~~c++
+for (int i = 0; i <= 5; i++)
+{
+    std::cout << i << std::endl;
+}
+~~~
+
+Esto funcionara como un contador que aumentara en 1 la variable **i** cada vez que se repita el bucle, pero... 
+
+¿y si quisiéramos hacer algo similar con una función?, intentemoslo:
+
+~~~c++
+void count()
+{
+    int i = 0; // iniciamos el dato como "0"
+    std::cout << i << std::endl; // mostramos en pantalla el valor de la variable
+    i++; // sumamos en 1 el valor de la variable
+}
+
+int main()
+{
+    count();
+    count();
+    count();
+    count();
+    count();
+    count();
+}
+~~~
+
+A pesar de "aparentar tener sentido" en este caso al intentar ejecutar el código nos daremos cuenta de algo importante y es que **todas las funciones nos mostraran el 0** en lugar de sumar de 1 en 1 y mostrar el resultado.
+
+Esto ocurre dado que al iniciarse la funcion "count()" esta define i con el valor de 0 y este deja de existir al terminar la funcion, esto lo podemos arreglar haciendo lo siguiente:
+
+~~~c++
+int i = 0; // al definir aqui la variable, esta estara siempre disponible y su valor se vera editado por la funcion
+
+void count()
+{
+    std::cout << i << std::endl; // mostramos en pantalla el valor de la variable
+    i++; // sumamos en 1 el valor de la variable
+}
+
+int main()
+{
+    // esto funcionara correctamente haciendo un contador del 0 al 5
+    count();
+    count();
+    count();
+    count();
+    count();
+    count();
+}
+~~~
+
+ el problema de esto es que esa variable será visible para todo nuestro código, si queremos hacer algo mas "limpio" o incluso mejor en varios casos, debemos usar los "static locales", para esto y usando el mismo ejemplo ejecutaremos lo siguiente:
+
+~~~c++
+void count()
+{
+	static int i = 0; // el valor al ser static, su estado final se mantiene guardado
+    std::cout << i << std::endl; // mostramos en pantalla el valor de la variable
+    i++; // sumamos en 1 el valor de la variable
+}
+
+int main()
+{
+    // esto funcionara correctamente haciendo un contador del 0 al 5
+    count();
+    count();
+    count();
+    count();
+    count();
+    count();
+}
+~~~
+
+----
+
+## Enums
+
+Los **enums** son similares a las clases, solo que estos nos permiten "almacenar" valores numéricos que requieran de un conteo, como son dias de la semana, horas o solo números que irán en orden cronológico (a  no ser que digamos lo contrario).
+
+Se hacen de la siguiente forma:
+
+~~~c++
+enum semana
+{lunes, martes, miercoles, jueves, viernes, sabado, domingo};
+~~~
+
+Entonces si hacemos lo siguiente:
+
+~~~c++
+int main()
+{
+    semana dia; // primero referenciamos el enum
+    std::cout << lunes; // en este caso al ser el primer valor mostrara un "0"
+    std::cout << miercoles; // en este caso al ser el tercer valor mostrara un "2"
+}
+~~~
+
+Estos valores van por defecto desde el 0 y aumentaran dependiendo del orden de los datos ingresados, pero como ya mencione anteriormente esto puede cambiar, de las siguientes formas:
+
+~~~c++
+enum ejemplo1 // el valor de estos es el por defecto (0, 1, 2, 3, 4, 5)
+{x, y, z, a, b, c}; 
+
+enum ejemplo2 // el valor de estos inicia desde el 10 (10, 11, 12, 13, 14, 15)
+{x = 10, y, z, a, b, c}; 
+
+enum ejemplo3 // el valor variara hasta el ultimo valor asignado, desde aqui aumentara normalmente (10, 5, 3, 4, 5, 6)
+{x = 10, y = 5, z = 3, a, b, c}; 
+~~~
+
+---
+
+## Constructors
+
+Estos son métodos especiales que se ejecutan obligatoriamente cada vez que nuestra clase sea instanciada, y su uso común es "**aplicar los valores básicos a los datos que hay dentro de las variables de nuestra clase**".
+
+*Para esto nos basaremos en el siguiente ejemplo:*
+
+~~~c++
+class nombreClase
+{
+    int x; // iniciamos x como un valor nulo
+    
+    nombreClase() // nuestro construct debe tener el mismo nombre que su clase
+    {
+    	x = 10; // asignamos un valor a "x" dentro de la misma clase
+    }
+};
+~~~
+
+Esta es la función básica de un constructor, pero si queremos añadir datos desde una función como lo es nuestro "main" podemos hacer lo siguiente:
+
+~~~c++
+class nombreClase
+{
+public:
+    int x;
+    
+    nombreClase(int y) // en este caso podemos añadir el valor que querramos al crear el objeto
+    {
+        x = y // asignamos el valor recogido a la variable que ya tenemos 
+    }
+};
+
+int main()
+{
+    // instanciamos el objeto
+    nombreClase clase(5) // creamos la clase y le damos el parametro 5 a su constructor (x = 5)
+}
+~~~
+
+---
+
+## Destructors
+
