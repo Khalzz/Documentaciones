@@ -1583,3 +1583,151 @@ int main()
 
 ## Destructors
 
+Los **Destructors** son como el gemelo "malvado" de los constructors, dado que su función es similar pero inversa, o sea que estos a diferencia de los constructors **solo se ejecutaran cuando el "objeto" o mejor dicho su instancia sea destruida**.
+
+*Por ejemplo:*
+
+~~~c++
+class nombreClase
+{
+public:
+    nombreClase() // este es nuestro constructor
+    {
+        std::cout << "el objeto se ha creado" << std::endl; // este mensaje se mostrara al crear el objeto
+    }
+    ~nombreClase() // los destructors llevan el nombre de su clase pero con un "~" antes
+    {
+        std::cout << "el objeto se ha destruido" << std::endl // este mensaje se mostrara al destruir el objeto
+    }
+};
+
+void funcionPrueba()
+{
+    nombreClase clase; // al estar dentro de una funcion el objeto se creara y estara vivo hasta que la misma termine
+}
+
+int main()
+{
+    funcionPrueba()
+}
+~~~
+
+Esto nos mostrara los 2 mensajes de forma exitosa.
+
+---
+
+## Herencia
+
+La herencia es **la "relación" entre 2 clases, una "padre" y otra "hija" donde la clase "padre" hereda sus datos y métodos a la clase hija** y esto es bastante útil para evitar la repetición de código.
+
+*Por ejemplo:*
+
+~~~c++
+// imagina que estamos haciendo un juego y tenemos una base para hacer los personajes
+class personaje
+{
+public:
+    int vidas;
+    bool estaVivo = True;
+    int posicionX;
+    int posicionY;
+};
+
+// para hacer un objeto que herede estos datos hacemos:
+class jugador : public personaje
+{
+  // todos los datos de "personaje" ahora estan en "jugador"  
+};
+
+int main()
+{
+    // si hacemos algo como lo siguiente:
+    jugador jug;
+    srd::cout << jug.estaVivo; // esto se ejecutara de forma exitosa
+}
+~~~
+
+---
+
+## Funciones virtuales
+
+Imagina que hacemos 2 clases, la segunda hereda todos los datos y métodos de la primera, pero hay ciertas funciones que queremos cambiar, para esto usamos las **funciones virtuales**, son funciones que "nos permiten" recrearlas en sus "clases hijo" sin generar problemas, por ejemplo:
+
+~~~c++
+class persona
+{
+public:
+    void saludar()
+    {
+        std::cout << "buenos dias" << std::endl;
+    }
+};
+
+class persona2 : public persona
+{
+public:
+    void saludar()
+    {
+        std::cout << "holas" << std::endl;
+    }
+};
+~~~
+
+Si intentamos hacer esto funcionara de forma correcta si simplemente ejecutamos nuestra función desde nuestro main, pero en otro caso si intentamos hacer cosas mas complejas, puede que esto nos genere errores en el output de nuestro programa.
+
+Para esto debemos marcar las funciones como **"Funciones virtuales"** lo cual nos asegurara que esa función en especifico nos permite "sobrescribirla".
+
+Esto lo hacemos con la siguiente sintaxis:
+
+~~~c++
+virtual void saludar()
+{
+    // bloque de codigo
+}
+~~~
+
+Y esto no es obligatorio pero recomiendo usar la keyword **override** cuando sobrescribamos un método, esto no generará un "cambio en su funcionamiento" es mas o menos como un "marcador" para señalar que la función que acabamos de sobrescribir es en efecto una un método sobrescrito. 
+
+De la siguiente manera:
+
+~~~c++
+class persona
+{
+public:
+    virtual void saludar() // esta funcion es "virtual"
+    {
+        std::cout << "buenos dias" << std::endl;
+    }
+};
+
+class persona2 : public persona
+{
+public:
+    void saludar() override // de esta forma "marcamos que esta funcion ha sido sobrescrita"
+    {
+        std::cout << "holas" << std::endl;
+    }
+};
+~~~
+
+Si queremos hacer algo llamado **Funciones virtuales puras** o "interfaces" en otros lenguajes, osea "funciones puras que solo reciben un bloque de codigo cuando se sobrescribe en una clase hijo" hacemos lo siguiente
+
+~~~c++
+class padre
+{
+public:
+    virtual void saludar() = 0; // creamos la funcion virtual y la dejamos vacia (igualandola a 0) 
+};
+
+class hijo : public padre
+{
+public:
+    void saludar() override // la "sobrescribimos" desde su clase hijo
+    {
+        std::cout << "holas" << std::endl;
+    }
+};
+~~~
+
+---
+
