@@ -235,10 +235,11 @@ public class Persona{
     public int edad;
     // tambien podemos añadirle un valor por defecto a cada uno por ejemplo si directamente añadimos el (= 20;) a la edad
 
-    public Persona(String nombre, String apellido, int edad){ /* El identificador del constructor debe ser el mismo al de la clase y sus parámetros deben tener
-    Asignados un tipo de dato y también un nombre, como se muestra arriba.
-    La keyword "this" hace referencia directamente a "esta" clase en si, este lo utilizaremos para acceder directamente a los atributos de la clase.
-    y por la misma razon añ referenciar solo los datos "nombre, apellido y edad" estos haran referencia a los parametros de la funcion, no a los atributos de la clase.*/
+    public Persona(String nombre, String apellido, int edad){ 
+    // el nombre de la funcion debe ser exactamente el mismo que de la clase
+    // los parametros pueden tener el nombre que deseemos pero deben tener el mismo tipo de dato que la variable que referencian
+    // la keyword "this" referencia la clase en si, por lo que el this.nombreDato referencia el nombre del atributo de la clase
+   	// en este mismo caso y por el scope del método, los datos nombre, apellido y edad referencian los parametros de la función
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
