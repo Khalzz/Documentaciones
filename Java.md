@@ -171,7 +171,8 @@ import paquete2.ClaseNueva; // asi se importa una nueva clase desde otro paquete
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hola Mundo");
+        System.out.println("Hola Mundo"); // ojo que esto no debemos utilizarlo fuera de un método main
+        // esto es por que las clases no deben acceder a métodos que sean externos a la misma
     }
 }
 ~~~
@@ -206,10 +207,11 @@ En si estos son "funciones" o sea, un bloque de código el cual esta asignado a 
 ~~~java
 public class Persona{
     
-    private peso = 10;
+    private int peso = 10;
+    private boolean estaCaminando = false;
     
     public void Caminar(){ // en este caso al ser una funcion "void" esta no requiere de un return para un correcto funcionamiento
-    	System.out.println("esta caminando");
+    	estaCaminando = true;
         
         // si queremos llamar un dato del objeto aqui debemos usar la siguiente sintaxis:
         this.peso--;
@@ -232,11 +234,11 @@ public class Persona{
     public String apellido;
     public int edad;
     // tambien podemos añadirle un valor por defecto a cada uno por ejemplo si directamente añadimos el (= 20;) a la edad
-    
+
     public Persona(String nombre, String apellido, int edad){ /* El identificador del constructor debe ser el mismo al de la clase y sus parámetros deben tener
     Asignados un tipo de dato y también un nombre, como se muestra arriba.
-    La keyword "this" hace referencia directamente al atributo de la clase, es como por decirlo de alguna manera, una abreviación del nombre de la clase.
-    por lo que en vez de utilizar Persona.nombre;, utilizariamos en cambio, this.nombre;, logrando así el mismo resultado pero de una manera más "correcta".*/
+    La keyword "this" hace referencia directamente a "esta" clase en si, este lo utilizaremos para acceder directamente a los atributos de la clase.
+    y por la misma razon añ referenciar solo los datos "nombre, apellido y edad" estos haran referencia a los parametros de la funcion, no a los atributos de la clase.*/
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
@@ -260,6 +262,10 @@ public class Main {
     }
 }
 ~~~
+
+Como ya vimos, los métodos constructores se requieren para "inicializar los datos de nuestro objeto", pero si no los utilizamos, por ejemplo si solo usamos getters y setters no es necesario añadirlo de forma explicita (a no ser que requieras inicializar datos, en ese caso obviamente vas a necesitarlo).
+
+**Esto es por que las clases por defecto contienen un constructor el cual es generado de forma automática si no lo añadimos explícitamente**.
 
 Como quizá habrás notado, por el bien de la fácil enseñanza de esta documentación he preferido hacer los datos de nuestra clase públicos, pero debo recordar que como vimos en la sección de encapsulamiento **esto no esta del todo correcto**, dado que las variables deben ser la mayoría de las veces generadas de forma privada y permitir su acceso utilizando:
 
