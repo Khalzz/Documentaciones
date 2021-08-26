@@ -1,5 +1,7 @@
 # Java
 
+**Documentación escrita por Rodrigo Seguel**
+
 Uno de los lenguajes mas conocidos en el mundo, uno de los mas usados y a la vez, uno de los mas demandados y el lenguaje en el que se ha creado una de las creaciones y obras maestras de la ingeniería mas grandes de nuestro mundo moderno, exacto estoy hablando de Minecraft.
 
 Creado el año 1991 por Sun Microsystems y posteriormente adquirido por Oracle, este lenguaje orientado a objetos, de tipado fuerte y estático es un lenguaje de un nivel intermedio-alto, esto dado que el lenguaje no corre directamente sobre el hardware de nuestro dispositivo, sino que al menos en computadores, este corre sobre un "virtual machine" o sea un computador virtual que ejecuta nuestro código, por lo que este mismo es completamente portable entre distintos sistemas (mientras estos soporten esta virtual machine).
