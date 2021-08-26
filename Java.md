@@ -166,7 +166,8 @@ import paquete2.ClaseNueva; // asi se importa una nueva clase desde otro paquete
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hola Mundo");
+        System.out.println("Hola Mundo"); // ojo que esto no debemos utilizarlo fuera de un método main
+        // esto es por que las clases no deben acceder a métodos que sean externos a la misma
     }
 }
 ~~~
@@ -201,10 +202,11 @@ En si estos son "funciones" o sea, un bloque de código el cual esta asignado a 
 ~~~java
 public class Persona{
     
-    private peso = 10;
+    private int peso = 10;
+    private boolean estaCaminando = false;
     
     public void Caminar(){ // en este caso al ser una funcion "void" esta no requiere de un return para un correcto funcionamiento
-    	System.out.println("esta caminando");
+    	estaCaminando = true;
         
         // si queremos llamar un dato del objeto aqui debemos usar la siguiente sintaxis:
         this.peso--;
@@ -228,11 +230,14 @@ public class Persona{
     public int edad;
     // tambien podemos añadirle un valor por defecto a cada uno por ejemplo si directamente añadimos el (= 20;) a la edad
     
-    public Persona(String _nombre, String _apellido, int edad){ // el nombre del metodo debe tener el mismo de la clase
-    // los parametros deben tener el tipo de dato y el nombre de los datos exactamente iguales (solo que el nombre lleva un "_" antes)
-        nombre = _nombre;
-        apellido = _apellido;
-        edad = _edad;
+    public Persona(String nombre, String apellido, int edad){ // los parametros pueden tener el nombre que queramos
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = edad;
+       	//el this llama al elemento DENTRO DE LA CLASE con el nombre de la variable, en lugar del parametro de la función
+        
+        // tambien podemos utilizarlo para definir los valores cuando este se inicie, por ejemplo edad = 0 
+        //osea que todas las instancias de esta clase empezaran con un valor de edad = 0
     }
 }
 
@@ -253,6 +258,10 @@ public class Main {
     }
 }
 ~~~
+
+Como ya vimos, los métodos constructores se requieren para "inicializar los datos de nuestro objeto", pero si no los utilizamos, por ejemplo si solo usamos getters y setters no es necesario añadirlo de forma explicita (a no ser que requieras inicializar datos, en ese caso obviamente vas a necesitarlo).
+
+**Esto es por que las clases por defecto contienen un constructor el cual es generado de forma automática si no lo añadimos explícitamente**.
 
 Como quizá habrás notado, por el bien de la fácil enseñanza de esta documentación he preferido hacer los datos de nuestra clase públicos, pero debo recordar que como vimos en la sección de encapsulamiento **esto no esta del todo correcto**, dado que las variables deben ser la mayoría de las veces generadas de forma privada y permitir su acceso utilizando:
 
