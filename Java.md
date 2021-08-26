@@ -109,14 +109,17 @@ La parte mas necesaria de entender para las variables son los tipos de datos, es
 
 Los tipos de datos son:
 
-| Tipo de dato | Descripción                                                  |
-| ------------ | ------------------------------------------------------------ |
-| boolean      | Este tiene solo admite 2 estados (true y false)              |
-| int          | Este admite valores numéricos enteros de 32bits              |
-| long         | Este admite valores numéricos enteros de 64bits              |
-| float        | Este tipo de datos admite números decimales de 32bits        |
-| double       | Este tipo de datos admite números decimales de 64bits        |
-| String       | Este admite "cadenas de texto" (cabe resaltar que este si o si debe tener la S mayuscula) los datos de este debe estar entre comillas |
+| Tipo de dato | Descripción                                                  | Ejemplo |
+| ------------ | ------------------------------------------------------------ | ------- |
+| boolean      | Este tiene solo admite 2 estados (true y false)              | true    |
+| byte         | Este admite valores numéricos enteros de 8bits               | 25      |
+| short        | Este admite valores numéricos enteros de 16bits              | 3500    |
+| int          | Este admite valores numéricos enteros de 32bits              | 10000   |
+| long         | Este admite valores numéricos enteros de 64bits              | 1000000 |
+| float        | Este tipo de datos admite números decimales de 32bits        | 25.3    |
+| double       | Este tipo de datos admite números decimales de 64bits        | 53034.255 |
+| String       | Este admite "cadenas de texto" (cabe resaltar que este si o si debe tener la S mayuscula) los datos de este debe estar entre comillas | "Hola" |
+| char         | Este admite únicamente carácteres unicode (sólo 1) los datos de este debe estar entre comillas simples | 'A' |
 
 ---
 
@@ -231,15 +234,14 @@ public class Persona{
     public String apellido;
     public int edad;
     // tambien podemos añadirle un valor por defecto a cada uno por ejemplo si directamente añadimos el (= 20;) a la edad
-    
-    public Persona(String nombre, String apellido, int edad){ // los parametros pueden tener el nombre que queramos
+
+    public Persona(String nombre, String apellido, int edad){ /* El identificador del constructor debe ser el mismo al de la clase y sus parámetros deben tener
+    Asignados un tipo de dato y también un nombre, como se muestra arriba.
+    La keyword "this" hace referencia directamente a "esta" clase en si, este lo utilizaremos para acceder directamente a los atributos de la clase.
+    y por la misma razon añ referenciar solo los datos "nombre, apellido y edad" estos haran referencia a los parametros de la funcion, no a los atributos de la clase.*/
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
-       	//el this llama al elemento DENTRO DE LA CLASE con el nombre de la variable, en lugar del parametro de la función
-        
-        // tambien podemos utilizarlo para definir los valores cuando este se inicie, por ejemplo edad = 0 
-        //osea que todas las instancias de esta clase empezaran con un valor de edad = 0
     }
 }
 
@@ -291,7 +293,7 @@ public class Persona{
     
     public int getEdad(){ // este es un getter, este nos permite acceder al valor de la variable
         // los getters siempre deben retornar el valor de la variable en si, por lo que no pueden ser void
-        return edad;
+        return this.edad;
     }
 }
 
