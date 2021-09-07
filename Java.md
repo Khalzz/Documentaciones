@@ -118,8 +118,11 @@ Los tipos de datos son:
 | long         | Este admite valores numéricos enteros de 64bits              | 1000000 |
 | float        | Este tipo de datos admite números decimales de 32bits        | 25.3    |
 | double       | Este tipo de datos admite números decimales de 64bits        | 53034.255 |
-| String       | Este admite "cadenas de texto" (cabe resaltar que este si o si debe tener la S mayuscula) los datos de este debe estar entre comillas | "Hola" |
-| char         | Este admite únicamente carácteres unicode (sólo 1) los datos de este debe estar entre comillas simples | 'A' |
+| String       | Este admite "cadenas de texto" (este si o si debe tener la S mayuscula) los datos de este debe estar entre comillas | "Hola" |
+| char         | Este admite únicamente caracteres Unicode (sólo 1) los datos de este debe estar entre comillas simples | 'A' |
+|class|Este admite "clases", por ejemplo si tenemos una clase llamada `C` podemos hacer:|C class = new C():|
+
+
 
 ---
 
@@ -313,8 +316,4 @@ public class Main {
 ~~~
 
 ---
-
-
-
-
 
