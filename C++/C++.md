@@ -704,7 +704,7 @@ Los operadores lógicos se dividen en:
 
 ### Conjugación lógica
 
-el operador de conjugación es `and` y sirve para evaluar si el valor o condición del lado izquierdo **y** el del lado derecho se cumplen.
+el operador de conjugación es `&&` y sirve para evaluar si el valor o condición del lado izquierdo **y** el del lado derecho se cumplen.
 
 | C++  | Conjugación | Python |
 | :--: | :---------: | :----: |
@@ -723,7 +723,7 @@ Este operador se puede mencionar como **multiplicación lógica**.
 
 ### Disyunción lógica
 
-El operador de disyunción es `or` y sirve para evaluar si el valor o condición del lado izquierdo **o** el del lado derecho se cumplen.
+El operador de disyunción es `||` y sirve para evaluar si el valor o condición del lado izquierdo **o** el del lado derecho se cumplen.
 
 | C++  | disyunción | python |
 | :--: | :--------: | :----: |
@@ -742,7 +742,7 @@ Este operador se puede mencionar como **unión o suma lógica**.
 
 ### Negación lógica
 
-El operador de negación es `not` se encarga de **transformar** booleanos de true a false y viceversa
+El operador de negación es `!` se encarga de **transformar** booleanos de true a false y viceversa
 
 | C++  | Negación | python |
 | :--: | :------: | :----: |
