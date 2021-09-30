@@ -141,7 +141,129 @@ Esto es muy necesario a la hora de trabajar con variables, no es muy común en l
 
 ---
 
-# Condicionales
+# Colecciones
+
+Las colecciones en si como concepto son otro tipo de dato pero uno bastante especial en si.
+
+Las colecciones son un tipo de dato que nos permite almacenar otros datos en su interior dado que estos funcionan así como "listas de elementos" en los que podemos iterar.
+
+Estos pueden ser de 2 tipos:
+
++ Arreglos (listas o colecciones de datos donde su longitud es fija, o sea que no puede aumentar o disminuir en cantidad).
++ Colecciones (listas o colecciones de datos donde su longitud puede variar dependiendo de si queremos añadir o eliminar datos de la misma).
+
+En general se utiliza la nomenclatura **`ArrayList<T>`** para referenciar que una colección o arreglo (**aun que este ultimo solo puede ser de un tipo de dato**) contiene solo elementos con el mismo tipo de dato.
+
+En si hay distintos tipos de colecciones, pero en las que nos fijaremos son las siguientes:
+
+## List
+
+Las listas son un conjunto de elementos ordenados en una secuencia en particular accesibles por medio de un indice ordenado el cual permite valores duplicados, hay distintos tipos de lista y algunos de estos son:
+
++ ArrayList
++ Vector
++ LinkedList
++ Etc...
+
+---
+
+## Set
+
+Es otra lista de datos ordenados, solo que esta no permite tener datos duplicados, por lo que si detecta que el dato que se esta añadiendo al set ya existe dentro de el mismo, este no se agrega.
+
+---
+
+## Queue
+
+Las "Colas" son otro tipo de lista de elementos ordenados cuya particularidad es la forma en la que ingresan y salen los datos de la misma además de permitir datos duplicados.
+
+Existen 2 tipos:
+
++ LIFO: "Last input, first output" El primer dato en entrar es el ultimo en salir.
++ FIFO: "First input, first output" el primer dato en entrar es el primero en salir.
+
+---
+
+## Maps
+
+Los mapas son colecciones de datos que se centran en la coneccion entre una "clave" y su "valor" osea su identificador dentreo del mapa y el dato que este representa, este en si no permite datos repetidos dado que pueden interferir con el sistema "clave-valor" que contiene el mismo.
+
+Hay de distintos tipos, como:
+
+* HashMaps.
+* HashTables.
+* LinkedHashMaps.
+* TreeMaps.
+
+---
+
+## ArrayList\<T>
+
+En si nosotros nos centraremos en las listas, específicamente en las ya mencionadas "`ArrayList<T>`" que como ya hice mención, son arreglos o colecciones en las que la **T** representa el tipo de datos que esta contendrá, por ejemplo si solo contiene int, Strings, floats u otros.
+
+Antes de continuar, deben recordar que necesitamos "importar" la funcionalidad de hacer arrayList y listas a java, para eso en la parte superior de nuestro codigo debemos agregar:
+
+~~~java
+import java.util.ArrayList;
+import java.util.List;
+~~~
+
+Los ArrayList siguen la siguiente sintaxis:
+
+~~~java
+// primero declaramos el arrayList
+//List<TipoDeDato> nombreLista;
+// luego creamos el arrayList
+//nombreLista = new ArrayList<TipoDeDato>();
+
+// osea podemos hacer esto
+List<int> listaDeNumeros;
+listaDeNumeros = new ArrayList<int>();
+
+// o lo siguiente
+List<int> listaDeNumeros = new ArrayList<int>();
+
+// para agregar datos a la lista debemos usar la funcion "add" de la siguiente forma
+listaDeNumeros.add(1);
+listaDeNumeros.add(5);
+listaDeNumeros.add(2);
+// terminaremos con una lista similar a la siguiente (1,5,2)
+~~~
+
+De esta forma hacemos una lista de tipo genérico, o sea que todos los datos dentro de la misma son del mismo tipo, pero también hay otro tipo los cuales son los **No genéricos**.
+
+Estos se caracterizan por permitir el ingreso de cualquier dato en si misma, sin importar el tipo de dato mezclándolos sin importar si estos son int, String, float o hasta clases, esto en si es poco recomendable dado que no hay muchas aplicaciones a almacenar tantos datos de distinta utilidad juntos.
+
+La sintaxis de estos es la siguiente:
+
+~~~java
+List listaNoGenerica = new ArrayList(); // como veras, en este caso no definimos el tipo de dato de los valores en la lista
+
+// esta al ser no generica podriamos hacer lo siguiente:
+listaNoGenerica.add("Rodrigo");
+listaNoGenerica.add(18);
+listaNoGenerica.add(persona); // en este ejemplo estoy almacenando una clase por si acaso
+~~~
+
+---
+
+### Métodos de un ArrayList
+
+Los array list al igual que los tipos de datos tienen diversas funciones y metodos que nos permiten iteractuar de diversas formas con estos.
+
+Las funciones que utilizaremos mas comúnmente son los siguientes:
+
+| Función    | Definición                                                   |
+| ---------- | ------------------------------------------------------------ |
+| add()      | Nos permiten agregar datos a una lista.                      |
+| clear()    | Nos permite eliminar todos los datos de una lista.           |
+| contains() | Devuelve true o false dependiendo de si la lista contiene un elemento especificado. |
+| get()      | Devuelve el elemento con el índice especificado (el índice de elementos de una lista siempre inicia desde el 0). |
+| indexOf()  | Devuelve el índice de la primera aparición del dato especificado. |
+| remove()   | nos permite eliminar un dato especifico dentro de la lista.  |
+| size()     | nos devuelve el tamaño de la lista.                          |
+
+---
 
 # Operadores
 
@@ -378,6 +500,18 @@ else
 
 ---
 
+# Bucles
+
+Los bucles son muy similares a las condicionales, solo que como su nombre lo indica pueden repetirse una cantidad de ocasiones especificada (o infinitamente hasta que el programa se detenga), este se suele utilizar para repetir acciones o para iterar sobre listas y otras colecciones que utilicemos aun que tiene otros muchísimos usos.
+
+---
+
+## Bucle for
+
+...
+
+---
+
 # Poo
 
 Para los que ya tengan experiencia en programacion orientada a objetos, no se les sera muy complejo adaptarse a java, dado que muchas partes de esto se ven reflejadas en este.
@@ -552,5 +686,5 @@ public class Main {
 }
 ~~~
 
----
+
 

@@ -803,7 +803,7 @@ namespace program
 
 en este caso como ejemplo use el método obligatorio que hay en cada código de c#, pero antes de hablar de como hacer los métodos extra veremos en este caso que son.
 
-+ static: esta palabra clave lo que hace es eliminar la necesidad de crear una instancia de objeto a la hora de llamar un método o atributo [ejemplo]().
++ static: esta palabra clave lo que hace es eliminar la necesidad de crear una instancia de objeto a la hora de llamar un método o atributo.
 
 + void: en este caso donde esta el void, debe ir la variable que se devuelve (ejemplo int,string,bool, etc..)pero en este caso, el que sea void significa que no devolverá datos en si.
 + main: en este caso el main no es algo en especial, solamente el nombre de la función en si.
