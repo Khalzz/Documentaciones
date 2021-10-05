@@ -508,7 +508,57 @@ Los bucles son muy similares a las condicionales, solo que como su nombre lo ind
 
 ## Bucle for
 
-...
+El bucle for nos permite iterar en grupos de datos, ya sea una colección de datos, una cadena de caracteres, etc...
+
+Podemos utilizarlos como base para un conteo controlado de la siguiente forma:
+
+~~~java
+// for (tipoDeDato variableIniciada; condicion; tipoDeAumento)
+for (int i = 0; i <= 10; i++) {
+    System.out.println(i);
+}
+
+// en este caso, el output es el siguiente:
+/*
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+*/
+~~~
+
+En este caso la condición sirve para mencionar que **"mientras la misma sea true, el bucle se repetirá"**.
+
+Para iterar sobre una colección debemos hacer lo siguiente:
+
+~~~java
+// supongamos que tenemos una coleccion con tres nombres "Rodrigo", "Jenni", "Alexis"
+List<String> nombres = new ArrayList<String>();
+nombres.add("Rodrigo");
+nombres.add("Jenni");
+nombres.add("Alexis");
+
+// for (tipoDeDato identificadorDentroDelBucle : coleccion)
+for (String n : nombres) {
+    System.out.println(n); // en este caso la "n" representa un valor nuevo dentro de la coleccion cada vez que el bucle se ejecuta
+}
+
+// esto nos mostrara en pantalla el output:
+/*
+Rodrigo
+Jenni
+Alexis
+*/
+~~~
+
+Técnicamente el `for` de esta ultima forma funciona similar al `for in` de python.
 
 ---
 
@@ -686,5 +736,82 @@ public class Main {
 }
 ~~~
 
+---
 
+# Try & Catch
+
+Las sentencias **Try y Catch** nos permiten **Generar o reaccionar a errores de forma controlada**, evitando que nuestro programa se cierre cuando se encuentre un error para el que no estamos preparados.
+
+Su sintaxis es la siguiente:
+
+~~~java
+try {
+  //  Codigo a intentar (que puede tener un error)
+}
+catch(Exception e) {
+  //  Codigo que se ejecuta en caso que el error especificado se presente
+}
+~~~
+
+---
+
+# Java Forms
+
+Nuestro IDE para java, ya sea NetBeans, Eclipse o Intellij Idea nos van a permitir una notable capacidad de java y es el **crear interfaces o formularios** osea que podemos hacer programas funcionales en una ventana gracias a lo que llamamos "**Java Forms**".
+
+Para poder interactuar con estos primero debemos saber el como se añaden a nuestro proyecto.
+
+Antes de iniciar en el proceso de "hacer el formulario debemos seguir unos pasos":
+
+1. Debemos crear un nuevo paquete en el que ingresaremos nuestro archivo de crecion del formulari.
+
+2. Debemos crear nuestro formulario, para eso vamos a dar clic derecho en nuestro paquete y seleccionamos `New > Jframe Form`.
+
+3. Seleccionamos el nombre de la clase y lko importamos en nuestra clase main de forma comun:
+
+   ~~~java
+   import paquete.claseFormulario;
+   ~~~
+
+4. Iniciamos la clase del formulario y hacemos que este se muestre en pantalla:
+
+   ~~~java
+   claseFormulario cf = new claseFormulario;
+   cf.setVisible(true);
+   ~~~
+
+Con esto ya hecho ahora podemos iniciar a trabajar en nuestro formulario, este nos permite editarlo de 2 formas, 1 es en su diseño (en la ventana diseño) mientras que en el otro editamos directamente el código de este formulario.
+
+Cuando agreguemos nuevas partes a nuestro formulario en el área de diseño nuestro código también será editado, aun que también podemos hacer ediciones di9rectas desde este si así es necesario.
+
+Cada vez que hagamos algo con una funcionalidad en si, como añadir un botón, campo de texto, pestana de selección, etc, se creara una función con el nombre de nuestro objeto (mas "ActionPerformed") además de una variable con este mismo nombre, la variable nos permite interactuar sobre el elemento en si, mientras que la funcion ActionPerformed, nos permite ejecutar cualquier código que queramos al ejecutar la función del objeto en si.
+
+ejemplo:
+
+Supongamos que añadimos un botón en nuestra interfaz, a este le damos el nombre "botonDePrueba", por lo que si queremos cambiar el texto al presionar el mismo, debemos hacer lo siguiente:
+
+~~~java
+// buscamos la funcion que ejecuta la accion del boton:
+botonDePruebaActionPerformed(java.awt.event.ActionEvent evt){
+    // aqui va todo el codigo que se ejecutara al presionar el boton
+    botonDePrueba.setText("este es el nuevo texto en el boton"); // esta funcion nos permite editar un dato del elemento.
+}
+~~~
+
+Todos los elemento s instanciados en el formulario se pueden contar como objetos, por lo que cada uno de estos tiene distintas funciones que editan la forma en la que podemos trabajar en cada uno de estos.
+
+---
+
+## Inicializador de una clase form
+
+Al trabajar con un formulario, debemos recordar que este es una clase, por lo que debe ser inicializado como cualquier clase, esto se hace por medio de la siguiente lineal en nuestro código:
+
+~~~java
+public ClaseInterfaz() {
+	initComponents();
+	// si vamos a escribir codigo aqui, debe ser debajo del "initComponents()"
+}
+~~~
+
+Es muy común hacerlo al revés y tener errores, pro lo que es fundamental recordar que en nuestro programa debemos dejar el `initComponents()` al principio de nuestro inicializador.
 
