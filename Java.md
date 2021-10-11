@@ -514,23 +514,17 @@ Podemos utilizarlos como base para un conteo controlado de la siguiente forma:
 
 ~~~java
 // for (tipoDeDato variableIniciada; condicion; tipoDeAumento)
-for (int i = 0; i <= 10; i++) {
+for (int i = 1; i <= 5; i++) {
     System.out.println(i);
 }
 
 // en este caso, el output es el siguiente:
 /*
-0
 1
 2
 3
 4
 5
-6
-7
-8
-9
-10
 */
 ~~~
 
@@ -735,6 +729,113 @@ public class Main {
     }
 }
 ~~~
+
+---
+
+## Herencia
+
+La programacion orientada a ojbjetos tiene multiples propiedades distintas, entre estas estan:
+
++ Encapsulamiento (la capacidad de una clase, atributo o método de ser accesible a todos "public" o con acceso prohibitivo "private").
++ Abstracción (es la capacidad que tiene una clase de diferenciarse de otras dado sus "características" especiales y  lo que las diferencia entre si).
++ Herencia y Polimorfismo (la posibilidad de "heredar atributos y métodos de otras clases a demás de editar la funcionalidad y datos de estas).
+
+En especial nos centraremos en esta ultima.
+
+La herencia como ya hice mención es **la habilidad de una clase de "copiar y pegar" las funciones y datos de otra clase como si fueran pertenecientes de la misma**, hagamos un ejemplo:
+
+imagina que tienes una clase "humano"
+
+~~~java
+public class Humano {
+    private String nombre; // este posee nombre
+    private int edad; // y edad
+    
+    // para aplicar la herencia siempre debemos tener nuestro metodo constructor
+    public Humano(String nombre, int edad) {
+        this.nombre = nombre;
+        this.edad = edad;
+    }
+    
+    // getters y setters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+    
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+    // getters y setters
+    
+    // funcion custom
+    public void Caminar() {
+        System.out.println("este humano camina :o");
+    }
+}
+~~~
+
+Si queremos hacer una clase estudiante sin necesidad de "copiar cada elemento dentro de nuestra clase padre" deberíamos hacer lo siguiente:
+
+~~~java
+class Estudiante extends Humano {
+    /* ahora por defecto en la clase estudiante tenemos:
+    	+ variables (nombre y edad)
+    	+ getters y setters
+    	+ funcion caminar
+       pero antes de continuar nos faltan unos pasos importantes*/
+    
+    // agreguemos mas atributos
+    private float promedio;
+    private int curso;
+    
+    // a la hora de hacer el constructor debemos agregar los atributos de la clase padre
+    public Estudiante(float promedio, int curso, String nombre, int edad) {
+        // estos atributos existen dentro de la clase, solo que son "invisibles"
+        this.notas = notas;
+        this.curso = curso;
+        this.nombre = nombre;
+        this.edad = edad;
+    }
+    
+   	// al momento de hacer nuestros getters y setters solo debemos hacerlos para los datos nuevos que en este caso son notas y curso
+    public void setNota(float promedio) {
+        this.promedio = promedio;
+    }
+
+    public float getPromedio() {
+        return promedio;
+    }
+    
+    public void setCurso(int curso) {
+        this.curso = curso;
+    }
+
+    public float getCurso() {
+        return curso;
+    }
+    
+    // vamos a cambiar la funcion original
+    public void Caminar() {
+        System.out.println("Ese estudiante camina mas rapida, dado que esta apurado");
+    }
+}
+~~~
+
+Ahora como resultado tenemos una clase completa, con datos heredados desde su clase padre (nombre y edad) a demas de sus nuevos datos (promedio y curso).
+
+Pero a demás hicimos algo nuevo, editamos lo que hace una función, esto se llama **Polimorfismo** y es el "editar el funcionamiento o datos originales de una clase padre en su clase hija", o sea editar los datos de una clase heredada.
+
+Como resultado ahora si ejecutamos `Humano.Caminar();` nos mostrara el mensaje: "este humano camina :o", por otro lado si hacemos lo mismo con la clase estudiante, o sea `Estudiante.Caminar();` nos mostrara el mensaje: "Ese estudiante camina mas rápida, dado que esta apurado".
+
+Ahora para finalizar, debemos inicializar nuestra clase Estudiante, esto lo hacemos siguiendo los ejemplos anteriores y el orden de datos de su constructor, a demás debo recordarles que si queremos llamar los datos nombre y edad de nuestra clase Estudiante, solo debemos hacerlo por sus getters y setters, dado que estos ya existen gracias a la herencia.
 
 ---
 
