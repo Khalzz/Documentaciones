@@ -815,3 +815,11 @@ public ClaseInterfaz() {
 
 Es muy común hacerlo al revés y tener errores, pro lo que es fundamental recordar que en nuestro programa debemos dejar el `initComponents()` al principio de nuestro inicializador.
 
+---
+
+## Elementos comunes de formularios
+
++ Button: son botones que ejecutan una acción al ser presionados
++ Text Field: son espacios en lo9s que podemos ingresar texto.
++ Text Area: son espacios en los que podemos mostrar textos.
++ Label: son espacios en los que podemos escribir texto.
