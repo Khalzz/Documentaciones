@@ -122,7 +122,18 @@ Los tipos de datos son:
 | char         | Este admite únicamente caracteres Unicode (sólo 1) los datos de este debe estar entre comillas simples | 'A' |
 |class|Este admite "clases", por ejemplo si tenemos una clase llamada `C` podemos hacer:|C class = new C():|
 
+Con los booleanos podemos hacer algo llamado "operador terciario" que nos permite referenciar un string o dato dependiendo de si un booleano es verdadero o falso, por ejemplo:
 
+~~~java
+((booleano)? "es verdadero":"es falso");
+// este booleano tambien puede ser una condicional
+((1 == 1)? "es verdadero":"es falso"); // en este caso se da el dato "es verdadero"
+((1 == 0)? "es verdadero":"es falso"); // en este caso se da el dato "es falso"
+
+// otra cosa que podemos hacer por ejemplo en una funcion usar:
+return ((estoyVivo)? "si", "no") + "estoy vivo";
+// asi retornamos un string dependiendo de un dato en especifico
+~~~
 
 ---
 
@@ -747,7 +758,8 @@ La herencia como ya hice mención es **la habilidad de una clase de "copiar y pe
 imagina que tienes una clase "humano"
 
 ~~~java
-public class Humano {
+// el abstract representa que este es una clase "padre" el cual no sera instanciado, por lo que solo podremos acceder a sus hijos
+public abstract class Humano {
     private String nombre; // este posee nombre
     private int edad; // y edad
     
@@ -775,10 +787,13 @@ public class Humano {
     }
     // getters y setters
     
-    // funcion custom
+    // funcion custom (en este caso com la funcion es abstracta esto no seria 100% correcto dado queno vamos a acceder a este dato)
     public void Caminar() {
         System.out.println("este humano camina :o");
     }
+    
+    // la forma correcta de hacerlo seria:
+    public abstract void Caminar(); // asi nos ahorramos codigo innecesario
 }
 ~~~
 
@@ -833,7 +848,7 @@ Ahora como resultado tenemos una clase completa, con datos heredados desde su cl
 
 Pero a demás hicimos algo nuevo, editamos lo que hace una función, esto se llama **Polimorfismo** y es el "editar el funcionamiento o datos originales de una clase padre en su clase hija", o sea editar los datos de una clase heredada.
 
-Como resultado ahora si ejecutamos `Humano.Caminar();` nos mostrara el mensaje: "este humano camina :o", por otro lado si hacemos lo mismo con la clase estudiante, o sea `Estudiante.Caminar();` nos mostrara el mensaje: "Ese estudiante camina mas rápida, dado que esta apurado".
+Como resultado ahora si ejecutamos `Humano.Caminar();` nos mostrara el mensaje: "este humano camina :o" (**recuerda que como esta clase es abstracta no podríamos hacerlo, pero como ejemplo me sirve**), por otro lado si hacemos lo mismo con la clase estudiante, o sea `Estudiante.Caminar();` nos mostrara el mensaje: "Ese estudiante camina mas rápida, dado que esta apurado".
 
 Ahora para finalizar, debemos inicializar nuestra clase Estudiante, esto lo hacemos siguiendo los ejemplos anteriores y el orden de datos de su constructor, a demás debo recordarles que si queremos llamar los datos nombre y edad de nuestra clase Estudiante, solo debemos hacerlo por sus getters y setters, dado que estos ya existen gracias a la herencia.
 
@@ -877,7 +892,7 @@ Antes de iniciar en el proceso de "hacer el formulario debemos seguir unos pasos
 4. Iniciamos la clase del formulario y hacemos que este se muestre en pantalla:
 
    ~~~java
-   claseFormulario cf = new claseFormulario;
+   claseFormulario cf = new claseFormulario();
    cf.setVisible(true);
    ~~~
 
@@ -921,6 +936,6 @@ Es muy común hacerlo al revés y tener errores, pro lo que es fundamental recor
 ## Elementos comunes de formularios
 
 + Button: son botones que ejecutan una acción al ser presionados
-+ Text Field: son espacios en lo9s que podemos ingresar texto.
++ Text Field: son espacios en los que podemos ingresar texto.
 + Text Area: son espacios en los que podemos mostrar textos.
 + Label: son espacios en los que podemos escribir texto.
