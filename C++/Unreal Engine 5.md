@@ -83,7 +83,46 @@ Listo, ya habremos optimizado lo mas posible nuestro Unreal Engine 5, ahora pode
 
 # La interfaz
 
-Cuando iniciemos nuestro primer proyecto en blanco en Unreal Engine 5 veremos una ventana llena de cosas que probablemente te fruste no entenderlas, pero dejame facilitarte un poco el entendimiento de estas.
+Cuando iniciemos nuestro primer proyecto en blanco en Unreal Engine 5 veremos una ventana llena de cosas que probablemente te frustre no entenderlas, pero déjame facilitarte un poco el entendimiento de estas.
+
++ **Editor**
+
+  Entre todos los elementos de la interfaz, el mas notable es en si la ventana del editor.
+
+  Esta se caracteriza por ser la parte que mas ocupa de nuestra pantalla, en este podemos visualizar los elementos que se veran en nuestra escena, el mapa, nuestros personajes, objetos, etc...
+
+  Este nos permite posicionar estos elementos de diversas formas a demás movernos dentro de la misma gracias a distintos controles que se accionan al mantener presionado el clic derecho en esta pestaña y moviéndote con W, A, S & D.
+
++ **World Outliner**
+
+  En Unity teníamos una pestaña conocida como la "Jerarquía", en esta se agregaban los elementos instanciados en el editor en si, y nos permite trabajar con los objetos que se encuentran dentro de nuestra "escena" (que por cierto en Unreal Engine a las "Scenes" se le conocen como "Worlds").
+
++ **Details**
+
+  La pestaña de "detalles" es similar a la pestaña del "inspector" en esta editaremos los componentes que están aplicados a los objetos de nuestro juego, cosas como su posición, el tamaño de sus colliders, los scripts aplicados a estos entre otros.
+
++ **Content Drawner**
+
+  En esta pestaña podremos ver los "assets" y carpetas de nuestro proyecto, para así acceder a nuestros scripts, modelos 3D, audios, sprites, entre otros muchos elementos que agregaremos a nuestro juego.
+
++ **Terminal (cmd)**
+
+  Unreal Engine cuenta con una terminal que nos permite por medio de comandos, activar funcionalidades especificas del editor, a demas de acceder a herramientas que nos pueden facilitar el trabajo en este.
+
+  Unos ejemplos de estas sfuncionalidades son por ejemplo los comandos anteriormente mencionados:
+
+  + `r.Nanite 0` para desactivar Nanite.
+  + `t.MaxFps 144` para aumentar a 144 el máximo de fps del editor.
+
+---
+
+# La estructura de tus proyectos
+
+Como es obvio, cuando empezamos a jugar con esta clase de herramientas que terminaran siendo basadas en una gran cantidad de elementos suele ser necesario mantener un orden entre estos, para facilitar tanto nuestro acceso a estos componentes pero también para facilitar el entendimiento de otros hacia nuestro proyecto si es que trabajaremos con mas personas.
+
+Aun así si no tienes amigos y trabajas solo es preferible utilizar esta guía como referencia a la hora de estructurar tus proyectos, ya que como mencione con anterioridad, es muy común el revisar elementos de tus proyectos anteriores para reutilizarlos en los nuevos. 
+
+
 
 
 
