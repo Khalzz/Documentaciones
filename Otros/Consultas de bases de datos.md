@@ -682,18 +682,86 @@ Los "operadores Set" son los siguientes:
 
   ---
 
-Como tema importante deben recordar que los "sets" son prescindibles, de hecho en varias ocasiones es mejor pasar de ellos por que estos afectan negativamente al rendimiento de nuestro código dado que tenemos que por ejemplo ejecutar la misma acción en múltiples ocasiones a demas de que en ocasiones es muchísimo mas rap[ido y fácil de hacer.
+Como tema importante deben recordar que los "sets" son prescindibles, de hecho en varias ocasiones es mejor pasar de ellos por que estos afectan negativamente al rendimiento de nuestro código dado que tenemos que por ejemplo ejecutar la misma acción en múltiples ocasiones a demás de que en ocasiones es muchísimo mas rap[ido y fácil de hacer.
 
 por ejemplo:
 
 ~~~sql
--- lo que con sets seria asi:
+-- lo que con sets seria asi (este es un ejemplo aplicado a unas tablas ya existentes de mi parte):
+SELECT c.nro_patente, anio, count(id_arriendo)
+FROM camion c join arriendo_camion ac on(c.nro_patente = ac.nro_patente)
+WHERE EXTRACT(YEAR FROM fecha_ini_arriendo) >= extract(year from sysdate) - 2
+GROUP BY c.nro_patente, anio
+UNION
+SELECT nro_patente, anio, 0
+FROM camion
+WHERE nro_patente not in (select nro_patente from arriendo_camion WHERE EXTRACT(YEAR FROM fecha_ini_arriendo) >= extract(year from sysdate) - 2)
 
+ORDER BY 1;
+
+-- en otro orden de factores podemos por ejemplo cambiar ese union por un left join y se veria de la siguiente forma:
+SELECT c.nro_patente, anio, count(id_arriendo)
+FROM camion c LEFT JOIN arriendo_camion ac on(c.nro_patente = ac.nro_patente AND EXTRACT(YEAR FROM fecha_ini_arriendo) >= extract(year from sysdate) -2)
+GROUP BY c.nro_patente, anio
+ORDER BY 1;
 ~~~
 
+Como veras hay muchísimo menos código pero en efecto ambos hacen exactamente lo mismo.
 
+En caso que quieras cambiar por ejemplo un MINUS por otra cosa puedes por ejemplo seguir lo siguiente con subquerys:
+
+~~~sql
+-- este es lo mismo que un minus pero aplicado a otro ejemplo
+SELECT med_run as "RUT MEDICO", upper(pnombre || ' ' || apaterno || ' ' || amaterno) as "NOMBRE MEDICO"
+FROM medico
+where med_run not in (SELECT med_run FROM atencion WHERE TO_CHAR(fecha_atencion, 'mm-yyyy') = &&fecha_definida)
+ORDER BY 1;
+~~~
+
+En otro caso para imitar por ejemplo un INTERSECT debemos hacerlo de la siguiente forma con joins:
+
+~~~sql
+SELECT p.pac_run as "RUT PACIENTE", upper(pnombre || ' ' || apaterno || ' ' ||amaterno) as "NOMBRE PACIENTE", TO_CHAR(fecha_atencion, 'dd/mm/yyyy') as "FECHA_ATENCION"
+FROM paciente p join atencion a on(p.pac_run = a.pac_run AND to_char(fecha_atencion, 'mm-yyyy') = &&fecha_Seleccionada)
+ORDER BY 3;
+~~~
+
+A parte de estas hay otras muchisimas formas de hacer esto con de otras formas.
 
 ---
 
 ## DML
 
+Los dml son "sentencias sql que nos permiten interactuar en si con las tablas ya existentes", desde editarlas hasta crearlas desde 0 hay varias y en nuestro caso nos interesan los siguientes:
+
++ Insertar datos en una tabla: Para esto usamos la sentencia `INSERT INTO` esta va antes de un select y nos permite ingresar en una tabla lo que sea que recibamos desde ese select.
+
+  ~~~sql
+  INSERT INTO tabla_en_la_Que_insertamos_los_Datos
+  SELECT dato1
+  FROM tabla1;
+  ~~~
+
++ Actualizar datos en una tabla: Para esto usamos la sentencia `UPDATE SET` en la que seleccionamos la tabla a editar, la forma en la que editaremos nuestros datos y si queremos una condición con la que estos se editaran, por ejemplo:
+
+  ~~~sql
+  UPDATE tabla1
+  SET dato_1 = dato_1 + 2000
+  WHERE dato_1 < 1000;
+  ~~~
+
+  Lo que aquí hacemos es "en la tabla 1, todos los dato_1 que sean menores a 1000 le sumaremos 2000".
+
+  Aquí un ejemplo mas "complejo y realista" se libre de explorar las formas en las que puedes editar y actualizar tablas:
+
+  ~~~sql
+  UPDATE camion
+  SET valor_arriendo_dia = valor_arriendo_dia + 2000, categoria = 'A'
+  WHERE nro_patente IN(SELECT nro_patente FROM resumen_camion WHERE cantidad_arriendos >= 10);
+  ~~~
+
++ Crear tablas: Esto te lo pasara la profe, no te preocupes, en medio de la prueba la profe entregara un codigo que va a crear esto, no debes preocuparte de mas.
+
+---
+
+  
