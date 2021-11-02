@@ -85,25 +85,52 @@ Listo, ya habremos optimizado lo mas posible nuestro Unreal Engine 5, ahora pode
 
 Cuando iniciemos nuestro primer proyecto en blanco en Unreal Engine 5 veremos una ventana llena de cosas que probablemente te frustre no entenderlas, pero déjame facilitarte un poco el entendimiento de estas.
 
-+ **Editor**
+Pero antes de entrar a ellas debo mencionar que hay una opción que te puede ser útil, si vas a una de estas pestañas y das clic derecho sobre el nombre de estas existe la opción "Move to sidebar" esto esconde las pestañas al lado de la pantalla facilitando la visibilidad de nuestro editor, haz esto si lo crees necesario, si prefieres la vista original no hay problema.
 
-  Entre todos los elementos de la interfaz, el mas notable es en si la ventana del editor.
++ **Viewport**
+
+  Entre todos los elementos de la interfaz, el mas notable es en si el Viewport.
 
   Esta se caracteriza por ser la parte que mas ocupa de nuestra pantalla, en este podemos visualizar los elementos que se veran en nuestra escena, el mapa, nuestros personajes, objetos, etc...
 
   Este nos permite posicionar estos elementos de diversas formas a demás movernos dentro de la misma gracias a distintos controles que se accionan al mantener presionado el clic derecho en esta pestaña y moviéndote con W, A, S & D.
 
+  En este podemos encontrar diversas opciones que nos van a ser de ayuda cuando utilicemos nuestro viewport de diversas formas.
+
+  + La primera opcion se caracteriza por tener un logo con tres lineas en la esquina superior izquierda, aqui podremos seleccionar ciertos datos que se muestraran en el editor, a demas de ciertas opciones como el fov de la camara del mismo por ejemplo.
+  + La segunda es la cámara de perspectiva, esta se distingue por que por defecto trae el logo de un cubo seguido del texto "**Perspective**", este nos permite modificar la forma en la que queremos visualizar nuestro mundo, ya sea desde arriba, abajo, los lados, o con perspectiva para facilitar el posicionamiento de objetos en la escena.
+  + La tercera es el "**ViewMode**" se caracteriza ya que por defecto trae el logo de una esfera seguido de la palabra "**Lit**", este hace referencia a como vemos nuestra escena, si queremos que procese todo de forma normal, si querremos ver solo las luces, solo colliders, solo polígonos, entre otras muchas formas que nos serán útiles durante el desarrollo (cabe recordar que si presionas `g` se esconderán todos los logos y otros elementos de la escena, para que esta se vea de la misma forma como si estuvieras jugando).
+  + La cuarta es la opción "**Show**" esta nos permite seleccionar que elementos queremos y no queremos ver en nuestro Viewport, cosas como el grid (las cuadrillas), el anti-aliasing, la atmosfera, entre otros...
+
+  Por ultimo estan las opciones de movimiento, estas nos permiten seleccionar si queremos rotar, mover, escalar, entre otros a nuestros objetos dentro de nuestro mundo.
+
+  Pero a pesar de ser opciones comunes hay 3 a las que tenemos que darles un ojo:
+
+  + Position snapping: este nos permite el movimiento de elementos por "saltitos" para posicionarlos de forma adecuada en base a nuestra cuadrilla, desactivarlo permitira que este posicionamiento se haga mas fluido, pero pierda esa presicion en la cuadrilla.
+  + Rotation snapping: similar al de posicionamiento, este nos permite **rotar elementos** por medio de esos saltitos, deshabilitarlo nos va a permitir hacer giros mas suaves pero mas imprecisos.
+  + Scaling snapping: este ultimo nos permite aplicar estos "saltitos" al escalado de elementos, desactivarlo nos permitira hacewr un escalado mas suave pero mas impreciso.
+
+  ---
+
 + **World Outliner**
 
-  En Unity teníamos una pestaña conocida como la "Jerarquía", en esta se agregaban los elementos instanciados en el editor en si, y nos permite trabajar con los objetos que se encuentran dentro de nuestra "escena" (que por cierto en Unreal Engine a las "Scenes" se le conocen como "Worlds").
+  En Unity teníamos una pestaña conocida como la "Jerarquía", en esta se agregaban los elementos instanciados en nuestro mundo (para aclarar, mientras en Unity definíamos nuestros niveles como "Scenes" en Unreal Engine los definimos como "Worlds").
+
+  ---
 
 + **Details**
 
   La pestaña de "detalles" es similar a la pestaña del "inspector" en esta editaremos los componentes que están aplicados a los objetos de nuestro juego, cosas como su posición, el tamaño de sus colliders, los scripts aplicados a estos entre otros.
 
+  ---
+
 + **Content Drawner**
 
   En esta pestaña podremos ver los "assets" y carpetas de nuestro proyecto, para así acceder a nuestros scripts, modelos 3D, audios, sprites, entre otros muchos elementos que agregaremos a nuestro juego.
+
+  Un tip que puede serte de ayuda, si prefieres que esta pestaña este siempre abierta como en unity puedes ir a la esquina superior derecha de este y seleccionar "**Dock in layout**", si deseas deshacer esto solo debes cerrar la pestaña con la "x" que ves al lado de su nombre y podrás abrir esta nuevamente como un menú desplegable.
+
+  ---
 
 + **Terminal (cmd)**
 
@@ -122,7 +149,26 @@ Como es obvio, cuando empezamos a jugar con esta clase de herramientas que termi
 
 Aun así si no tienes amigos y trabajas solo es preferible utilizar esta guía como referencia a la hora de estructurar tus proyectos, ya que como mencione con anterioridad, es muy común el revisar elementos de tus proyectos anteriores para reutilizarlos en los nuevos. 
 
+Al crear un proyecto dentro de nuestro "Content drawner" vamos a encontrar 2 carpetas principales.
 
+1. **Content**: una carpeta especificamente creada para ingresar elementos a nuestro juego como son modelos, animaciones, audios, texturas, entre otros...
+2. **C++ Classes**:  en esta carpeta encontraremos un archivo con el nombre de nuestro proyecto, dentro de la cual encontraremos el codigo que define el funcionamiento de nuestro juego.
+
+La forma en la que recomiendo estructurar la carpeta content es según los elementos de nuestro juego, o sea generar carpetas según cosas como nuestro personaje que en su interior  contenga otras carpetas que definan los complementos del mismo, en esto entran modelos, audios, texturas, etc... aun que también es posible que en ciertos proyectos, puedas trabajar con una estructura similar a la de unity, utilizando carpetas generales para cada tipo de elementos y dentro de estas separarlos por uso.
+
+Otro tema necesario a tomar en cuenta es que en temas de funcionalidad, en la carpeta "**Content**" ira nuestra lógica en caso que queramos utilizar blueprints
+
+Por otro lado en la carpeta **C++ Clases** como dice su nombre, es la carpeta en la que esta nuestra lógica **escrita en código C++** por lo que en este caso si queremos utilizar código debemos hacer estos en esta carpeta.
+
+---
+
+# Scripting
+
+Como es obvio, una parte fundamental de nuestro paso por este conocido motor de videojuegos es la programación, el hacer funcionalidades por medio de código (o blueprints) es una de las partes mas esenciales a la hora de iniciar nuestro desarrollo, pero debemos tomar en cuenta ciertos factores a la hora de iniciar nuestro trabajo con este motor.
+
+Primero lo primero recordar que Unreal Engine 5 funciona con C++ así que te recomiendo pasarte por mi documentación de C++ que puedes encontrar [aqui](https://github.com/Khalzz/Documentaciones/blob/master/C%2B%2B/C%2B%2B.md).
+
+Ahora podemos comenzar, para crear un archivo de C++ debemos primero ir a la pestania "**Content Drawner**" para luego buscar la carpeta llamada "**C++ Classes**", aqui crearemos una nueva clase basado en nuestros requerimientos.
 
 
 

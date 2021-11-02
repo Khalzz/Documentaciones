@@ -103,6 +103,13 @@ private int edad = 18;
 private boolean estaVivoPorDentro = false;
 ~~~
 
+También están las constantes, que son en si datos **cuyo valor no cambia durante la ejecución del programa**, para esto tenemos que escribirlo de la siguiente forma:
+
+~~~java
+int metro = 1000; // en este caso seria una variable
+int METRO = 1000; // en este caso seria una constante
+~~~
+
 ## Tipos de datos
 
 La parte mas necesaria de entender para las variables son los tipos de datos, es "el grupo al que pertenece un dato", ya sea un numero entero, números decimales, texto o booleanos, saber las propiedades de cada uno es bastante necesario para poder trabajar normalmente con las variables en si.
@@ -208,7 +215,7 @@ Hay de distintos tipos, como:
 
 ---
 
-## ArrayList\<T>
+## Listas de tipo unico
 
 En si nosotros nos centraremos en las listas, específicamente en las ya mencionadas "`ArrayList<T>`" que como ya hice mención, son arreglos o colecciones en las que la **T** representa el tipo de datos que esta contendrá, por ejemplo si solo contiene int, Strings, floats u otros.
 
@@ -258,7 +265,7 @@ listaNoGenerica.add(persona); // en este ejemplo estoy almacenando una clase por
 
 ---
 
-### Métodos de un ArrayList
+### Métodos de una lista
 
 Los array list al igual que los tipos de datos tienen diversas funciones y metodos que nos permiten iteractuar de diversas formas con estos.
 
@@ -273,6 +280,62 @@ Las funciones que utilizaremos mas comúnmente son los siguientes:
 | indexOf()  | Devuelve el índice de la primera aparición del dato especificado. |
 | remove()   | nos permite eliminar un dato especifico dentro de la lista.  |
 | size()     | nos devuelve el tamaño de la lista.                          |
+
+---
+
+## ArrayList
+
+El ArrayList es una lista "sin orden aparente" donde podemos agregar objetos u datos de un tipo de dato general, por ejemnplo podemos anidarle un objeto base y agregar en el mismo otros objetos que hereden de este, por ejemplo
+
+Imagina que tenemos 1 clase llamada animal, a demás de varios animales que heredan de este, entre perros, gatos, pajaros, etc...
+
+~~~java
+// Si queremos hacer una lista por ejemplo de solo perros debemos hacer:
+List<Perro> listaDePerros = new ArrayList<Perro>();
+
+// Si queremos hacer una lista por ejemplo de solo gatos debemos hacer:
+List<Gato> listaDeGatos = new ArrayList<Gato>();
+
+// por otro lado si queremos hacer una lista que agregue todos estos animales TENEMOS que usar el ArrayList
+ArrayList<Object> listaDeAnimales = new ArrayList();
+// en este podemos referenciar cualquier dato en si MIENTRAS QUE ESTE SEA UN OBJETO
+~~~
+
+Otro tema a tomar en cuenta es que al referenciar un objeto llegaremos a sus datos facilmente, pero nos mostrara errores si intentamos acceder a uno de sus datos de forma directa, por ejemplo:
+
+~~~java
+for (Object animales: listaDeAnimales) {
+	System.out.println(animales.GetNombre()) // en este caso nos daria un error    
+}
+~~~
+
+Esto ocuyrre por que en realidad en los arrayList podemos agregar **cualquier dato que sea un objeto** sin importar los datos que tenga en su interior, para poder ejecutar los datos que hay en su interior primero tendremos que "revisar" si los datos que requerimos son los necesarios, utilizando un comparador de instancias, por ejemplo:
+
+Imagina que tenemos una lista de objetos con los siguientes en su interior: (perro, gato, caballo, misilBalisticoIntercontinental).
+
+Suponiendo que tanto perro, gato y caballo heredan de animal, deberiamos poder acceder a ellos haciendo lo siguiente:
+
+~~~java
+for (Object animales: listaDeAnimales) {
+	if (animales instanceof Animal) {
+        animales anim = (Animal)animales;  // datoDelFor nombreNuevo = (ClaseOriginal)datoDelFor
+        anim.getNombre() // para acceder a los datos del mismo utilizamos el "nombre nuevo"
+    } 
+}
+~~~
+
+Por ejemplo si tenemos una lista como: (perro, puddle, gato, caballo, misilBalisticoIntercontinental) si suponemos que puddle es una subclase de perro podemos hacer lo siguiente:
+
+~~~java
+for (Object animales: listaDeAnimales) {
+	if (animales instanceof perro) {
+        animales anim = (perro)animales;  // datoDelFor nombreNuevo = (ClaseOriginal)datoDelFor
+        anim.getNombre() // para acceder a los datos del mismo utilizamos el "nombre nuevo" 
+    } 
+}
+~~~
+
+En este caso se mostraran tanto el objeto base en si (perro) como la subclase del mismo (puddle) y descartando los que no lo son (gato, caballo y misil balístico intercontinental).
 
 ---
 
@@ -697,6 +760,24 @@ Como ya vimos, los métodos constructores se requieren para "inicializar los dat
 
 **Esto es por que las clases por defecto contienen un constructor el cual es generado de forma automática si no lo añadimos explícitamente**.
 
+Otro tema que puede ser de ayuda es el saber que signi9fica o representa un "super".
+
+Un **super** en programación orientada a objetos sirve para directamente "referenciar a la clase de la cual heredamos datos y funciones", por ejemplo en el caso de un constructor a parte de lo anteriormente visto, podemos hacer lo siguiente:
+
+~~~java
+public class PersonaNueva extends PersonaVieja{ // supongamos que heredamos el nombre y apellido de la clase "persona vieja"
+    
+    public int edad; // en esta clase tenemos solo 1 dato, "edad"
+
+    public Persona(int edad, String nombre, String apellido){  // aqui referenciamos los datos que ingresaran en nuestro constructor
+        super(nombre, apellido); // aqui van los datos que "extraemos de la otra clase" (asi nos ahorramos los constructores anteriores)
+        this.edad = edad; // este es el dato que creamos en esta clase
+    }
+}
+~~~
+
+**Por si acaso: si aun no sabes que es el extends y a que me refiero con la herencia, continua un poco y luego vuelve**.
+
 Como quizá habrás notado, por el bien de la fácil enseñanza de esta documentación he preferido hacer los datos de nuestra clase públicos, pero debo recordar que como vimos en la sección de encapsulamiento **esto no esta del todo correcto**, dado que las variables deben ser la mayoría de las veces generadas de forma privada y permitir su acceso utilizando:
 
 ---
@@ -743,7 +824,7 @@ public class Main {
 
 ---
 
-## Herencia
+## Herencia y Abstract
 
 La programacion orientada a ojbjetos tiene multiples propiedades distintas, entre estas estan:
 
@@ -854,6 +935,111 @@ Ahora para finalizar, debemos inicializar nuestra clase Estudiante, esto lo hace
 
 ---
 
+## Métodos abstractos
+
+Quizá en algún momento hayas escuchado a alguien hacer mención a estos, no te preocupes son mas simples de lo que crees, un método abstracto no es mas que **un método "base" que se crea ya sea en una clase abstracta o en una interfaz (esto lo veremos mas adelante) las cuales están "vacías de por si" y no poseen utilidad de forma directa** estas sirven como un "molde" para que así **las clases que hereden estos métodos abstractos sean quienes se encarguen de darle una función en particular**.
+
+*Por ejemplo:*
+
+~~~java
+// ahora como ejemplo voy a hacer una clase abstracta y una clase hijo que herede de este un metodo
+
+// CLASE 1 PADRE
+public abstract class padre {
+    public void saludar{} // dado que la clase padre es abstracta este metodo tambien lo sera (el mismo no posee una funcion)
+    // al ser una clase que no se instanciara, incluso aun que le agreguemos una funcion esta no hara nada hasta ser heredada y editada
+}
+
+// CLASE 2 (HIJO)
+public final class hijo extends padre {
+    public void saludar { // llamamos a la clase abstracta y le agregamos una funcion, tecnicamente deja de ser una clase abstracta
+        System.out.println("holaaaas!!!!");
+    }
+    
+    // este metodo no se considera abstracto ya que su funcion esta definida de inmediato y no es usada comno "base" para otra
+    public void caminar { 
+        System.out.println("estoy caminando!!!!");
+    }
+}
+~~~
+
+---
+
+## Clases finales
+
+Si anteriormente utilizábamos el abstract para "referenciar que habrá herencia", utilizaremos la keyword `final`, esta nos permite "marcar" las clases finales de una herencia, como recordaremos puedes hacer herencia sobre una clase con datosa ya heredados y asi hacer una cadena infinita, pero que puede tener un final
+
+este lo marcaremos agregando `final` en la clase que hayamos creado como si de un "abstract" se tratara, por ejemplo:
+
+~~~java
+public abstract class a {} // creamos nuestra clase inicial
+
+public final class b extends a {} // creamos una clase que hereda de a, pero es la final
+
+public class c extends b {} // estp nos generara un error dado qeu la clase b es final
+
+~~~
+
+Este error no se presentaría si la clase b fuera una clase sin el "final".
+
+---
+
+## Interfaces
+
+Seguro te estas preguntando, **"como que las interfaces no son entes gráficos con los que interactuamos con las aplicaciones?????"** es normal, a mi también me ocurrió la primera vez que escuche del concepto, pero fuera de esa creencia, puedo mencionar que las interfaces son un tema bastante util para potenciar nuestra programación orientada a objetos.
+
+Las interfaces son como una **"clase especial"** en la que principalmente podremos agregar:
+
++ Constantes: datos que mantienen un valor durante todo el tiempo de ejecución (imagínate como una variable que no puede cambiar de valor).
++ Métodos abstractos: métodos sin "volumen" cuya función será agregada en una clase que herede a esta.
+
+Esta no sirve para definir clases u objetos, esta en si esta hecha para definir "**datos y funciones generales**" que cualquier clase, sin importar su tipo puedan hacer referencia a estos.
+
+Para hacerlos debemos entrar al paquete en el que queramos crearlos y obviamente según nuestro ide, crear una nueva interfaz (como tema extra, **usualmente las interfaces tienen un nombre definido por "I" + "nombre" como "Icomun"**), luego en este definimos nuestros métodos abstractos y constantes.
+
+*Ejemplo:*
+
+~~~java
+package PaqueteActual; // este debe estar agregado en un paquete como cualquier otra clase
+
+public interface Icomun { // el Icomun es el nombre del archivo
+    
+    // aqui agregamos nuestras constantes como:
+    int SEGUNDOSENMINUTO = 60; // por si no estas seguro siempre hay 60 segundos en un minuto, solo por si acaso... :b
+    
+    // aqui agregamos nuestros metodos abstractos como:
+    int CalcularSuma(int x, int y); // como este es un metodo abstracto, no hace falta definir su funcion en particular
+}
+~~~
+
+Para **"implementar"** las interfaces en nuestra clase, lo que tenemos que hacer es referenciarla en la clase especifica que queremos, aun que también **podemos ponerlo en una clase padre para ahorrar algo de coodigo**.
+
+Para hacer esto seguimos el siguiente ejemplo:
+
+~~~java
+// imagina que tenemos hecho ya la interfaz anteriormente creada "Icomun" y tenemos una clase llamada "hermano"
+public class hermano implements Icomun { // debemos usar "implements + nombre de la interfaz"
+    
+    // luego de esto es posible que nos salga un error dado que debemos "sobreescribir nuestras funciones escritas en la interfaz"
+    @Override
+    public int CalcularSuma(int x, int y) { // si lo hacemos automaticamente nos saldra esto
+        throw new UnsupportedOperationException("Not supported yet."); // esto se nos mostrara por defecto pero podemos cambiarlo
+    }
+    
+    // para el ejemplo yo lo dejare de la siguiente forma:
+    @Override
+    public int CalcularSuma(int x, int y) {
+        return x + y
+    }
+}
+~~~
+
+En el caso de netbeans nosotros podemos automáticamente "sobrescribir estos métodos", ya sea presionando la "bombilla" al lado del nombre de nuestra clase (donde nos saldrá el error) y seleccionando "**implement all abstract methods**", o también seleccionando "**insert code**" y luego ir a la opción "**implement method**" (para acceder fácil a esta opción recuerda que puedes hacerlo con clic derecho o con `ALT` + `INSERT`) para finalmente seleccionar todos los métodos que se desean implementar.
+
+Listo, ahora sabes que es una interfaz.
+
+---
+
 # Try & Catch
 
 Las sentencias **Try y Catch** nos permiten **Generar o reaccionar a errores de forma controlada**, evitando que nuestro programa se cierre cuando se encuentre un error para el que no estamos preparados.
@@ -939,3 +1125,9 @@ Es muy común hacerlo al revés y tener errores, pro lo que es fundamental recor
 + Text Field: son espacios en los que podemos ingresar texto.
 + Text Area: son espacios en los que podemos mostrar textos.
 + Label: son espacios en los que podemos escribir texto.
+
+---
+
+# Util
+
+Si hacemos un ToString con el netbeans de forma similar a los getters y setters, este de por si nos generara un método que nos permitirá mostrar los datos de la clase.
