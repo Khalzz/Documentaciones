@@ -538,6 +538,22 @@ WHERE sueldo_base > avg(sueldo_base);
 
 Puede que en algún momento podamos llegar a hacer algo similar a esto mas adelante, pero en este caso no nos funcionaria correctamente.
 
+Algo que podemos hacer en un where a parte es comprobar la existencia o la no existencia de un dato en otra subcopnsulta, por ejemplo:
+
+~~~sql
+SELECT sueldo_base
+FROM medico
+WHERE sueldo_base in(SELECT dato1 FROM tabla1); -- si el dato se encuentra en esta tabla, se mostrara en el select
+~~~
+
+Por el otro lado:
+
+~~~sql
+SELECT sueldo_base
+FROM medico
+WHERE sueldo_base not in(SELECT dato1 FROM tabla1); -- si el dato NO se encuentra en esta tabla, se mostrara en el select
+~~~
+
 ---
 
 ## Operadores "SET"
