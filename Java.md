@@ -110,6 +110,8 @@ int metro = 1000; // en este caso seria una variable
 int METRO = 1000; // en este caso seria una constante
 ~~~
 
+Estos pueden estar dentro o fuera de nuestro main, pero si es adentro del mismo no pueden tener encapsulamiento (si son private o public) y si los hacekmos fuera del main debemos si o si agregar el private o public (preferiblemente private) 
+
 ## Tipos de datos
 
 La parte mas necesaria de entender para las variables son los tipos de datos, es "el grupo al que pertenece un dato", ya sea un numero entero, números decimales, texto o booleanos, saber las propiedades de cada uno es bastante necesario para poder trabajar normalmente con las variables en si.
@@ -318,7 +320,9 @@ Suponiendo que tanto perro, gato y caballo heredan de animal, deberiamos poder a
 ~~~java
 for (Object animales: listaDeAnimales) {
 	if (animales instanceof Animal) {
-        animales anim = (Animal)animales;  // datoDelFor nombreNuevo = (ClaseOriginal)datoDelFor
+        Animal anim = (Animal)animales;  // ClaseOriginal nombreNuevo = (ClaseOriginal)datoDelFor
+        // tambien podemos llamar datos por ejemplo accediendo a (Animal)animales.getNombre();
+        
         anim.getNombre() // para acceder a los datos del mismo utilizamos el "nombre nuevo"
     } 
 }
@@ -659,6 +663,7 @@ En este caso debemos "importar" los nuevos paquetes y clases a nuestro Main.java
 package paquete1;
 
 import paquete2.ClaseNueva; // asi se importa una nueva clase desde otro paquete
+import paquete2.*
 
 public class Main {
 
