@@ -780,4 +780,31 @@ Los dml son "sentencias sql que nos permiten interactuar en si con las tablas ya
 
 ---
 
-  
+ # Unidad 3
+
+## Gestión de usuarios y objetos en la base de datos
+
+La gestión de usuarios y objetos en una base de datos es casi tan importante como el control de los datos en si, saber como crear usuarios, darles privilegios entre otras muchísimas utilidades en base a esto son las acciones que estaremos haciendo en esta "unidad".
+
+Aquí ya empezamos a jugar el rol del "administrador de la base de datos".
+
+Primero debes recordar que para trabajar con esto debes hacerlo si o si **desde la conexión master o "de administrador"**
+
+## crear usuario
+
+Para crear un usuario tenemos que seguir varios pasos que serian por ahora los siguientes:
+
+1. Alterar la variable "`_ORACLE_SCRIPT`" a true (para que el script funcione)
+2. Crear el usuario por nombre y contrasenia
+3. aplicarle el "espacio temporal" en el que puede trabajar
+
+~~~sql
+ALTER SESSION SET "_ORACLE_SCRIPT" = true; -- esto lo hacemos por que las verciones mas nuevas de oracle lo requieren si o si
+
+CREATE USER fulanito IDENTIFIED BY contraseña123 -- create user + nombre usuario + identified by + contraseña de usuario
+TEMPORARY TABLESPACE "TEMP"; -- esto nos permite asignar la capacidad de usar un espacio de tabla "temporal"
+-- esto es para permitir por ejemplo hacer consultas sin afectar la base de datos asi en un "espacio de tablas temporal"
+
+ALTER USER fulanito QUOTA UNLIMITED ON USERS; -- alteramos el usuario entregandole un "espacio ilimitado" con el que trabajar
+~~~
+
