@@ -1365,11 +1365,11 @@ private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
 
 ## DAO
 
-Se le conoce como "DAO" a la "capa" en la que directamente interactuaremos con la base de datos (capa de acceso a datos), en si es un paquete en el que nosotros por defecto iterac tuaremos con la base de datos desde java
+Se le conoce como "DAO" a la "capa" en la que directamente interactuaremos con la base de datos (capa de acceso a datos), en si es un paquete en el que nosotros por defecto interactuaremos con la base de datos desde java
 
-Este concepto se hace importante ya que por temas de orden es la mejor forma en la que podemos iteractuar siguiendo el sistema en el que hemos estado trabajando, en otros casos puede ser distinto, pero en este es la mejor forma en la que podemos trabajar.
+Este concepto se hace importante ya que por temas de orden es la mejor forma en la que podemos interactuar siguiendo el sistema en el que hemos estado trabajando, en otros casos puede ser distinto, pero en este es la mejor forma en la que podemos trabajar.
 
-Entonces para trabajar con este lo unico que debemos hacer es crear un paquete el cual vamos a llamar "DAO".
+Entonces para trabajar con este lo único que debemos hacer es crear un paquete el cual vamos a llamar "DAO".
 
 Con esto ya hecho vamos a crear una clase para cada tabla que existe en la base de datos, si por ejemplo tenemos la tabla alumno y profesor tendremos que hacer una clase para alumno y profesor, que por temas de "orden" preferiblemente lo mejor seria escribirlos como "**AlumnoDao**" & "**ProfesorDAO**", en el caso del ejemplo anterior tendremos que crear un **UsusarioDAO**.
 
@@ -1457,6 +1457,8 @@ De este codgo hay varias cosas a mencionar:
 Y finalmente volvemos a la clase de nuestro formulario para hacer lo siguiente:
 
 ~~~java
+private UsuarioDAO uDAO = new UsuarioDAO(); // instanciamos nuestro DAO fuera de la funcion para que se pueda acceder desde toda la clase
+
 private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
     try { // primero agregamos todo dentro de un try-catch
         Usuario usr = new Usuario();
@@ -1464,7 +1466,6 @@ private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
         usr.setPassword(txtPassword.getText());
 
         // agregamos:
-        UsuarioDAO uDAO = new UsuarioDAO(); // instanciamos nuestro DAO
         boolean res = uDAO.Create(usr); // creamos un usuario segun el objeto user y su return lo almacenamos en la variable "res"
         if (res) { // si nuestra creacion nos devuelve un true y aqui conseguimos un feedback del mismo
             JOptionPane.showMessageDialog(null, "Usuario agregado", "Informacion", 1);
@@ -1482,6 +1483,29 @@ private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
 Si se siguieron todos los pasos correctamente esto debería generarnos solo 1 error al por ejemplo agregar un usuario que ya exista, pero eso no es problema, de hecho esta bien que ocurra.
 
 Pero puede haber un error que no notemos fácilmente, el que creemos un usuario sin USERNAME y sin PASSWORD, esto lo arreglamos validando esto en la clase usuario con una excepción, exactamente como lo muestro [aquí](#Excepciones).
+
+---
+
+## Read
+
+Ya para leer una tabla es mas fácil, simplemente requerimos de el lugar en el que mostraremos los datos de la misma y hacer algunos pases similares a los anteriormente mostrados.
+
+Volviendo a nuestra clase "UsuarioDAO"
+
+~~~java
+public ArrayList<Usuario[]> Read() { // llamamos la funcion que ya creamos en la interfaz
+	try {
+        Conection con = db.conectar(); // creamos la conexion a la base de datos
+        String query = "SELECT * FROM `usuarios`";
+        pst = con.prepareStatement(query); // ejecutamos el query escrito anteriormente
+        rs = pst.executeQuery(); // este es como el excecuteUpdate, solo que este funciona para "la lectura de datos"
+    } catch (SQLException ex) {
+        Logger.getLogger(UsuarioDAO.class.getName()).log(level.SEVERE, null, ex);
+        return false
+    }
+~~~
+
+
 
 ---
 
