@@ -795,8 +795,9 @@ Primero debes recordar que para trabajar con esto debes hacerlo si o si **desde 
 Para crear un usuario tenemos que seguir varios pasos que serian por ahora los siguientes:
 
 1. Alterar la variable "`_ORACLE_SCRIPT`" a true (para que el script funcione)
-2. Crear el usuario por nombre y contrasenia
-3. aplicarle el "espacio temporal" en el que puede trabajar
+   1. Crear el usuario por nombre y contraseña
+
+2. aplicarle el "espacio temporal" en el que puede trabajar
 
 ~~~sql
 ALTER SESSION SET "_ORACLE_SCRIPT" = true; -- esto lo hacemos por que las verciones mas nuevas de oracle lo requieren si o si
@@ -805,6 +806,51 @@ CREATE USER fulanito IDENTIFIED BY contraseña123 -- create user + nombre usuari
 TEMPORARY TABLESPACE "TEMP"; -- esto nos permite asignar la capacidad de usar un espacio de tabla "temporal"
 -- esto es para permitir por ejemplo hacer consultas sin afectar la base de datos asi en un "espacio de tablas temporal"
 
-ALTER USER fulanito QUOTA UNLIMITED ON USERS; -- alteramos el usuario entregandole un "espacio ilimitado" con el que trabajar
+ALTER USER fulanito QUOTA UNLIMITED ON USERS; -- alteramos el usuario entregandole un "espacio ilimitado" con el que trabajar, TECNICAMENTE LE DAMOS ESPACIO EN EL DISCO SOLO QUE ILIMITADO
+~~~
+
+___
+
+## Roles
+
+Hay veces que queremos etregarles ciertos datos y servicios a ciertos bjetos, en lugar de tener que hacer esto uno pór uno, es mil veces mas eficiente hacer un "espacio general" y anidamos todos los objetos a estos que conocemos como "Roles".
+
+Para esto utilizamos `CREATE ROLE` + `nombre_rol` de la siguiente forma:
+
+~~~sql
+ALTER SESSION SET "_ORACLE_SCRIPT" = true;
+
+CREATE USER fulanito IDENTIFIED BY contraseña123
+TEMPORARY TABLESPACE "TEMP";
+
+ALTER USER fulanito QUOTA UNLIMITED ON USERS;
+
+-- aplicamos el rol
+CREATE ROLE rol_escogido
+CREATE ROLE rol_admin -- puede haber mas de 1 rol
+~~~
+
+___
+
+## Permisos
+
+Como quiza sea obvio, todos los usuarios requieren utilidades distintas y datos distintos, con los "permisos" seleccionamos que puede hacer o a que puede acceder cada usuario de la base de datos.
+
+Para esto utilizamos `GRANT` + `"permiso"` + `TO` + `nombre_usuario` de la siguiente forma:
+
+~~~sql
+ALTER SESSION SET "_ORACLE_SCRIPT" = true;
+
+CREATE USER fulanito IDENTIFIED BY contraseña123
+TEMPORARY TABLESPACE "TEMP";
+
+ALTER USER fulanito QUOTA UNLIMITED ON USERS;
+
+-- aplicamos el rol
+CREATE ROLE rol_escogido
+CREATE ROLE rol_admin -- puede haber mas de 1 rol
+
+GRANT "CONNECT" TO fulanito -- CONNECT PERMITE CREAR SECIONES Y CREAR CONTENEDORES Y CONECTARSE A LA DB
+GRANT "RESOURCE" TO fulanito -- RESOURCE CREAR TABLAS, TIPOS, OPERADORES, SECUENCIAS, ETC...
 ~~~
 
