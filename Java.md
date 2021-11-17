@@ -1060,6 +1060,29 @@ catch(Exception e) {
 }
 ~~~
 
+Es bastante posible que en varias partes de nuestro código nos aparezcan errores a pesar de que nuestro código este bien escrito, estos usualmente son "excepciones" que genera nuestro código cuando un bloque puede o no concluir eficazmente, en el caso de netbeans, este nos avisara y permitirá hacer un try-catch automático.
+
+## Excepciones
+
+Las excepciones son en si un tipo de "mensaje" que lanza el programa cuando se detecta algún caso que para nosotros generara error, que un dato este en blanco, que no se retorne lo que nosotros deseemos etc.
+
+Este nos puede funcionar de gran forma en algunos casos que se pueda generar un error pero que esto no afecte el funcionamiento del programa, ósea que este no se pare o interrumpa.
+
+Una de las funciones mas útiles de estas por ejemplo es "evitar que un campo quede vacío al ser ingresado en una clase" especialmente si utilizamos una interfaz con la que entregamos esos datos.
+
+esto lo hacemos de la siguiente forma:
+
+~~~java
+// suponiendo queo tendremos nuestros datos segun los setters comprobaremos el dato "nombre"
+public void setNombre(String nombre) throws Exception { // el throws Exception indica que esta funcion puede lanzar una excepcion
+    if (!nombre.isEmpty() && !nombre.isBlank()) { // asi comparamos que el dato no este vacio o en blanco
+        this.nombre = nombre;
+    } else {
+        throw new Exception("El nombre no puede estar vacio")
+    }
+}
+~~~
+
 ---
 
 # Java Forms
@@ -1070,11 +1093,11 @@ Para poder interactuar con estos primero debemos saber el como se añaden a nues
 
 Antes de iniciar en el proceso de "hacer el formulario debemos seguir unos pasos":
 
-1. Debemos crear un nuevo paquete en el que ingresaremos nuestro archivo de crecion del formulari.
+1. Debemos crear un nuevo paquete en el que ingresaremos nuestro archivo de creación del formulario (preferiblemente llama este paquete "vistas").
 
 2. Debemos crear nuestro formulario, para eso vamos a dar clic derecho en nuestro paquete y seleccionamos `New > Jframe Form`.
 
-3. Seleccionamos el nombre de la clase y lko importamos en nuestra clase main de forma comun:
+3. Seleccionamos el nombre de la clase y lo importamos en nuestra clase main de forma común:
 
    ~~~java
    import paquete.claseFormulario;
@@ -1107,6 +1130,12 @@ botonDePruebaActionPerformed(java.awt.event.ActionEvent evt){
 
 Todos los elemento s instanciados en el formulario se pueden contar como objetos, por lo que cada uno de estos tiene distintas funciones que editan la forma en la que podemos trabajar en cada uno de estos.
 
+**Si por alguna razón queremos que nuestro código tome nuestro formulario como clase principal por ejemplo si queremos hacer una prueba de conexiones simple con una base de datos, debemos hacer cierta configuración en el proyecto:**
+
+1. Damos clic derecho en el nombre del proyecto y presionamos en "propiedades"
+2. Buscamos y cliqueamos la opción "run".
+3. Buscamos nuestras clases en el botón "browse" y seleccionamos la clase que pensamos en usar como principal
+
 ---
 
 ## Inicializador de una clase form
@@ -1124,6 +1153,20 @@ Es muy común hacerlo al revés y tener errores, pro lo que es fundamental recor
 
 ---
 
+## Crear alertas
+
+A la hora de utilizar nuestro programa puede que nuestros usuarios requieran de cierto feedback, este lo podemos conseguir por medio de "mensajes" que se muestran al ejecutar una acción especifica. 
+
+Para esto utilizamos:
+
+~~~java
+// JOptionPane.showMessageDialog(null, "mensaje general", "titulo", numeroTipoDeMensaje)
+JOptionPane.showMessageDialog(null, "Usuario Agregado", "Informacion", 1); // esto mostrara un mensaje con un logo de alerta
+JOptionPane.showMessageDialog(null, "Usuario no agregado", "Error", 0); // esto mostrara un mensaje con un logo de error
+~~~
+
+---
+
 ## Elementos comunes de formularios
 
 + Button: son botones que ejecutan una acción al ser presionados
@@ -1136,3 +1179,323 @@ Es muy común hacerlo al revés y tener errores, pro lo que es fundamental recor
 # Util
 
 Si hacemos un ToString con el netbeans de forma similar a los getters y setters, este de por si nos generara un método que nos permitirá mostrar los datos de la clase.
+
+---
+
+# Bases de datos
+
+Aun que se comente muy poco el tema al inicio del estudio de la programacion, el conectar un programa a una base de datos es una de las herramientas mas utiles para nuestro proceso de desarrollo y nos puede salvar si es que nuestro proyecto requiere del almacenamiento de datos masivos de distintas formas.
+
+Esto lo lograremos por medio de distintos factores, datos y codigos qeu veras en este capitulo de la documentacion.
+
+Pero antes de iniciar con esto tenemos que recaer a una herramienta fundamental.
+
+## XAMPP
+
+Xampp es una herramienta que nos permite gestionar bases de datos y hacer "conecciones" a distintos tipos de servicios de varias formas, este lo utilizaremos para conectar nuestro codigo a una base de datos.
+
+este lo podemos instalar desde [la siguiente pagina](https://www.apachefriends.org/es/index.html), su instalación es simple, similar a cualquier otro programa.
+
+Primero antes de proceder tenemos uqe "activar todo" primero.
+
+1. Activamos el servidor Apache (presionando en el boton "start" al lado de este) **Debe aparecer un color verde ya activado**.
+2. Activamos el gestor de bases de datos MySql (presionando en el boton "start" al lado de este) **Debe aparecer un color verde ya activado**.
+3. Abrimos la pagina de administracion del MySql presionando el boton "admin" que se encuentra al lado del mismo
+
+Ahora podemos crear nuestra base de datos, para esto nos vamos a la pestania "Nueva" a la izquierda de la pantalla, al entrar en ella tendremos que rellenar 2 campos:
+
+1. Campo de nombre: aquí ingresamos el nombre/identificador de nuestra base de datos.
+2. Tipografía definida: aquí elegimos los caracteres aceptados dentro de la base de datos (cambiamos "utf8bm4_general_ci" por ""utf8bm4_general_ci"")
+3. Finalmente tenemos el boton crear el que utilizaremos para en efecto finalizar la creacion de nuestra base de datos.
+
+Al terminar esto tenemos que crear tablas agregando los tipos de datos que iran en este, para eso seleccionamos los datos de la misma especificamente:
+
+1. El nombre de la tabla
+2. la cantidad de columnas que tendra
+
+Dependiendo de este ultimo sera nuestra libertad para agregar datos, trasa esto se agregaran en la pantalla las columnas que agregaremos, para seleccionar el nombre de las mismsas, tipoos de datos que contienen, su inidice, etc...
+
+En general los datos que traen cada una de estas columnas que nos importan son:
+
+1. nombre
+2. tipo de dato (int, string, float, etc...)
+3. valor o longitud (el valor del mismo, puede ser por ejemplo un numnero o un texto entre otros muchisimos datos)
+4. valor predeterminadoi (por ejemplo si no hay un dato podemos hacer que este se muestre como nulo)
+5. Nulo: si es que queremmos que este se muestre o no como nulo
+6. Indice: si queremos que una coluimna por ejemplo sea una clave primaria
+
+Ya al editar estos y presionar "guardar" se creara nuestra hbase de datos con las tablas ya creadas en si, pero sin datos en ella.
+
+---
+
+## Conectándonos a la base de datos
+
+Este proceso se debe hacer lo antes posible cuando creamos el proyecto, para asi evitar problemas lo mas posible.
+
+A la hora de hacer esto primero tenemos que importar una libreria que nos permite comunicar java con sql pero puede que esta no funcione, para eso importaremos la que a nosotros nos parezca conveniente.
+
+Para proceder debes ingresar el siguiente código en una clase que tu crees (en mi caso la llamare Conexión) y preferible que este en otro paquete (en este caso lo llamare Modelo):
+
+~~~java
+import java.sql.Connection; // importamos la libreria que agregamos anteriormente
+import java.sql.DriverManager; // importamos la libreria que agregamos anteriormente
+import java.swing.JOptionPane; // importamos la libreria que agregamos anteriormente
+
+public class Conexion {
+    // este codigo es siempre igual
+    Connection conectar=null;
+    String servidor = "127.0.0.1"; // ip local dado que nuestra coneccion es local (localhost)
+    String baseDatos = "registro"; // este lo debemos cambiar por el nombre de nuestra base de datos
+    String usuario = "root"; // el usuario debe ser distinto a root SOLO CUANDO LA BASE DE DATOS REQUIERE DE UN USUARIO
+    String password = ""; // esto permanece vacio hasta que la base de datos requiera una contraseña
+    public Connection conectar(){
+       try {
+          Class.forName("com.mysql.jdbc.Driver");
+          //conectar=DriverManager.getConnection("jdbc:mysql:"
+          //          + "//localhost/productos", "root","");
+          conectar=DriverManager.getConnection("jdbc:mysql:"
+                    + "//"+ servidor + "/" + baseDatos, usuario, password);
+       } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,e.getMessage());
+           // si queremos podemos hacer JOptionPane.showMessageDialog(null,"Conexion fallida" + e.getMessage(), "ERROR", 0);
+           // asi mostraremos un mensaje de error mas "personalizado"
+       }
+       return conectar;
+    }
+} 
+~~~
+
+Luego de hacer esto en otra clase vamos a llamar esta clase para así poder comprobar la conexión de forma efectiva, en mi caso esto lo hare en un formulario dentro de un paquete distinto, este es solo una pestaña con un botón que dice "comprobar".
+
+Cuando tengamos eso hecho nos metemos en su código y hacemos lo siguiente:
+
+~~~java
+// primero importamos las clases que necesitamos y en este caso son:
+import Modelo.Conexion;
+import java.sql.Connection;
+
+// despues buscamos la funcion en la que se ejecuta la funcion de nuestro boton y hacemos lo siguiente:
+private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
+    Conexion db = new Conexion(); // instanciamos la clase que creamos
+    Connection con = db.conectar(); // creamos la conexion a la base de datos
+    
+    if (con != null) {
+        try {
+        	JOptionPane.showMessageDialog(null, "Conexion establecida", "Correcto!", 1);
+        	con.close(); 
+   // tenemos que cerrar la conexion por que si esta no se cierra en otro tipo de servidor no permitira a mas equipos acceder a este			            
+        } catch (SQLExeption ex) {
+            Logger.getLogger(CheckConexion.class.getName()).log(level.SEVERE, null, ex);
+        }
+    }
+}
+~~~
+
+Utilizamos un try & catch al final por que esta parte del codigo es propensa a fallos y de otra forma no se ejecutaria correctamente, de hecho no nos dejaria ejecutar el codigo ya quenos marcaria todo como error, un tip para hacerlo mas rapido es escribiendo solo el:
+
+~~~java
+if (con != null) {
+    JOptionPane.showMessageDialog(null, "Conexion establecida", "Correcto!", 1);
+    con.close();
+}
+~~~
+
+Y luego con la "bombilla" que nos aparece al lado izquierdo de nuestro código seleccionamos la opción "Surround block with try-catch" y así se concreta automáticamente.
+
+Con esto listo ya deberíamos ser capaces de ejecutar el formulario que nos comprueba la conexión a la base de datos. 
+
+---
+
+## Utilizando la base de datos
+
+Ya habiendo comprobado la conexión y asegurándonos de que esta se llevo a cabo correctamente podemos empezar a trabajar en la misma, agregando información a la base de datos.
+
+Primero debemos ser concientes de los datos que podemos agregar a nuestras tablas, imagina que nuestra base de datos con el nombre **BaseDeDatos**, tiene 1 tabla llamada **Usuario** y que en su interior tiene 2 datos **USERNAME** y **PASSWORD**, siendo ambos varchar, tecnicamente en temas de jerarquia esto se veria de la siguiente forma:
+
++ BaseDeDatos (la base de datos en si)
+  + Usuario (la tabla donde almacenaremos nuestros usuarios)
+    + USERNAME (el dato que llama el nombre de usuario) **Esta es clave primaria** [VARCHAR]
+    + PASSWORD (el dato que llama la contraseña del usuario) [VARCHAR]
+
+Para iniciar con nuestro "traspaso de datos" vamos a traducir un poco la tabla a una clase, así para obtener primero los datos que querremos traspasar a la misma.
+
+Esta clase debe estar en el; mismo paquete que nuestra "conexión" solo por temas de comodidad.
+
+~~~java
+// empezaremos creando una clase basica con el nombre de nuestra tabla
+public class Usuario {
+    String username; // varchar = String
+    String password; // carchar = String
+    
+    public Usuario() {
+        
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public void setUsername(String username) {
+        this.username = username
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password
+    }
+}
+~~~
+
+Ahora simplemente busca una forma de darle los valores a estos datos, puede ser directamente por medio del constructor o por medio de un formulario usando getters y setters, yo prefiero personalmente esta ultima.
+
+Simplemente creamos nuestro formulario con 2 textfield, uno para username y otro para password a demás de un botón que nos permita "enviar" estos datos, para ello en la función del botón debemos "instanciar la clase usuario" y enviar los datos obtenidos por este formulario:
+
+~~~java
+private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
+	Usuario usr = new Usuario(); // instanciamos la clase
+
+	// pasamos los datos del formulario a la clase
+	usr.setUsername(txtusername.getText());
+	usr.setPassword(txtPassword.getText());
+}
+~~~
+
+## DAO
+
+Se le conoce como "DAO" a la "capa" en la que directamente interactuaremos con la base de datos (capa de acceso a datos), en si es un paquete en el que nosotros por defecto iterac tuaremos con la base de datos desde java
+
+Este concepto se hace importante ya que por temas de orden es la mejor forma en la que podemos iteractuar siguiendo el sistema en el que hemos estado trabajando, en otros casos puede ser distinto, pero en este es la mejor forma en la que podemos trabajar.
+
+Entonces para trabajar con este lo unico que debemos hacer es crear un paquete el cual vamos a llamar "DAO".
+
+Con esto ya hecho vamos a crear una clase para cada tabla que existe en la base de datos, si por ejemplo tenemos la tabla alumno y profesor tendremos que hacer una clase para alumno y profesor, que por temas de "orden" preferiblemente lo mejor seria escribirlos como "**AlumnoDao**" & "**ProfesorDAO**", en el caso del ejemplo anterior tendremos que crear un **UsusarioDAO**.
+
+Tras esto crearemos una interfaz en la que agregaremos las funciones que queremos usar en nuestra "clase Usuario" y asi predefinimos nuestro "CRUD" (CREATE, READ, UPDATE, DELETE).
+
+Entonces en nuestra interfaz (en mi caso lo ingreso en el mismo paquete que nuestra conexión y la clase usuario) agregaremos nuestras funciones de la siguiente forma:
+
+~~~java
+public interface IOperacionesUsuario {
+    //CRUD// 
+    boolean Create(Usuario u); // funcion con la que creamos un usuario
+    ArrayList<Usuario[]> Read(); // nos permite leer un arreglo de usuarios
+    boolean Update(Usuario u); // funcion con la que actualizamos el usuario
+    boolean Delete(Usuario u); // funcion con la que eliminamos un usuario
+}
+~~~
+
+Luego simplemente implementamos esta interfaz en nuestro DAO para el usuario y pasando a este. 
+
+Deberíamos hacer lo siguiente:
+
+~~~java
+// primero importamos las librerias necesarias:
+import java.util.ArrayList;
+import java.sql.ResultSet; // este lo ocupamos cuando traemos datos desde la base de datos
+import java.sql.PreparedStatement; // este lo ocupamos cuando enviamos datos a la base de datos
+import java.sql.Connection;
+
+public class UsuarioDAO implements IOperacionesUsuario {
+    Conexion db = new Conexion(); // primero "generamos la conexion"
+    ResultSet rs; // instanciamos el objeto ResultSet
+    PreparedStatement pst; // instanciamos el objeto PreparedStatement
+    
+    // ahora empezxamos con nuestras funciones
+    
+}
+~~~
+
+---
+
+### Create
+
+Ya habiendo concreto esto nos centraremos en una de las funciones que debemos hacer nos centraremos en "crear usuarios", para esto en la clase "UsuarioDAO" haremos lo siguiente:
+
+~~~java
+public boolean Create(Usuario u) { // llamamos la funcion que ya creamos en la interfaz
+        try {
+            Conection con = db.conectar(); // creamos la conexion a la base de datos
+
+            String query = "INSERT INTO `usuarios`(`USERNAME`, `PASSWORD`) VALUES ('?','?')"; // 1.
+            pst = con.prepareStatement(query); // ejecutamos el query escrito anteriormente
+            
+            // 2.
+            pst.setString(1, u.getUsername);
+            pst.setString(2, u.getPassword);
+            
+            int resultado = pst.executeUpdate(); // 3.
+            if (resultado >= 1) { // el resultado puede obtener mas valores a parte de 1 pero 0 siempre significa que fallo
+                con.close(); // recuerda cerrar la consulta
+                return true
+            }
+            con.close(); // recuerda cerrar la consulta
+            return false
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(level.SEVERE, null, ex);
+            return false
+        }
+    }
+~~~
+
+De este codgo hay varias cosas a mencionar:
+
+1. Como habrás visto en la variable "query" tenemos un string que en si es un insert into de sql, para facilitar nuestra vida podemos acceder a este **por medio de nuestro local host**, para esto tenemos que seleccionar nuestra tabla, luego seleccionar "sql", ahi veremos un espacio de texto y varios botones, segun el que seleccionemos nos entregara un query con la sintaxis de mySql nosotros elegimos el boton "insert" en este caso y nos da el String:
+
+    `"INSERT INTO `usuarios`(`USERNAME`, `PASSWORD`) VALUES ('[value-1]','[value-2]')"` y cambiamos el "[value-1]" y "[value-2]" por un `?` 
+
+   ---
+
+2. En el código usamos `pst.setString(1, u.getUsername);`, la función de este es enviar los datos a la tabla en si según la posición del parámetro ingresado en la función, en este caso al primer parámetro (USERNAME) y el segundo parámetro es el valor que le enviaremos al mismo, el nombre "setString()" varia dependiendo del tipo de dato que enviaremos, si es un integer por ejemplo se transformara en un "setInt()".
+
+   ---
+
+3. En el código utilizamos el `pst.executeUpdate();` para "actualizar" la tabla en si, este lo usamos únicamente para los INSERT, UPDATE y DELETE.
+
+Y finalmente volvemos a la clase de nuestro formulario para hacer lo siguiente:
+
+~~~java
+private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
+    try { // primero agregamos todo dentro de un try-catch
+        Usuario usr = new Usuario();
+        usr.setUsername(txtusername.getText());
+        usr.setPassword(txtPassword.getText());
+
+        // agregamos:
+        UsuarioDAO uDAO = new UsuarioDAO(); // instanciamos nuestro DAO
+        boolean res = uDAO.Create(usr); // creamos un usuario segun el objeto user y su return lo almacenamos en la variable "res"
+        if (res) { // si nuestra creacion nos devuelve un true y aqui conseguimos un feedback del mismo
+            JOptionPane.showMessageDialog(null, "Usuario agregado", "Informacion", 1);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al guardar", "Error", 0);
+        }  
+    } catch (Exception ex) {
+        Logger.getLogger(UsuarioDAO.class.getName()).log(level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(null, "Error " + ex.getMessage(), "Error", 0);
+        // por eleccion personal quiero que en este caso se muestre el mensaje de error igualmente
+    }
+}
+~~~
+
+Si se siguieron todos los pasos correctamente esto debería generarnos solo 1 error al por ejemplo agregar un usuario que ya exista, pero eso no es problema, de hecho esta bien que ocurra.
+
+Pero puede haber un error que no notemos fácilmente, el que creemos un usuario sin USERNAME y sin PASSWORD, esto lo arreglamos validando esto en la clase usuario con una excepción, exactamente como lo muestro [aquí](#Excepciones).
+
+---
+
+**Ya finalmente podemos exportar nuestra base de datos como archivo sql y ahí ya podríamos trabajar con el mismo desde otro gestor si así lo necesitamos**.
+
+
+
+## Extra 
+
+Para hacer esto debemos ir a la pestania de librerias en el netbeans, dar clic derecho en la misma y seleccionamos la opcion "Add Library", en esta seleccionamos la opcion "Create", ahi le agregaremos el nombre a nuestra libreria (en este caso "LibSql") y lo seleccionamos como "class library", finalmente damos en el boton "Add Jar Folder" y seleccionas el archivo java de tu libreria, por ultimo simplemente bguscas esta libreria en el selector de librerias y le das en "add library".
+
+## CRUD
+
++ create
++ read
++ update
++ delete
