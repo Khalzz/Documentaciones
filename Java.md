@@ -1232,14 +1232,20 @@ Ya al editar estos y presionar "guardar" se creara nuestra hbase de datos con la
 
 Este proceso se debe hacer lo antes posible cuando creamos el proyecto, para asi evitar problemas lo mas posible.
 
-A la hora de hacer esto primero tenemos que importar una libreria que nos permite comunicar java con sql pero puede que esta no funcione, para eso importaremos la que a nosotros nos parezca conveniente.
+A la hora de hacer esto primero tenemos que importar una librería que nos permite comunicar java con sql pero puede que esta no funcione, para eso importaremos la que a nosotros nos parezca conveniente.
+
+Primero antes de proceder tenemos que "agregar una librería" la cual se encargara de ayudarnos a conectar nuestro java con la base de datos, la librería podrás encontrarla [en este link](https://dev.mysql.com/downloads/file/?id=507327) y para agregarla a nuestro proyecto tendrás que seguir los siguientes pasos:
+
+1. debemos ir a la pestaña de librerías en el netbeans, dar clic derecho en la misma y seleccionamos la opción "Add Library".
+2. seleccionamos la opción "Create", ahí le agregaremos el nombre a nuestra librería (en este caso "LibSql") y lo seleccionamos como "class library" y continuamos.
+3. damos en el botón "Add Jar Folder" y seleccionas el archivo java de tu librería por ultimo simplemente buscas esta librería en el selector de librerías y le das en "add library".
 
 Para proceder debes ingresar el siguiente código en una clase que tu crees (en mi caso la llamare Conexión) y preferible que este en otro paquete (en este caso lo llamare Modelo):
 
 ~~~java
 import java.sql.Connection; // importamos la libreria que agregamos anteriormente
 import java.sql.DriverManager; // importamos la libreria que agregamos anteriormente
-import java.swing.JOptionPane; // importamos la libreria que agregamos anteriormente
+import javax.swing.JOptionPane; // importamos la libreria que agregamos anteriormente
 
 public class Conexion {
     // este codigo es siempre igual
@@ -1257,7 +1263,7 @@ public class Conexion {
                     + "//"+ servidor + "/" + baseDatos, usuario, password);
        } catch (Exception e) {
             JOptionPane.showMessageDialog(null,e.getMessage());
-           // si queremos podemos hacer JOptionPane.showMessageDialog(null,"Conexion fallida" + e.getMessage(), "ERROR", 0);
+           // si queremos podemos hacer JOptionPane.showMessageDialog(null,"Conexion fallida " + e.getMessage(), "ERROR", 0);
            // asi mostraremos un mensaje de error mas "personalizado"
        }
        return conectar;
@@ -1284,7 +1290,7 @@ private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
         	JOptionPane.showMessageDialog(null, "Conexion establecida", "Correcto!", 1);
         	con.close(); 
    // tenemos que cerrar la conexion por que si esta no se cierra en otro tipo de servidor no permitira a mas equipos acceder a este			            
-        } catch (SQLExeption ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(CheckConexion.class.getName()).log(level.SEVERE, null, ex);
         }
     }
@@ -1373,7 +1379,7 @@ Entonces para trabajar con este lo único que debemos hacer es crear un paquete 
 
 Con esto ya hecho vamos a crear una clase para cada tabla que existe en la base de datos, si por ejemplo tenemos la tabla alumno y profesor tendremos que hacer una clase para alumno y profesor, que por temas de "orden" preferiblemente lo mejor seria escribirlos como "**AlumnoDao**" & "**ProfesorDAO**", en el caso del ejemplo anterior tendremos que crear un **UsusarioDAO**.
 
-Tras esto crearemos una interfaz en la que agregaremos las funciones que queremos usar en nuestra "clase Usuario" y asi predefinimos nuestro "CRUD" (CREATE, READ, UPDATE, DELETE).
+Tras esto crearemos una interfaz en la que agregaremos las funciones que queremos usar en nuestra "clase Usuario" y así predefinimos nuestro "CRUD" (CREATE, READ, UPDATE, DELETE).
 
 Entonces en nuestra interfaz (en mi caso lo ingreso en el mismo paquete que nuestra conexión y la clase usuario) agregaremos nuestras funciones de la siguiente forma:
 
@@ -1393,6 +1399,7 @@ Deberíamos hacer lo siguiente:
 
 ~~~java
 // primero importamos las librerias necesarias:
+import Modelo.Conexion;
 import java.util.ArrayList;
 import java.sql.ResultSet; // este lo ocupamos cuando traemos datos desde la base de datos
 import java.sql.PreparedStatement; // este lo ocupamos cuando enviamos datos a la base de datos
@@ -1417,25 +1424,25 @@ Ya habiendo concreto esto nos centraremos en una de las funciones que debemos ha
 ~~~java
 public boolean Create(Usuario u) { // llamamos la funcion que ya creamos en la interfaz
         try {
-            Conection con = db.conectar(); // creamos la conexion a la base de datos
+            Connection con = db.conectar(); // creamos la conexion a la base de datos
 
-            String query = "INSERT INTO `usuarios`(`USERNAME`, `PASSWORD`) VALUES ('?','?')"; // 1.
+            String query = "INSERT INTO `usuarios`(`USERNAME`, `PASSWORD`) VALUES (?,?)"; // 1.
             pst = con.prepareStatement(query); // ejecutamos el query escrito anteriormente
             
             // 2.
-            pst.setString(1, u.getUsername);
-            pst.setString(2, u.getPassword);
+            pst.setString(1, u.getUsername());
+            pst.setString(2, u.getPassword());
             
             int resultado = pst.executeUpdate(); // 3.
             if (resultado >= 1) { // el resultado puede obtener mas valores a parte de 1 pero 0 siempre significa que fallo
                 con.close(); // recuerda cerrar la consulta
-                return true
+                return true;
             }
             con.close(); // recuerda cerrar la consulta
-            return false
+            return false;
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(level.SEVERE, null, ex);
-            return false
+            return false;
         }
     }
 ~~~
@@ -1460,7 +1467,7 @@ Y finalmente volvemos a la clase de nuestro formulario para hacer lo siguiente:
 private UsuarioDAO uDAO = new UsuarioDAO(); // instanciamos nuestro DAO fuera de la funcion para que se pueda acceder desde toda la clase
 
 private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
-    try { // primero agregamos todo dentro de un try-catch
+    try { // primero agregamos todo dentro de un try-catch 
         Usuario usr = new Usuario();
         usr.setUsername(txtusername.getText());
         usr.setPassword(txtPassword.getText());
@@ -1481,6 +1488,8 @@ private void jButton1ActionPreformed(java.awt.event.ActionEvent evt) {
 ~~~
 
 Si se siguieron todos los pasos correctamente esto debería generarnos solo 1 error al por ejemplo agregar un usuario que ya exista, pero eso no es problema, de hecho esta bien que ocurra.
+
+**El try y catch agregado en esta ultima parte es necesario solo si "hacemos uno dentro de la clase que compruebe que estos datos que le damos la mismo puedan o no estar vacío", en líneas generales podemos dejarlo sin el mismo pero si quieres comprobar que estos campos no queden vacíos deberías hacerlo a demás de agregar la confirmación en la clase "usuario"**.
 
 Pero puede haber un error que no notemos fácilmente, el que creemos un usuario sin USERNAME y sin PASSWORD, esto lo arreglamos validando esto en la clase usuario con una excepción, exactamente como lo muestro [aquí](#Excepciones).
 

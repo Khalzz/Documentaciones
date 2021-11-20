@@ -806,7 +806,7 @@ CREATE USER fulanito IDENTIFIED BY contraseña123 -- create user + nombre usuari
 TEMPORARY TABLESPACE "TEMP"; -- esto nos permite asignar la capacidad de usar un espacio de tabla "temporal"
 -- esto es para permitir por ejemplo hacer consultas sin afectar la base de datos asi en un "espacio de tablas temporal"
 
-ALTER USER fulanito QUOTA UNLIMITED ON USERS; -- alteramos el usuario entregandole un "espacio ilimitado" con el que trabajar, TECNICAMENTE LE DAMOS ESPACIO EN EL DISCO SOLO QUE ILIMITADO
+ALTER USER fulanito QUOTA UNLIMITED ON USERS; -- alteramos el usuario entregandole un "espacio ilimitado" con el que trabajar, TECNICAMENTE LE DAMOS ESPACIO EN EL DISCO SOLO QUE EN ESTE CASO ES "ILIMITADO"
 ~~~
 
 ___
@@ -832,7 +832,7 @@ CREATE ROLE rol_admin -- puede haber mas de 1 rol
 
 ___
 
-## Permisos
+## Privilegios
 
 Como quiza sea obvio, todos los usuarios requieren utilidades distintas y datos distintos, con los "permisos" seleccionamos que puede hacer o a que puede acceder cada usuario de la base de datos.
 
@@ -854,3 +854,115 @@ GRANT "CONNECT" TO fulanito -- CONNECT PERMITE CREAR SECIONES Y CREAR CONTENEDOR
 GRANT "RESOURCE" TO fulanito -- RESOURCE CREAR TABLAS, TIPOS, OPERADORES, SECUENCIAS, ETC...
 ~~~
 
+Pero que nos permite hacer cada "privilegio"?, pues la respuesta es:
+
++ **RESOURCE**: nos permite:
+  + crear tablas
+  + crear tipos
+  + crear operadores
+  + crear tipos de índice
+  + crear clusters
+  + crear procedimientos
+  + crear secuencias
+  + crear triggers
++ **CONNECT**: nos permite:
+  + crear seciones
+  + establecer contenedores
+
+Entonces dependiendo del privilegio que deseemos entregarle al objeto que creamos podrá el mismo hacer una de todas estas acciones.
+
+Como extra si quieres revisar los permisos que te entrega un privilegio en si puedes usar:
+
+~~~sql
+SELECT privilege 
+FROM dba_sys_privs
+WHERE grantee = 'PRIVILEGIO' -- el 'PRIVILEGIO' lo cambias por 'RESOURCE', 'CONNECT' u otros
+~~~
+
+---
+
+## Secuencias
+
+Las secuencias son otro objeto de la base de datos que en si nos permite crear "correlativos" osea **una secuencia de datos que incrementa o decrementa segun una cantidad constante especificada**.
+
+En si el uso principal de estos es **asignar los valores de la misma como id para otros datos**.
+
+Ejemplo:
+
+~~~sql
+-- aqui creamos una secunencia que inicia en 5 y aumenta de 2 en 2 (5,7,9,11...)
+CREATE SEQUENCE seq
+START WITH 5
+INCREMENT BY 2;
+~~~
+
+Un ejemplo usando esta secuencia como "id" de un elemento seria:
+
+~~~sql
+INSERT INTO personas
+VALUES(seq.NEXTVAL, nombre); -- entonces segun la secuencia este tendra como id 5
+
+INSERT INTO personas
+VALUES(seq.NEXTVAL, nombre); -- entonces segun la secuencia este tendra como id 7
+
+INSERT INTO personas
+VALUES(seq.NEXTVAL, nombre); -- entonces segun la secuencia este tendra como id 9
+
+-- asi sucesivamente
+~~~
+
+---
+
+## Vistas
+
+Estas son "visiones parciales" de las tablas, basándose en lo que nuestro objeto en si desea que se vea, por lo que por ejemplo el usuario 1 puede elegir que mostrarle a usuario 2 y los datos que le compartirá según nuestra elección.
+
+Antes de usar este deemos "entregarle la posibilidad de hacer vistas a nuestro objeto", esto lo hacemos dandole el "privilegio que le entrega esa capacidad", cosa que haremos de la siguiente forma:
+
+~~~sql
+-- esto lo hacemos en el usuairo system o admin
+GRANT CREATE ANY VIEW TO usuario1;
+~~~
+
+Para crear una vista hacemos lo siguiente:
+
+~~~sql
+CREATE OR REPLACE VIEW vista_aprobada AS
+-- aqui agregamos un SELECT FROM... dado que con este seleccionamos los datos  en si que vamos a mostrar en nuestra vista
+
+-- un ejemplo:
+-- supoingamos que tenemos usuario 1 y usuario 2, usuario 1 tiene notas y tareas completadas, este solo quiere mostrar las notas
+CREATE OR REPLACE VIEW vista_notas AS
+SELECT notas
+FROM tabla_usuario1
+WITH READ ONLY; -- ESTA ES LA RESTRICCION DE LA VISTA (en este caso no se puede modificar por que esta solo permite ser leida)
+-- si lo necesitamos podemos agregar where, order by y todo lo anteriormente visto en sql
+~~~
+
+---
+
+## Sinónimos
+
+Estos son como "alias" para las tablas ya existente que utilizamos para "referirnos a esta tabla ya existente" bastante similar a como funcionaria una variable en cualquier lenguaje de programación.
+
+Antes de intentarlo al igual que las vistas tenemos que entregarle al usuario los permisos para hacer estas vistas, esto lo hacemos de la siguiente forma:
+
+~~~sql
+-- esto lo hacemos en el usuairo system o admin
+GRANT CREATE PUBLIC SYNONYM TO usuario1; -- AHORA EL USUARIO 1 TIENE PERMISO PARA CREAR SINONIMOS PUBLICOS
+~~~
+
+El sinónimo se puede dividir en 2:
+
++ PUBLIC (que cualquier usuario puede acceder a este)
++ PRIVATE (que solo el mismo usuario puede acceder a el)
+
+Para crear el sinónimo debemos hacer lo siguiente:
+
+~~~SQL
+CREATE OR REPLACE PUBLIC SYNONYM nombre_sinonimo FOR tabla_usuario_1;
+~~~
+
+Ahora gracias a esto, si eres dueño de este sinónimo puedes acceder constantemente al mismo sin problemas, pero si no lo eres debes tener permiso para acceder al mismo, de no ser así este es inaccesible (si es privado por defecto solo el dueño puede verlo).
+
+Lo mismo con la escritura en la tabla, puedes escribir en la misma si eres dueño, pero si no es así debes pedir permiso.
