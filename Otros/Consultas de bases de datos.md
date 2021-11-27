@@ -826,8 +826,8 @@ TEMPORARY TABLESPACE "TEMP";
 ALTER USER fulanito QUOTA UNLIMITED ON USERS;
 
 -- aplicamos el rol
-CREATE ROLE rol_escogido
-CREATE ROLE rol_admin -- puede haber mas de 1 rol
+CREATE ROLE rol_escogido;
+CREATE ROLE rol_admin; -- puede haber mas de 1 rol
 ~~~
 
 ___
@@ -877,6 +877,27 @@ Como extra si quieres revisar los permisos que te entrega un privilegio en si pu
 SELECT privilege 
 FROM dba_sys_privs
 WHERE grantee = 'PRIVILEGIO' -- el 'PRIVILEGIO' lo cambias por 'RESOURCE', 'CONNECT' u otros
+~~~
+
+Otra cosa sobre el "grant" en si es que lo utilizamos para "entregarle privilegios a los usuarios y a los roles" por lo que si entregamos los privilegios por ejemplo al rol "usuario" solo tendrás que entregar este rol a los usuarios en lugar de específicamente entregar todos los privilegios que usan estos.
+
+Por ejemplo imagina que creamos el "rol_programador" y le damos el privilegio de crear procedimientos y indices.
+
+~~~sql
+-- primero creamos el rol:
+CREATE ROLE rol_desarrollador;
+
+-- le entregamos los privilegios:
+GRANT CREATE PROCEDURE, CREATE ANY INDEX TO rol_desarrollador;
+
+-- finalmente le entregamos el rol al "usuario_1"
+GRANT rol_desarrollador TO usuario_1;
+~~~
+
+otro ejemplo es por si queremos entregarle a un usario especifico los privilegios de "insertar, actualizar y eliminar" datos de una tabla del usuario_1 para el usuario_2, en este caso lo hariamos de la siguiente forma:
+
+~~~sql
+GRANT INSERT, UPDATE, DELETE ON usuario_1.tabla_del_usuario_1 TO usuario_2; 
 ~~~
 
 ---
@@ -950,6 +971,9 @@ Antes de intentarlo al igual que las vistas tenemos que entregarle al usuario lo
 ~~~sql
 -- esto lo hacemos en el usuairo system o admin
 GRANT CREATE PUBLIC SYNONYM TO usuario1; -- AHORA EL USUARIO 1 TIENE PERMISO PARA CREAR SINONIMOS PUBLICOS
+GRANT CREATE SYNONYM TO usuario1; -- AHORA EL USUARIO 1 TIENE PERMISO PARA CREAR SINONIMOS privados
+
+GRANT CREATE PUBLIC SYNONYM, CREATE SYNONYM TO usuario1; -- AHORA EL USUARIO 1 TIENE PERMISO PARA CREAR SINONIMOS PUBLICOS y privados
 ~~~
 
 El sinónimo se puede dividir en 2:
@@ -960,9 +984,116 @@ El sinónimo se puede dividir en 2:
 Para crear el sinónimo debemos hacer lo siguiente:
 
 ~~~SQL
-CREATE OR REPLACE PUBLIC SYNONYM nombre_sinonimo FOR tabla_usuario_1;
+CREATE OR REPLACE PUBLIC SYNONYM nombre_sinonimo FOR tabla_usuario_1; -- sinonimo publico
+CREATE OR REPLACE SYNONYM nombre_sinonimo_privado FOR tabla_1_usuario_1; -- sinonimo privado
 ~~~
 
 Ahora gracias a esto, si eres dueño de este sinónimo puedes acceder constantemente al mismo sin problemas, pero si no lo eres debes tener permiso para acceder al mismo, de no ser así este es inaccesible (si es privado por defecto solo el dueño puede verlo).
 
+Y en defecto para crear un sinónimo privado solo debemos eliminar el "public".
+
+Por ultimo debes ser consiente de que quien crea el sinónimo es a quien le pertenece estas tablas y quien se encarga de generar los permisos para acceder a estos sinónimos es el system de la siguiente forma:
+
+~~~sql
+GRANT SELECT ON nombre_sinonimo TO usuario_2; -- para sinonimos publicos
+GRANT SELECT ON usuario_1.nombre_sinonimo_privado TO usuario_2; -- para sinonimos publicos
+~~~
+
+Luego puedes usar estos sinónimos en los querys para referirte a estas tablas.
+
 Lo mismo con la escritura en la tabla, puedes escribir en la misma si eres dueño, pero si no es así debes pedir permiso.
+
+---
+
+## Índices
+
+Este es otro objeto creable por los usuarios que contienen el privilegio "RESOURCE" y que en si su función principal es "**optimizar los tiempos de respuesta de la base de datos a cambio de espacio en la memoria**".
+
+Imagínalo de la misma forma en la que funciona un índice en un libro, sin este debemos buscar pagina por pagina hasta encontrar lo que queremos, pero si tenemos un índice este puede indicar donde se encuentra lo que buscamos, pero a cambio utilizamos espacio del libro ya que esto ocupa una o mas hojas del mismo.
+
+En este caso imagina que tenemos la tabla "persona" y en ella tenemos los datos: id, primer_nombre, segundo_nombre y fecha_nacimiento.
+
+Supongamos que en este tenemos 100.000.000 datos almacenados que representan a una persona creada de forma aleatoria, ahora si quisiéramos hacer una revisión de estos datos, lastimosamente descubriríamos que esto requeriría una cantidad notable de tiempo.
+
+por ejemplo:
+
+~~~sql
+SELECT count(*)
+FROM persona;
+~~~
+
+En este caso recibimos el id, nombre, apellido y fecha de nacimiento de **todas las personas ingresadas en la base de datos**, esta llamada tomaria aproximadamente 3562ms, esto aumentaría si por ejemplo hacemos
+
+~~~sql
+SELECT count(*)
+FROM persona
+WHERE primer_nombre = "Rodrigo";
+~~~
+
+En este otro ejemplo traemos solo "la cantidad de personas cuyo nombre sea Rodrigo", solo por agregar esto el tiempo de respuesta aumenta a 4261ms, el mismo tiempo seria por ejemplo si buscamos por el apellido y ya ni hablar si agregamos mas requerimientos a la consulta.
+
+Esto ocurre por que al ejecutar el código **el mismo analiza la base de datos completa antes de seleccionar que casos contienen por ejemplo la relación especificada**.
+
+Para esto usamos los índices y antes de iniciar necesito que revises algo.
+
+Toma cualquier llamada sql que aun no tenga un índice, y ejecuta la opción "Explain plan", en el caso de sql developer se encuentra 2 espacios al lado de la opción de ejecutar el código, al ejecutar esto se abrirá un menú donde veremos las tablas a las que hacemos mención en nuestro query son los siguientes elementos:
+
++ Operation: en esta lineal se vera el "objeto" que esta mencionando, si por ejemplo es un acceso a una tabla o un índice.
++ OBJECT_NAME: el nombre del objeto según el que este tenga.
++ OPTIONS: la forma de acceso que tendrá nuestra tabla.
+
+si ejecutamos la operación antes vista que nos cuenta todos los datos de las personas llamadas "Rodrigo" y mostramos sus  datos con el "Explain plan", encontraremos lo siguiente:
+
+| OPERATION    | OBJECT_NAME | OPTIONS |
+| ------------ | ----------- | ------- |
+| TABLE ACCESS | persona     | FULL    |
+
+Ósea tendremos el acceso a una tabla llamado persona de acceso completo y lo de acceso completo hacer referencia a como revisamos la tabla, en este caso el full representa que primero se revisara toda la tabla antes de mencionar si hay alguna relación.
+
+Para mejorar esto tenemos que fijarnos primero en 2 tipos de índices que dependen fuertemente de como esta estructurada nuestra consulta:
+
+1. **B-TREE**: Este índice se genera cuando nuestro query filtra los datos según un dato simple por ejemplo:
+
+   ~~~sql
+   SELECT count(*)
+   FROM persona
+   WHERE primer_nombre = "Rodrigo"; -- en este caso filtramos por un dato comun y traemos el conteo de personas con ese nombre
+   ~~~
+
+   Y para crear el "índice" de esta consulta debemos usar:
+
+   ~~~sql
+   -- el nombre del indice puede ser el que queramos, pero el dato debe ingresarse asi: tabla(dato a usar como indice);
+   CREATE INDEX idx_persona_nombre ON persona(primer_nombre);
+   ~~~
+
+   Entonces ahora si intentamos ejecutar cualquier consulta **que dependa o filtre por el primero nombre** no importa si llama otros datos se ejecutara muchísimo mas rápidamente.
+
+   Entonces al terminar esto y al volver a ejecutar la query anteriormente vista, descubriremos que tendremos:
+
+   | OPERATION    | OBJECT_NAME        | OPTIONS                |
+   | ------------ | ------------------ | ---------------------- |
+   | TABLE ACCESS | persona            | BY INDEX ROWID BATCHED |
+   | INDEX        | idx_persona_nombre | RANGE SCAN             |
+
+   Esto nos dice que la tabla "persona" ya tiene un índice aplicado y que la búsqueda de estos datos se hará por medio del índice con el nombre "idx_persona_nombre"
+
+   ---
+
+2. **Índice basado en función**: Estos se generan cuando en nuestro query encontramos una función en el having el cual usamos para "filtrar los datos del mismo", por ejemplo:
+
+   ~~~sql
+   SELECT count(*)
+   FROM persona
+   WHERE TO_CHAR(fecha_nacimiento, 'mm-yyyy') = '03-2003' ; 
+   -- en este caso filtramos con una funcion entre medio la cual se encarga de revisar que la fecha de nacimiento sea el marzo del 2003
+   -- esta funcion puede cambiar por cualquier otra
+   ~~~
+
+   Y para crear el índice de la misma debemos usar:
+
+   ~~~sql
+   CREATE INDEX idx_persona_nombre ON persona(TO_CHAR(fecha_nacimiento, 'mm-yyyy')); -- ponemos la condicion antes del =
+   ~~~
+
+   Y ya después de esto en nuestra tabla de "Explain plan" veremos algo muy similar a lo anteriormente mencionado, solo que obviamente el nombre de la tabla y del índice va a cambiar dependiendo de este.
