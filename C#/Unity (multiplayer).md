@@ -1374,6 +1374,12 @@ namespace GameServer
                 {
                     GameLogic.Update(); // actualizamos la logica del juego
                     _nextLoop = _nextLoop.AddMilliseconds(Constants.MS_PER_TICK); // agregamos tiempo al loop
+                    
+                    if (_nextLoop > DateTime.Now) // esta linea nos permite "bajar el uso de procesador"
+                    {
+                        Thread.Sleep(_nextLoop - DateTime.Now);
+                    }
+                    // caundo el servidor esta inactivo este seguira usando recursos, a no ser que utilizemos esta condicion
                 }
             }
         }
@@ -1381,7 +1387,11 @@ namespace GameServer
 }
 ~~~
 
- Listo ahora al ejecutar nuestro servidor y conectarnos por medio del cliente veremos el mensaje de ""
+ Listo ahora al ejecutar nuestro servidor y conectarnos por medio del cliente veremos el mensaje de bienvenida desde el servidor y el cliente cada vez que alguien se conecte.
+
+---
+
+
 
 
 
