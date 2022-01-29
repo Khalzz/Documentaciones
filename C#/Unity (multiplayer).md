@@ -571,9 +571,619 @@ Al hacer esto te deberías dar cuenta de 2 cosas:
 1. La conexión al servidor debería generarse normalmente si lo activamos normalmente.
 2. Si la conexión al servidor falla el botón de conexión deberían aparecer nuevamente.
 
-Por ultimo seguro no veras tu nuevo nombre de usuario en ni un lado, esto es por que enviamos los datos, pero aun no los utilizamos, para ello continua en la siguiente seccion de.
+---
+
+## Manejando el mensaje (nombre de usuario) en el servidor y spawneando jugadores
+
+Seguramente tras haber hecho todo esto te preguntaras, ¿Y mi nombre? ya que agregamos este como un dato a recibir por el servidor, en efecto este dato se esta recibiendo, pero lamentablemente para poder trabajar con este vamos a necesitar de la cooperación de parte del servidor y para esto haremos lo siguiente.
+
+Primero copiaremos el "selector de id" para poder identificar el mensaje recibido por el servidor del script "**NetworkManager**" de nuestro proyecto "**Client**", este ira en el "**NetworkManager**" del proyecto "**Server**" de la siguiente forma:
+
+~~~c#
+// NetworkManager (Server)
+using RiptideNetworking;
+using RiptideNetworking.Utils;
+
+using UnityEngine;
+
+public enum ClientToServerId : ushort // este enumerador contendra los id de todos los mensajes que enviemos del cliente al servidor
+{
+    name = 1, // empezando por el 1
+}
+
+public class NetworkManager : MonoBehaviour
+{
+    private static NetworkManager _singleton;
+    public static NetworkManager singleton
+    {
+        get => _singleton;
+        private set
+        {
+            if (_singleton == null)
+            {
+                _singleton = value;
+            }
+            else if (_singleton != null)
+            {
+                print($"{nameof(NetworkManager)} instance already exists, destroying duplicate!");
+                Destroy(value);
+            }
+        }
+    }
+
+    public Server Server { get; private set; }
+    [SerializeField] private ushort port;
+    [SerializeField] private ushort maxClientCount;
+
+    private void Awake()
+    {
+        singleton = this;
+    }
+
+    private void Start()
+    {
+        RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false); 
+        Server = new Server();
+        Server.Start(port, maxClientCount);
+    }
+
+    private void FixedUpdate()
+    {
+        Server.Tick();
+    }
+
+    private void OnApplicationQuit()
+    {
+        Server.Stop();
+    }
+}
+~~~
+
+Luego vamos a nuestra clase "**Player**" en nuestro proyecto "**Server**" y agregamos lo siguiente:
+
+~~~c#
+// Player (Server)
+using RiptideNetworking; // agregamos RiptideNetworking
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    // creamos un diccionario estatico para acceder a los jugadores segun un id
+    public static Dictionary<ushort,Player> list = new Dictionary<ushort,Player>();
+
+    public ushort Id { get; private set; }
+    public string Username { get; private set; }
+
+    // ahora para manejar el mensaje que viene con nuestro nombre de usuario tendremos que hacer lo siguiente:
+
+    // esta funcion se activa cuando nuestro jugador es destruido (se desconecta)
+    private void OnDestroy()
+    {
+        list.Remove(Id);
+    }
+
+    public static void Spawn(ushort id, string username) // creamos la funcion que va a generar nuestros jugadores en la partida
+    {
+        // y los generamos segun un prefab
+        Player player = Instantiate(GameLogic.singleton.PlayerPrefab, new Vector3(1, 1, 1), Quaternion.identity).GetComponent<Player>(); 		
+        player.name = $"Player {id} ({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
+         // esto es tecnicamente una condicional if pero en linea
+        // revisamos que el nombre de usuario no este vacio y de ser asi aplicamos el nuevo nombre de usuario
+
+        // agregamos los ultimos datos y ingresamos al jugador a la lista de jugadores
+        player.Id = id;
+        player.Username = string.IsNullOrEmpty(username) ? "Guest" : username;  
+        list.Add(id, player);
+    }
+
+    [MessageHandler((ushort)ClientToServerId.name)]
+    private static void Name(ushort fromClientId, Message message)
+    {
+        Spawn(fromClientId, message.GetString());
+    }
+}
+~~~
+
+Ahora vamos al "**NetworkManager**" de nuestro proyecto "**Server**" y hacemos lo siguiente:
+
+~~~c#
+// NetworkManager (Server)
+using RiptideNetworking;
+using RiptideNetworking.Utils;
+
+using UnityEngine;
+
+public enum ClientToServerId : ushort
+{
+    name = 1,
+}
+
+public class NetworkManager : MonoBehaviour
+{
+    private static NetworkManager _singleton;
+    public static NetworkManager singleton
+    {
+        get => _singleton;
+        private set
+        {
+            if (_singleton == null)
+            {
+                _singleton = value;
+            }
+            else if (_singleton != null)
+            {
+                print($"{nameof(NetworkManager)} instance already exists, destroying duplicate!");
+                Destroy(value);
+            }
+        }
+    }
+
+    public Server Server { get; private set; } // we start our server class
+    [SerializeField] private ushort port;
+    [SerializeField] private ushort maxClientCount;
+
+    private void Awake()
+    {
+        singleton = this;
+    }
+
+    private void Start()
+    {
+        RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false); 
+        Server = new Server();
+        Server.Start(port, maxClientCount);
+
+        Server.ClientDisconnected += PlayerLeft; // actualizamos los jugadores restantes
+    }
+
+    private void FixedUpdate()
+    {
+        Server.Tick()
+    }
+
+    private void OnApplicationQuit()
+    {
+        Server.Stop();
+    }
+
+    // agregamos lo siguiente:
+    private void PlayerLeft(object sender, ClientDisconnectedEventArgs e)
+    {
+        Destroy(Player.list[e.Id].gameObject);
+    }
+}
+
+~~~
+
+Ahora copiamos el código de nuestro Singleton y lo pegamos en nuestro script "**GameLogic**" en el proyecto "**Server**" y luego cambiamos las referencias a este proyecto a demás de lo siguiente:
+
+~~~c#
+// GameLogic (Server)
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameLogic : MonoBehaviour
+{
+    // agregamos el singleton
+    private static GameLogic _singleton;
+    public static GameLogic singleton
+    {
+        get => _singleton;
+        private set
+        {
+            if (_singleton == null)
+            {
+                _singleton = value;
+            }
+            else if (_singleton != null)
+            {
+                print($"{nameof(GameLogic)} instance already exists, destroying duplicate!");
+                Destroy(value);
+            }
+        }
+    }
+
+    // agregamos el prefab que representa a nuestro jugador
+    public GameObject PlayerPrefab => playerPrefab;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject playerPrefab;
+
+    private void Awake()
+    {
+        singleton = this;
+    }
+}
+~~~
+
+Ya con esto listo podemos ir a nuestro proyecto "**Server**" y crear un objeto vacío que representara a nuestro jugador y le asignamos el script "**Player**", luego como hijo le agregamos una capsula como objeto 3D y le eliminamos su collider (esto lo trabajaremos mas adelante), finalmente agregamos el script "**GameLogic**" a nuestro **objeto** NetworkManager y creamos el prefab de nuestro jugador en la carpeta prefab, eliminamos el jugador de nuestra escena y lo referenciamos en el script "**GameLogic**" dentro de nuestro NetworkManager.
+
+Tras esto al conectarnos como cliente deberíamos ver a nuestro "jugador" en el proyecto "**Server**" a demás de tener este el nombre de usuario en el nombre del prefab.
 
 ---
 
-## Manejando el mensaje (nombre de usuario) en el servidor
+## Spawneando jugadores en el cliente
+
+Como vimos anteriormente al instanciar jugadores, estos solo se verán desde el servidor, por lo que necesitamos hacer unas cuantas cosas extra para que esto ocurra de forma que el cliente pueda ver al jugador instanciado.
+
+Para esto itermos al script "**NetworkManager**" de nuestro proyecto "***Server**" y agregamos lo siguiente:
+
+~~~c#
+// NetworkManager (Server)
+using RiptideNetworking;
+using RiptideNetworking.Utils;
+using UnityEngine;
+
+public enum ServerToClientId : ushort // este enumerador contendra los id de todos los mensajes que enviemos del servidor al cliente
+{
+    playerSpawned = 1, // empezando por el 1
+}
+
+// este ya existia, solo lo agrego como referencia para donde posicionar el enumerador anterior
+public enum ClientToServerId : ushort
+{
+    name = 1,
+}
+~~~
+
+Despues en nuestro script "**Player**" del proyecto "**Server**" hacemos lo siguiente:
+
+~~~c#
+using RiptideNetworking;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public static Dictionary<ushort,Player> list = new Dictionary<ushort,Player>();
+
+    public ushort Id { get; private set; }
+    public string Username { get; private set; }
+    private void OnDestroy()
+    {
+        list.Remove(Id);
+    }
+
+    public static void Spawn(ushort id, string username)
+    {
+        Player player = Instantiate(GameLogic.singleton.PlayerPrefab, new Vector3(1, 1, 1), Quaternion.identity).GetComponent<Player>();
+        player.name = $"Player {id} ({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
+
+        player.Id = id;
+        player.Username = string.IsNullOrEmpty(username) ? "Guest" : username;  
+
+        list.Add(id, player);
+    }
+
+    #region Messages
+    //creamos el metodo que se encargara de enviar el mensaje de "spawn"
+    private void sendSpawned()
+    {
+        Message message = Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.playerSpawned); // creamos el mensaje
+        message.AddUShort(Id); // creamos el id
+        message.AddString(Username); // y creamos el nombre de usuario
+    }
+
+    [MessageHandler((ushort)ClientToServerId.name)]
+    private static void Name(ushort fromClientId, Message message)
+    {
+        Spawn(fromClientId, message.GetString());
+    }
+    #endregion
+}
+
+~~~
+
+Pero como podra el cliente saber donde vamos a posicionar al jugador?, pues pasandole las posiciones de donde va a spawnear el mismo, bien si podemos ponerlo simplemente agregando 3 float, esto es muy ineficiente, por lo que vamos a copiar y pegar [el código del siguiente enlace](https://github.com/tom-weiland/RiptideNetworking/blob/main/UnityPackage/Runtime/MessageExtensionsUnity.cs) en nuestro "**MessageExtensions**" del proyecto "**Server**" cambiando nuestra clase básica de unity por la clase que se ve en este mismo y luego agregamos el `using RiptideNetworking;` arriba del todo **a demas recuerda hacer esto mismo pero en el proyecto "Client"**.
+
+Luego de esto podemos volver a nuestro script "**Player**" de "**Server**" y agregar lo siguiente:
+
+~~~c#
+using RiptideNetworking;
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public static Dictionary<ushort,Player> list = new Dictionary<ushort,Player>();
+
+    public ushort Id { get; private set; }
+    public string Username { get; private set; }
+
+    private void OnDestroy()
+    {
+        list.Remove(Id);
+    }
+
+    public static void Spawn(ushort id, string username)
+    {
+        // hacemos esto para que el mensaje llegue a todos los jugadores que no sean el recien creado
+        foreach (Player otherPlayer in list.Values) 
+        {
+            otherPlayer.sendSpawned(id);
+        }
+
+        Player player = Instantiate(GameLogic.singleton.PlayerPrefab, new Vector3(1, 1, 1), Quaternion.identity).GetComponent<Player>();
+        player.name = $"Player {id} ({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
+        player.Id = id;
+        player.Username = string.IsNullOrEmpty(username) ? "Guest" : username;
+
+        player.sendSpawned(); // esto envia el mensaje de spawn al jugador que llego pero no a los otros
+
+        list.Add(id, player);
+    }
+
+    #region Messages // aqui es donde mas cambios hemos hecho
+        
+    // creamos 2 metodos de spawn, uno que envia los datos a un solo jugador y otro que lo hace de forma general    
+    private void SendSpawned() // este metodo se encargara de enviar el mensaje de "spawn" a todos los usuarios
+    {
+        NetworkManager.singleton.Server.SendToAll(AddSpawnData(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.playerSpawned)));
+    }
+
+    private void SendSpawned(ushort toClientId) // este metodo se encargara de enviar el mensaje de "spawn" a un usuario en especifico
+    {
+        NetworkManager.singleton.Server.Send(AddSpawnData(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.playerSpawned)), toClientId);
+    }
+
+    private Message AddSpawnData(Message message) // creamos esto como un facilitador del proceso de crear el mensaje
+    {
+        // enviamos aqui los datos de spawn
+        message.AddUShort(Id); // creamos el id
+        message.AddString(Username); // y creamos el nombre de usuario
+        message.AddVector3(transform.position); // usamos esto para enviar la posicion de este objeto al cliente
+        return message;
+    }
+
+    [MessageHandler((ushort)ClientToServerId.name)]
+    private static void Name(ushort fromClientId, Message message)
+    {
+        Spawn(fromClientId, message.GetString());
+    }
+    #endregion
+}
+~~~
+
+---
+
+## Recibiendo datos de spawn desde el cliente
+
+Ahora tenemos que conseguir esos datos desde el cliente por lo que haremos lo siguiente en "**NetworkManager**" del proyecto "**Client**".
+
+~~~c#
+// NetworkManager (Client)
+using RiptideNetworking;
+using RiptideNetworking.Utils;
+using UnityEngine;
+
+public enum ServerToClientId : ushort // este lo copiamos y pegamos de NetworkManager (Server)
+{
+    playerSpawned = 1,
+}
+
+// este ya existia, solo lo agrego como referencia para donde posicionar el enumerador anterior
+public enum ClientToServerId : ushort
+{
+    name = 1,
+}
+~~~
+
+Luego vamos al script "**Player**" de nuestro proyecto "**Client**" y agregamos lo siguiente:
+
+~~~c#
+// Player (Client)
+using RiptideNetworking; // agregamos riptide
+
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public static Dictionary<ushort, Player> list = new Dictionary<ushort, Player>();
+
+    public ushort id { get; private set; }
+    public bool isLocal { get; private set; }
+    private string username;
+
+    private void OnDestroy()
+    {
+        list.Remove(id);
+    }
+
+    // generamos el spawn y revisamos si el jugador es o no local
+    public static void Spawn(ushort id, string username, Vector3 position)
+    {
+        Player player;
+        if (id == NetworkManager.singleton.Client.Id)
+        {
+            player = Instantiate(GameLogic.singleton.LocalPlayerPrefab, position, Quaternion.identity).GetComponent<Player>();
+            player.isLocal = true;
+        }
+        else
+        {
+            player = Instantiate(GameLogic.singleton.PlayerPrefab, position, Quaternion.identity).GetComponent<Player>();
+            player.isLocal = false;
+        }
+
+        player.name = $"Player {id} ({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
+        player.id = id;
+        player.username = username;
+
+        list.Add(id, player);
+    }
+
+    // ahora creamos un "manejador de mensajes" para nuestro jugador spawneado
+    [MessageHandler((ushort)ServerToClientId.playerSpawned)]
+    private static void SpawnPlayer(Message message)
+    {
+        // recuerda que para recibir mensajes se deben leer de la misma forma que se envian
+        //(en nuestro caso enviamos id, nombre de usuario y posicion)
+        // asi que leemos en el mismo orden (ushort, string, vector3)
+        Spawn(message.GetUShort(), message.GetString(), message.GetVector3());
+    }
+}
+~~~
+
+Ahora agregamos en el "**GameLogic**" de nuestro "**Client**" el singleton de la siguiente forma:
+
+~~~c#
+//GameLogic (Client)
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameLogic : MonoBehaviour
+{
+    // agregamos el singleton (copiado y pegado desde nuestro Server)
+    private static GameLogic _singleton;
+    public static GameLogic singleton
+    {
+        get => _singleton;
+        private set
+        {
+            if (_singleton == null)
+            {
+                _singleton = value;
+            }
+            else if (_singleton != null)
+            {
+                print($"{nameof(GameLogic)} instance already exists, destroying duplicate!");
+                Destroy(value);
+            }
+        }
+    }
+
+    public GameObject LocalPlayerPrefab => localPlayerPrefab;
+    public GameObject PlayerPrefab => playerPrefab;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject localPlayerPrefab;
+    [SerializeField] private GameObject playerPrefab;
+
+    private void Awake()
+    {
+        singleton = this;
+    }
+}
+~~~
+
+Finalmente vamos a unity y creamos nuestro jugador de la misma forma que lo hicimos en el servidor, creamos un objeto vacío y le damos el script "**Player**", luego creamos y agregamos su modelo, en mi caso sera una capsula y creare 2 prefabs, uno que represente al jugador local y otro qeu represente los jugadores externos, esto lo hare dandole un material de color distinto a ambos.
+
+Luego al objeto "NetworkManager" le entregamos el script "**GameLogic**" y agregamos nuestros prefabs en sus correspondientes casillas.
+
+Por ultimo en el "**NetworkingManager**" de nuestro proyecto "**Client**" creamos la posibilidad de desconectar jugadores de la siguiente forma:
+
+~~~c#
+// NetworkManager (Client)
+using RiptideNetworking;
+using RiptideNetworking.Utils;
+using System;
+using UnityEngine;
+
+public enum ServerToClientId : ushort
+{
+    playerSpawned = 1,
+}
+
+public enum ClientToServerId : ushort
+{
+    name = 1,
+}
+
+
+public class NetworkManager : MonoBehaviour
+{
+    private static NetworkManager _singleton;
+    public static NetworkManager singleton
+    {
+        get => _singleton;
+        private set
+        {
+            if (_singleton == null)
+            {
+                _singleton = value;
+            }
+            else if (_singleton != null)
+            {
+                print($"{nameof(NetworkManager)} instance already exists, destroying duplicate!");
+                Destroy(value);
+            }
+        }
+    }
+
+    public Client Client { get; private set; }
+
+    [SerializeField] private string ip;
+    [SerializeField] private ushort port;
+
+    private void Awake()
+    {
+        singleton = this;
+    }
+
+    private void Start()
+    {
+        RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false);
+        Client = new Client();
+
+        Client.Connected += DidConnect;
+        Client.ConnectionFailed += FailedToConnect;
+        
+        Client.ClientDisconnected += PlayerLeft; // agregamos el siguiente
+        
+        Client.Disconnected += DidDisconnect;
+    }
+
+    private void FixedUpdate()
+    {
+        Client.Tick();
+    }
+
+    private void OnApplicationQuit()
+    {
+        Client.Disconnect();
+    }
+
+    public void Connect()
+    {
+        Client.Connect($"{ip}:{port}");
+    }
+
+    private void DidConnect(object sender, EventArgs e)
+    {
+        UiManager.singleton.SendName();
+    }
+
+    private void FailedToConnect(object sender, EventArgs e)
+    {
+        UiManager.singleton.BackToMain();
+    }
+
+    private void PlayerLeft(object sender, ClientDisconnectedEventArgs e) // destruimos el objeto de jugador
+    {
+        Destroy(Player.list[e.Id].gameObject);
+    }
+
+    private void DidDisconnect(object sender, EventArgs e)
+    {
+        UiManager.singleton.BackToMain();
+    }
+}
+
+~~~
+
+---
+
+Listo, tras esto nuestro proyecto funcionara en lo básico, podremos conectarnos al servidor, enviar nuestro nombre de usuario y instanciar un objeto que se vera de igual forma en todos los clientes.
+
+Puede que nuestro servidor este ocupando demás de nuestro equipo para procesar todo y veremos que el mismo esta corriendo a mas de 200 fps en ciertas ocasiones, para ello podemos ir a nuestro agregando `Application.targetFrameRate = 60` en el "**NetworkManager**"  del proyecto "**Server**".
+
+Ya nuestro servidor básico esta acabado, ahora simplemente falta intentar hacer las cosas mas avanzadas, como lo es el movimiento del jugador entre muchos otros.
 
