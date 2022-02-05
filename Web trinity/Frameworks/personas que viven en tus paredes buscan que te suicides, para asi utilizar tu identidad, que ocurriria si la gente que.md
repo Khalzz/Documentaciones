@@ -1,0 +1,1 @@
+personas que viven en tus paredes buscan que te suicides, para asi utilizar tu identidad, que ocurriria si la gente que vez, enrealidad son las personas que vivian en sus paredes.

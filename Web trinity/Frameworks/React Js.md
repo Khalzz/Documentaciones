@@ -22,11 +22,12 @@ Sin mas que divagar, comencemos.
 
 Como ya mencione React Js es una biblioteca enfocada al Front-End, a demás de entregarnos la posibilidad de "modular" nuestras aplicaciones web, tanto como permitirnos hacer cosas mas complejas gracias al sistema de "componentes" que nos entrega React Js.
 
-Recomiendo el aprendizaje de este por principalmente 3 razones:
+Recomiendo el aprendizaje de este por principalmente 4 razones:
 
 1. Es cómodo de usar: Su integración modular nos entrega la posibilidad de dividir nuestra aplicación en pequeñas secciones cada una con una función y mas componentes "hijo" para hacer así iteraciones mas y mas complejas con nuestra aplicación.
 2. Es muy requerido: Al ser una de las bibliotecas mas utilizadas en JavaScript es muy fácil encontrar trabajos que requieran de este como uno de los principales requisitos.
 3. Alto desempeño: React Js si es algo es rápido y nos permite hacer cambios a nuestra web sin tener que "recargar" nuestra pagina.
+3. Soporta renderizado en el servidor: Cuando una pagina web tiene renderizado de parte del cliente pero no del servidor ocurre un problema común y es que no se muestra en los buscadores web, por suerte React Js si nos permite acceder a esta funcionalidad.
 
 ---
 
