@@ -1187,3 +1187,321 @@ Puede que nuestro servidor este ocupando demás de nuestro equipo para procesar 
 
 Ya nuestro servidor básico esta acabado, ahora simplemente falta intentar hacer las cosas mas avanzadas, como lo es el movimiento del jugador entre muchos otros.
 
+---
+
+# Agregando Movimiento
+
+Obviamente como ya mencione anteriormente en varios casos tendremos que enviar datos entre el cliente y servidor, uno de estos será el movimiento hecho por nuestro jugador.
+
+Esto no se complica tanto como el inicio de nuestras conexiones pero hay un factor que puede dificultar nuestro desarrollo de movimiento.
+
+Uno de estos es **"la protección de los datos"**, a lo que me refiero es que no debemos y repito **no debemos** confiar en nuestros clientes, si lo hacemos nos abrimos a la posibilidad de ser vulnerables a hackers.
+
+La forma en la que tenemos que hacer esto es obteniendo el input de nuestros jugadores y calculando la posición de este y el movimiento en general en el servidor.
+
+Para ello haremos lo siguiente:
+
+---
+
+## Recibiendo Input
+
+Para poder obtener input desde el jugador vamos primero a nuestro proyecto "**Client**" creando 3 scripts:
+
++ PlayerController
++ CameraController
++ PlayerAnimationManager
+
+Y en "**PlayerController**" hacemos lo siguiente:
+
+~~~c#
+using RiptideNetworking;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField] private Transform camTransform; // referenciamos el transform de la camara
+     
+    private bool[] inputs; // creamos un array de "entradas"
+
+    private void Start()
+    {
+        inputs = new bool[6]; // iniciamos el array con 6 elementos para enviar
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            inputs[0] = true;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            inputs[1] = true;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            inputs[2] = true;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            inputs[3] = true;
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            inputs[4] = true;
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            inputs[5] = true;
+        }
+
+        // dejamos el "Input[6]" para la posicion de la camara
+    }
+
+    #region Messages
+    private void SendInput() // creamos la funcion que enviara nuestros mensajes
+    {
+        Message message = Message.Create(MessageSendMode.unreliable, ClientToServerId.input); // esta linea nos dara un error
+        message.AddBools(inputs, false);
+        message.AddVector3(camTransform.forward);
+        NetworkManager.singleton.Client.Send(message);
+    }
+    #endregion 
+}
+~~~
+
+Para solucionar el error que nos dará tenemos que ir al "**NetworkManager**" de nuestro proyecto "**Client**" y ahí hacer lo siguiente:
+
+~~~c#
+// NetworkManager (Client)
+
+public enum ServerToClientId : ushort
+{
+    playerSpawned = 1,
+    playerMovement, // agregamos el mensaje del movimiento del jugador
+}
+
+public enum ClientToServerId : ushort 
+{
+    name = 1, 
+    input, // agregamos el mensaje de input
+}
+~~~
+
+---
+
+## Calculando el movimiento desde el servidor
+
+Ahora para proceder tenemos primero que copiar lo anteriormente hecho en el "**NetworkManager**" del cliente para nuestro servidor, simplemente copiando y pegando lo mismo que ya había.
+
+En nuestro servidor ahora haremos un script llamado "**PlayerMovement**" en el agregaremos lo siguiente:
+
+~~~c#
+using RiptideNetworking; // referenciamos riptide
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+// hacemos esto por que para este ejemplo vamos a usar character controllers
+[RequireComponent(typeof(CharacterController))] 
+
+public class PlayerMovement : MonoBehaviour
+{
+    // creamos los datos relevantes a nuestro jugador
+    [SerializeField] private Player player; 
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private Transform camProxy;
+    [SerializeField] private float gravity;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private float jumpHeight;
+
+    // creamos los datos relevantes al mundo
+    private float gravityAcceleration;
+    private float moveSpeed;
+    private float jumpSpeed;
+
+    // referenciamos las entradas de datos y la velocidad en el eje y
+    private bool[] inputs;
+    private float yVelocity;
+
+    // validamos la existencia de un elemento controller y player para luego "inicializar" la lectura constante
+    private void OnValidate()
+    {
+        if (controller == null)
+            controller = GetComponent<CharacterController>();
+        if (player == null)
+            player = GetComponent<Player>();
+        Initialize();
+
+    }
+
+    private void Start()
+    {
+        Initialize(); // inizializamos la lectura constante de datos
+        inputs = new bool[6];
+    }
+
+    private void FixedUpdate() // usamos fixed update para leer input y enviarlo a la funcio nde movimiento
+    {
+        Vector2 inputDirection = Vector2.zero;
+        if (inputs[0]) // w
+            inputDirection.y += 1;
+        if (inputs[1]) // s
+            inputDirection.y -= 1;
+        if (inputs[2]) // a
+            inputDirection.x -= 1;
+        if (inputs[3]) // d
+            inputDirection.x += 1;
+
+        Move(inputDirection, inputs[4], inputs[5]);
+    }
+
+    private void Initialize() // aqui tenemos todos los datos que constantemente se actualizaran
+    {
+        gravityAcceleration = gravity * Time.fixedDeltaTime * Time.fixedDeltaTime;
+        moveSpeed = movementSpeed * Time.fixedDeltaTime;
+        jumpSpeed = Mathf.Sqrt(jumpHeight * -2f * gravityAcceleration);
+    }
+    
+    private void Move(Vector2 inputDirection, bool jump, bool sprint) // la funcion principal de movimiento
+    {
+        Vector3 moveDirection = Vector3.Normalize(camProxy.right * inputDirection.x + Vector3.Normalize(FlattenMove(camProxy.forward)) * inputDirection.y);
+        moveDirection *= moveSpeed;
+
+        if (sprint)
+        {
+            moveDirection *= 2f;
+        }
+        if (controller.isGrounded)
+        {
+            yVelocity = 0f;
+            if (jump)
+                yVelocity = jumpSpeed;
+        }
+        yVelocity *= gravityAcceleration;
+
+        moveDirection.y = yVelocity;
+        controller.Move(moveDirection);
+
+        SendMovement();
+    }
+
+    // este nos facilita el movimiento en caso de que el jugador no se mueva mientras ve adelante
+    private Vector3 FlattenMove(Vector3 vector) 
+    {
+        vector.y = 0;
+        return vector;
+    }
+
+    // conseguimos el input del jugador
+    public void SetInput(bool[] inputs, Vector3 forward)
+    {
+        this.inputs = inputs;
+        camProxy.forward = forward;
+    }
+
+    // enviamos la posicion nueva de todos los jugadores
+    private void SendMovement()
+    {
+        Message message = Message.Create(MessageSendMode.unreliable, ServerToClientId.playerMovement);
+        message.AddUShort(player.Id);
+        message.AddVector3(transform.position);
+        message.AddVector3(transform.forward);
+        NetworkManager.singleton.Server.SendToAll(message);
+    }
+}
+
+~~~
+
+**Ojo:** todo lo de este script que no este apegado al envió de datos puede ser editado, específicamente lo que tiene que ver con como calculamos el movimiento, esto depende de los valores que tu quieras darle, mas adelante daré un ejemplo de como hacer esto mismo con movimiento por medio de físicas usando rigidbodys.
+
+---
+
+## Manejando los mensajes de "Input"
+
+Antes de continuar con nuestro movimiento tenemos que primero poder manejar bien nuestros mensajes de entrada de datos, para esto entraremos al script "**Player**" de nuestro proyecto "**Server**" y haremos lo siguiente:
+
+~~~c#
+using RiptideNetworking;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public static Dictionary<ushort,Player> list = new Dictionary<ushort,Player>();
+
+    public ushort Id { get; private set; }
+    public string Username { get; private set; }
+
+    // agregamos estos
+    public PlayerMovement Movement => movement;
+    [SerializeField] private PlayerMovement movement;
+
+    private void OnDestroy()
+    {
+        list.Remove(Id);
+    }
+
+    public static void Spawn(ushort id, string username)
+    {
+        foreach (Player otherPlayer in list.Values) 
+        {
+            otherPlayer.SendSpawned(id);
+        }
+
+        Player player = Instantiate(GameLogic.singleton.PlayerPrefab, new Vector3(1, 1, 1), Quaternion.identity).GetComponent<Player>(); 
+        player.name = $"Player {id} ({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
+
+        player.Id = id;
+        player.Username = string.IsNullOrEmpty(username) ? "Guest" : username;
+
+        player.sendSpawned();
+
+        list.Add(id, player);
+    }
+
+    #region Messages
+    
+    private void sendSpawned()
+    {
+        NetworkManager.singleton.Server.SendToAll(AddSpawnData(Message.Create(MessageSendMode.reliable, ServerToClientId.playerSpawned)));
+    }
+
+    private void SendSpawned(ushort toClientId)
+    {
+        NetworkManager.singleton.Server.Send(AddSpawnData(Message.Create(MessageSendMode.reliable, ServerToClientId.playerSpawned)), toClientId);
+    }
+
+    private Message AddSpawnData(Message message)
+    {
+        message.AddUShort(Id); 
+        message.AddString(Username);
+        message.AddVector3(transform.position);
+        return message;
+    }
+
+    [MessageHandler((ushort)ClientToServerId.name)]
+    private static void Name(ushort fromClientId, Message message)
+    {
+        Spawn(fromClientId, message.GetString());
+    }
+
+    // agregamos el mensaje de input
+    [MessageHandler((ushort)ClientToServerId.input)]
+    private static void Input(ushort fromClientId, Message message)
+    {
+        if (list.TryGetValue(fromClientId, out Player player))
+            player.Movement.SetInput(message.GetBools(6), message.GetVector3());
+    }
+    #endregion
+}
+
+~~~
+
+---
+
+
+
