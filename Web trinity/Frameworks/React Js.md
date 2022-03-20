@@ -196,20 +196,7 @@ En el "**App.js**" hacemos lo siguiente
 ~~~react
 import React from "react"; // importamos react
 
-// creamos nuestro componente
-function Componente() {
-    return <h1>Hola bro, como estas?</h1>
-}
-
-// estos componentes funcionan igualmente en funciones flecha como:
-const Componente = () => {<h1>Hola bro, como estas?</h1>} // recuerden que las funciones flecha retornan por defecto
-
-// tambien podemos hacer lo mismo por medio de una clase por ejemplo:
-class Componetne extends React.Component {
-    render() {
-        return <h1>Hola bro, como estas?</h1>
-    }
-}
+const Componente = <h1>Hola bro, como estas?</h1> // esto es un componente basico
 
 export default Componente; // exportamos la funcion "Componente"
 ~~~
@@ -239,52 +226,183 @@ class Componente extends Component {}
 
 ---
 
-## Props
+## Componentes funcionales
 
-Los props son lo que llamariamos "parametros de una funcion" pero agregados a los conceptos de componente que conocemos de React.
+El nombre de "componente funcional" es mas que solo una forma de mencionar que un componente "**funciona**", este hace referencia a  que el mismo esta anidado a una funcion como identificador, en lugar de a una variable como anteriormente ya vimos.
 
-Estos mas que solo datos funcionan como objetos ya que al crear un "prop" enrealidad creamos un objeto con un dato en su interior el cual es igual a la propiedad asignada, osea:
+por ejemplo:
 
-~~~react
-// si hacemos lo siguiente:
-<Componente nombre = "Rodrigo"/>
-
-// estamos creando un objeto
-{
-    nombre = "Rodrigo"
+~~~jsx
+// este es un "componente funcional"
+function Componente() {
+    return <h1>Hola bro, como estas?</h1>
 }
+
+// estos componentes se pueden aplicar igualmente en funciones flecha como:
+const Componente = () => {<h1>Hola bro, como estas?</h1>} // recuerden que las funciones flecha retornan por defecto
+
+// tambien podemos hacer lo mismo por medio de una clase por ejemplo:
+class Componetne extends React.Component {
+    render() {
+        return <h1>Hola bro, como estas?</h1>
+    }
+}
+
+// y al referenciarlo se hace de la misma forma que los componentes normales
 ~~~
 
-entonces la forma en la que estos funcionan es por medio de los siguientes pasos:
+---
 
-~~~React
-// 1. donde estemos llamando nuestro componente tenemos que agregar la nueva propiedad
-<Componente nombre = "Rodrigo"/>
+## Props
 
-function Componente(prop) { // 2. le entregamos un parametro "prop" a nuestro componente
-    console.log(prop); // si hacemos esto en la consola podremos ver todas las propiedades recibidas
-    return <h1>Hola bro, mi nombre es {prop.nombre}</h1> // referenciamos el prop con llaves {prop.propiedadNueva}
+Los Props o propiedades son lo que llamaríamos "parámetros de una etiqueta" pero agregados a los conceptos de componente que conocemos de React y que nos permite hacer mas interactivos nuestros elementos de JSX.
+
+En la base las propiedades funcionan de la siguiente forma:
+
+~~~jsx
+// creamos un componente funcional con un prop entre los parametros de la funcion
+const X = (props) => {<p>Hola mi nombre es {props.nombre} y estoy {props.estado}</p>} 
+
+// esto llamara a los elementos que le pasemos a este jsx a la hora de referenciarlo, por ejemplo:
+ReactDOM.render(
+  <X nombre="Rodrigo" estado="Feliz"/>, document.getElementById('root')
+)
+
+// al haber hecho esto tecnicamente estaremos creando un objeto como el siguiente:
+props {
+    nombre = "Rodrigo",
+    estado = "Feliz"
 }
+// cuyos elementos podemos llamar utilizando:
+props.nombre /* y */ props.estado
 
-// esto nos dejaria por ejemplo hacer:
-<Componente nombre = "Rodrigo"/> <Componente nombre = "Ariel"/> <Componente nombre = "Jenniffer"/>
-// y mostrar distintos mensajes con esas respectivas ediciones
+// debes recordar que para ingresar javascript en un JSX debemos usar llaves {} para permitirnos insertar codigo en los mismos
+
+// ya si hacemos esto
+ReactDOM.render(
+  <X nombre="Rodrigo" estado="Feliz"/>, document.getElementById('root')
+)
+
+// obtendriamos un "Hola mi nombre es Rodrigo y estoy Feliz"
 ~~~
 
 Con eso ya habremos creado un prop, esto se puede compartir entre distintos componentes entre si y agregar ese toque de interactividad que nos dan los parámetros en una función.
 
-Ya si queremos agregar varias propiedades podemos hacer algo como lo siguiente:
+Si hacemos esto en una clase tenemos que usar `this.props.propiedad`.
 
-~~~react
-<Componente nombre = "Rodrigo" edad = 15/>
+No lo he explicado pero tambien podemos acceder a estos elementos dentro de un mismo componente por ejemplo:
 
-function Componente(prop) {
-    console.log(prop);
-    return <h1>Hola bro, mi nombre es {prop.nombre} y mi edad es {prop.edad}</h1>
+~~~jsx
+const Componente = () => {
+    let nombre = "Rodrigo";
+    return (
+    	<p>Hola, me llamo {nombre}</p> // aplicamos el valor de la variable directamente
+    );
 }
 ~~~
 
-Si hacemos esto en una clase tenemos que usar `this.props.propiedad`.
+Pero nos faltan ciertas cosas de importantes por ver, hay veces en las que nosotros querremos "anidar componentes" osea llamar un componente desde dentro de otro como el siguiente caso:
+
+~~~jsx
+const ParrafoNombre = () => { // creamos un componente
+    return <p>Rodrigo Seguel</p>
+}
+
+// luego podemos usarlo dentro de otro:
+const App = () => {
+    return (
+    	<div>
+        	<ParrafoNombre></ParrafoNombre>
+        </div>
+    ); 
+}
+// al haber ingresado el texto dentro del componente en si, no hace falta agregar nada para acceder al texto del mismo
+~~~
+
+Esto puede ser totalmente funcional y no traer ni un problema pero en temas de funcionalidad es mas bien inutil, algo que podemos hacer es pasarle los valores a `ParrafoNombre` para asi definir funcionalidades en nuestro elemento anteriormente visto, como hacemos esto, pues de la siguiente forma:
+
+~~~jsx
+const ParrafoNombre = (props) => { // referencuamos un objeto con props
+    return <p>{props.children}</p> // llamamos el objeto props y uno de los datos llamado "children"
+}
+
+// luego podemos usarlo dentro de otro:
+const App = () => {
+    return (
+    	<div>
+        	<ParrafoNombre>Rodrigo Seguel</ParrafoNombre>
+        </div>
+    ); 
+}
+// y ahora pasamos el componente del mismo desde nuestra otra funcion
+~~~
+
+Esto lo que hace es permitirnos acceder a distintos componentes del mismo siendo **children** el que representa el dato que le damos a nuestra etiqueta, y si por ejemplo queremos pasar otras propiedades podemos hacer lo siguiente:
+
+~~~jsx
+const ParrafoNombre = (props) => { // referencuamos un objeto con props
+    return <p>hola, soy {props.children} y estoy {props.estado}</p> // llamamos el objeto props y uno de los datos llamado "children"
+}
+
+// luego podemos usarlo dentro de otro:
+const App = () => {
+    return (
+    	<div>
+        	<ParrafoNombre estado="feliz">Rodrigo Seguel</ParrafoNombre>
+        </div>
+    );
+}
+~~~
+
+ahora le estaríamos pasando tanto el **children** (el dato ingresado en la etiqueta) como el **estado** (el dato ingresado como propiedad).
+
+---
+
+### Object destructoring
+
+La "desestructuración de objetos" es una forma de trabajar con los mismos segun las propiedades que nos permiten acceder de forma mas explicita y limitada a los datos que queremos pasar como props, quiza en componentes muy pequeños no sea de tanta ayuda pero en componentes mas grandes puede ser de vital importancia.
+
+por ejemplo:
+
+~~~jsx
+// imagina que tenemos lo siguiente:
+const ParrafoNombre = (props) => { // referencuamos un objeto con props
+    return <p>{props.children}</p> // llamamos el objeto props y uno de los datos llamado "children"
+}
+
+const App = () => {
+    return (
+    	<div>
+        	<ParrafoNombre estado="feliz">Rodrigo Seguel</ParrafoNombre>
+        </div>
+    );
+}
+~~~
+
+esto de aqui seria un componente que recibe como valor un objeto con 2 valores: **`{estado, children}`** por lo que al acceder a los mismos tendríamos que usar `props.estado` o `props.children` para referenciarlos, pero como te daras cuenta en nuestro componente `ParrafoNombre` solo estamos utilizando el children, pero eso nos lleva a una pregunta:
+
+**¿Como limitamos o especificamos las propiedades que llegan a nuestros componentes?**
+
+Bueno eso lo logramos por medio de la desestructuración de objetos, es el proceso de mencionar de forma literal los elementos a llamar de un objeto y es magico a la hora de hacer nuestro codigo mas "efectivo", por ejemplo:
+
+~~~jsx
+// imagina que tenemos lo siguiente:
+const ParrafoNombre = ({estado, children}) => { // referencuamos los datos a pasar (solo estado aun que no lo usemos y el children)
+    return <p>{props.children}</p>
+}
+
+const App = () => {
+    return (
+    	<div>
+        	<ParrafoNombre estado="feliz" edad=19>Rodrigo Seguel</ParrafoNombre>
+        </div>
+    );
+}
+/* 
+    en este caso en vez de llegar un objeto con todo lo que tiene nuestro componente referenciado,
+    haremos uno solo con las propiedades necesarias.
+*/ 
+~~~
 
 ---
 
@@ -386,7 +504,74 @@ De este ejemplo puedes sacar 2 cosas importantes:
 
 ## Agregando Css
 
-Como es relativamente obvio, podemos agregarle un css a nuestros componentes, para esto simplemente podemos hacer lo siguiente:
+Como es relativamente obvio, podemos agregarle un css a nuestros componentes y esto podemos lograrlo de varias formas siendo estas:
+
+### Estilo en linea
+
+Como quiza recuerden de css, podemos en algunos elementos utilizar "estilo en linea" osea en html hacer algo como lo siguiente:
+
+~~~html
+<p style="color: #fff">Hola!!!, ¿como estas?</p>
+~~~
+
+Esto en Html no era muy recomendado pero en React puede ser muy útil y en este funcionaria de la siguiente forma:
+
+~~~jsx
+// creamos el estilo ya sea como clase
+const estilo_clase = {
+    color: "#fff",
+    margin: "0 auto",
+}
+
+// o como funcion
+const estilo_funcion = () => {
+    color: "#111",
+    margin: "0 auto",
+}
+
+// para llamarlos podemos hacer:
+<p style={estilo_clase}>Texto 1 (clase)</p>
+<p style={estilo_funcion()}>Texto 2 (funcion)</p>
+~~~
+
+pero las funciones nos dejan volvernos un poco locos gracias a lo siguiente:
+
+~~~jsx
+// o como funcion
+const estilo_funcion = (cl = "#456") => { // creamos la funcion con un parametro (este sera por defecto)
+    color: cl, // referenciamos el parametro
+    margin: "0 auto",
+}
+
+<p style={estilo_funcion()}>Texto 2 (funcion)</p> // en este caso el color del mismo sera (#456)
+<p style={estilo_funcion("#234")}>Texto 2 (funcion)</p> // en este caso el color del mismo sera (#234)
+~~~
+
+y ya para combinar estilos podemos hacer lo siguiente:
+
+~~~jsx
+// si tenemos por ejemplo una clase de estilo
+const estilo_clase = {
+    boxShadow: '0 5px 3px rgba(0, 0, 0, 0.5)'
+}
+
+// a demas de una funcion de estilo con algo distinto
+const estilo_funcion = (cl = "#456") => { // creamos la funcion con un parametro (este sera por defecto)
+    color: cl, // referenciamos el parametro
+    margin: "0 auto",
+}
+
+// para unirlos podemos hacer:
+<p style={...estilo_clase, ...estilo_funcion("#234")}>Texto 2 (funcion)</p> // ahora los 2 estilos se estarian aplicando
+~~~
+
+---
+
+### Estilo por archivo
+
+El estilo pro archivo funciona exactamente igual que como lo usaríamos normalmente en un proyecto web sin usar react, por medio de otro archivo que es importado a nuestro archivo principal en el que escribiremos css puro sin complicaciones.
+
+El único contra que tiene esto es que si en algún momento llegamos a "eyectar" nuestro código podrían haber problemas con los archivos importados, pero fuera de esto **(mas aun siendo algo muy poco común)**, no nos debería generar mayor problema.
 
 *Supongamos que hemos hecho un archivo llamado "archivo.css" en la misma carpeta que nuestro "App.js"*
 
@@ -396,7 +581,13 @@ import ./archivo.css // instanciamos el css
 
 // creamos nuestro componente
 function Componente() {
-    return <h1 id = "Saludo">Hola bro, como estas?</h1>
+    return (
+        <h1 id="Saludo">Hola bro, como estas?</h1> // si queremos acceder a un elemento css por su id hacemos lo siguiente
+        // lo mismo ocurriria con otros elementos EXCEPTO si queremos hacer esto por medio de clases
+        // para ello en lugar de usar class="" debemos hacer algo como lo siguiente:
+        <h1 className="Saludo">Hola bro, como estas?</h1> 
+        // esto por que class es una keyword de JavaScript, por lo que pueden haber errores
+    );
 }
 
 export default Componente; // exportamos la funcion "Componente"
@@ -411,9 +602,7 @@ Ahora desde nuestro "archivo.css" podríamos hacer algo como lo siguiente:
 }
 ~~~
 
-
-
-
+## 
 
 
 
