@@ -1097,3 +1097,110 @@ Para mejorar esto tenemos que fijarnos primero en 2 tipos de índices que depend
    ~~~
 
    Y ya después de esto en nuestra tabla de "Explain plan" veremos algo muy similar a lo anteriormente mencionado, solo que obviamente el nombre de la tabla y del índice va a cambiar dependiendo de este.
+
+---
+
+## Programación de bases de datos (PL/SQL)
+
+### Bloques anonimos
+
+Se divide en 3 areas:
+
+~~~sql
+DECLARE
+-- aqui va el codigo que aplicaremos y los datos a utilizar
+BEGIN
+-- aqui van las "instrucciones"
+END;
+
+-- se puede usar de la siguiente forma:
+
+SET SERVEROUTPUT ON -- encendemos el "output del servidor"
+-- esto se usa para poder ver lo que ejecutamos en el bloque
+
+DECLARE
+    v_total NUMBER; -- este es un int
+BEGIN
+-- OBTENER TOTAL DE CLIENTES
+    SELECT COUNT(rutcliente)
+    INTO v_total -- esto significa "donde se guarda el resultado del select" (en una variable) 
+    FROM cliente;
+    
+-- IMPRIMIR TOTAL DE CLIENTES
+    DBMS_OUTPUT.PUT_LINE('TOTAL DE CLIENTES' || v_total);
+END;
+~~~
+
+La cantidad de instrucciones se calculan según las cosas que hagamos como:
+
++ Select de sql (cuenta como una instrucción)
++ DBMS_OUTPUT.PUT_LINE (cuenta como una instrucción) 
+
+---
+
+## Ciclo for
+
+el ciclo for en pl/sql funciona similar a cualquier otro lenguaje de programación, la sintaxis del mismo es:
+
+~~~sql
+FOR dato IN 0 .. 9 LOOP
+	-- aqui va el codigo que se ejecutara 10 veces
+END LOOP;
+
+-- por ejemplo podemo hacer lo siguiente
+DECLARE
+    v_total NUMBER;
+BEGIN
+    FOR v_digito IN 0 .. 9 LOOP
+        SELECT COUNT(nro_patente)
+        INTO v_total
+        FROM camion
+        WHERE nro_patente LIKE '%' || v_digito; 
+        -- al agregar variables en un for esta se declara automaticamente (solo dentro del ciclo for)
+    END LOOP;
+END;
+~~~
+
+---
+
+## Ciclo while
+
+Este entra nuevamente en el grupo de componentes programáticos que funcionan igual en los lenguajes de programación, por ejemplo:
+
+~~~sql
+FOR dato < 9 LOOP
+	-- aqui va el codigo que se ejecutara 10 veces
+	dato := dato + 1
+END LOOP;
+
+-- por ejemplo podemo hacer lo siguiente
+DECLARE
+    v_total NUMBER;
+    v_digito NUMBER := 0; -- con el while tenemos que declarar las variables
+BEGIN
+    WHILE v_digito <= 9 LOOP -- igualamos el maximo del loop
+        SELECT COUNT(nro_patente)
+        INTO v_total
+        FROM camion
+        WHERE nro_patente LIKE '%' || v_digito; 
+        -- al agregar variables en un for esta se declara automaticamente (solo dentro del ciclo for)
+        
+        V_DIGITO := V_DIGITO + 1; -- aumentamos el valor del mismo manualmene
+    END LOOP;
+END;
+~~~
+
+## bloques anidados
+
+una de las cosas que podemos hacer es ingresar un bloque dentro de otro de la siguiente forma:
+~~~sql
+DECLARE
+BEGIN
+  DECLARE
+  BEGIN
+  END;
+END;
+
+-- DE ESTA FORMA PODEMOS AGREGAR BLOQUES DENTRO DE BLOQUES 
+-- ES MAS IMPORTANTE CUANDO SE VEN LAS EXEPCIONES
+~~~
