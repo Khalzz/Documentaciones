@@ -524,10 +524,10 @@ const estilo_clase = {
 }
 
 // o como funcion
-const estilo_funcion = () => {
+const estilo_funcion = () => ({
     color: "#111",
     margin: "0 auto",
-}
+});
 
 // para llamarlos podemos hacer:
 <p style={estilo_clase}>Texto 1 (clase)</p>
@@ -539,8 +539,8 @@ pero las funciones nos dejan volvernos un poco locos gracias a lo siguiente:
 ~~~jsx
 // o como funcion
 const estilo_funcion = (cl = "#456") => { // creamos la funcion con un parametro (este sera por defecto)
-    color: cl, // referenciamos el parametro
-    margin: "0 auto",
+    color: cl; // referenciamos el parametro
+    margin: "0 auto";
 }
 
 <p style={estilo_funcion()}>Texto 2 (funcion)</p> // en este caso el color del mismo sera (#456)
