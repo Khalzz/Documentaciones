@@ -102,3 +102,192 @@ int main(int argc, char* args[])
 }
 ~~~
 
+---
+
+## Separando nuestro codigo
+
+Como ya vimos en el ejemplo anterior, hay una forma de crear una ventana que se encuentra dentro de una misma función (**específicamente la función main**), esto puede funcionar para ejemplos cortos, pero en proyectos reales como videojuegos lo mejor es separar nuestro código, esto por que en si a la hora del desarrollo, lo mejor es generar un código **modular**.
+
+Para así ir agregando elementos sin mayor complicación con el tiempo.
+
+Un ejemplo facil de lo que ya hicimos seria el siguiente:
+
+~~~cpp
+#include <SDL.h> // agregamos las librerias
+#include <stdio.h> // agregamos las librerias
+
+bool init(); // creamos una funcion para iniciar sdl
+void close(); // creamos otra funcion para cerrar sdl
+
+//agregamos como constantes las dimensiones de la ventana
+const int ANCHO_VENTANA = 640;
+const int ALTO_VENTANA = 480;
+
+// creamos la ventana como una variable global
+SDL_Window* ventanaGlobal = NULL;
+
+// la superficie que contendra la ventana
+SDL_Surface* gScreenSurface = NULL;
+
+int main(int argc, char* args[])
+{
+    // iniciar SDL y creamos una ventana
+    if (!init())
+    {
+        printf("Failed to initialize!\n");
+    }
+    else
+    {
+        SDL_UpdateWindowSurface(ventanaGlobal); // Actualizamos la superficie
+        SDL_Delay(2000); // Esperamos 2 segundos
+    }
+    close(); // luego de todo cerramos la ventana
+    return 0;
+}
+
+bool init()
+{
+    bool success = true;
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    else
+    {
+        // creamos la ventana
+        ventanaGlobal = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
+        if (ventanaGlobal == NULL) // si la ventana no se ha creado
+        {
+            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+            success = false; // la funcion no ha sido eccitosa
+        }
+        else
+        {
+            // obtenemos la superficie de la ventana
+            gScreenSurface = SDL_GetWindowSurface(ventanaGlobal);
+        }
+    }
+    return success;
+}
+
+void close() // cerramos la ventana
+{
+    //Destroy window
+    SDL_DestroyWindow(ventanaGlobal);
+    ventanaGlobal = NULL;
+
+    //Quit SDL subsystems
+    SDL_Quit();
+}
+~~~
+
+---
+
+# Mostrando imagenes
+
+Ya habiendo transformado nuestro código a algo mas fácil de escribir y entender podemos continuar con algo mas como lo es **mostrar imágenes en pantalla**, antes de continuar debes ser consiente que mostraremos imágenes en formato **BMP** que nos permite referenciar las imágenes como bloques de código en memoria, para hacer mas eficiente la carga.
+
+Primero tendremos que preparar todo, en mi caso iré al archivo de mi proyecto y agregare la carpeta **`Assets/Images`** en la cual estará la imagen **Banana.bmp** (recuerda que esta carpeta debe estar posicionada donde se encuentre nuestro proyecto en si (si estas en **VS** es la carpeta con el archivo "**sdl2-test.vcxproj**"))
+
+Para hacer esto tenemos que hacer lo siguiente:
+
+~~~cpp
+#include <SDL.h> 
+#include <stdio.h>
+
+bool init();
+
+bool loadMedia(); //creamos una funcion que cargue la imagen
+
+void close();
+
+const int ANCHO_VENTANA = 640;
+const int ALTO_VENTANA = 480;
+
+SDL_Window* ventanaGlobal = NULL;
+SDL_Surface* gScreenSurface = NULL;
+
+SDL_Surface* gHelloWorld = NULL; //creamos la imagen que vamos a instanciar en la superficie
+
+int main(int argc, char* args[])
+{
+    if (!init())
+    {
+        printf("Failed to initialize!\n");
+    }
+    else
+    {
+        if (!loadMedia())
+        {
+            printf("Failed to load media!\n");
+        }
+        else
+        {
+            //aplicamos la imagen
+            SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
+            SDL_UpdateWindowSurface(ventanaGlobal); // actualizar la superficie de la ventana
+            SDL_Delay(2000);
+        }
+    }
+    // liberar recursos y cerrar
+    close();
+    return 0;
+}
+
+bool init()
+{
+    bool success = true;
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    else
+    {
+        ventanaGlobal = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
+        if (ventanaGlobal == NULL)
+        {
+            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+            success = false;
+        }
+        else
+        {
+            gScreenSurface = SDL_GetWindowSurface(ventanaGlobal);
+        }
+    }
+    return success;
+}
+
+bool loadMedia() // esta funcion se dedicara a cargar la imagen y entregarla en la variable que vamos a utilizar
+{
+    // carga comletada (flag)
+    bool success = true;
+    // cargamos la imagen
+    gHelloWorld = SDL_LoadBMP("Assets/Images/Banana.bmp");
+    if (gHelloWorld == NULL) // en caso que la imagen no se encuentre
+    {
+        printf("Unable to load image %s! SDL Error: %s\n", "Assets/Images/Banana.bmp", SDL_GetError());
+        success = false;
+    }
+    return success;
+}
+
+void close()
+{
+    // destruir superficie
+    SDL_FreeSurface(gHelloWorld);
+    gHelloWorld = NULL;
+
+    SDL_DestroyWindow(ventanaGlobal);
+    ventanaGlobal = NULL;
+    SDL_Quit();
+}
+~~~
+
+---
+
+# Programación orientada a eventos
+
+Como es obvio, los videojuegos son mas que una imagen que aparezca en pantalla, estos requieren de cierto nivel de "datos ingresados por el usuario" pero este **input** lo almacenamos en algo llamado "Eventos" que es con lo que trabajaremos ahora.
+
