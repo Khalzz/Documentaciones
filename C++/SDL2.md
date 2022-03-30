@@ -45,101 +45,97 @@ Listo, con esto hecho ya deberíamos poder trabajar totalmente en nuestro proyec
 
 ---
 
-## Creando una ventana
+# Creando una ventana
+
+A la hora de crear una ventana tenemos que ejecutar varios "pasos" para que este proceso se ejecute de forma eficiente y funcional, desde **iniciar el funcionamiento de SDL** hasta obviamente **cerrarlo**, a este proceso me gusta llamarlo el "ciclo de vida de una ventana".
+
+## El ciclo de vida de una ventana
+
+Las ventanas al menos en términos programáticos deben seguir los siguientes pasos para funcionar:
+
+1. **Iniciación de SDL**.
+
+   Uno de los pasos esenciales es **iniciar SDL** permitiéndonos acceder tanto a funciones como a elementos provenientes a la generación de la pagina.
+
+2. **Creación de la ventana**
+
+   Creamos la ventana como una variable de tipo **`SDL_Window`** a esta variable le entregamos la función **`SDL_CreateWindow()`** y esta toma como parámetro:
+
+   1. **El nombre de la ventana**.
+   2. **La posición de la ventana en la pantalla (en el eje x, en el eje y).**
+   3. **Las dimensiones de la ventana (en el eje x, en el eje y).**
+   4. **Elemento para mostrar la ventana**, en este caso es **`SDL_WINDOW_SHOWN`**.
+
+3. **Crear superficie y actualizarla**
+
+   La superficie es el lugar o "la zona" que tenemos disponible para dibujar imágenes en la ventana y para poder trabajar con esta la instanciamos como una  variable y le entregamos una función que marca la superficie de la ventana como disponible.
+
+4. **Cerrar SDL**
+
+   Cuando puesta ventana llega al final de su vida o la cerramos, tenemos que encargarnos de cerrar el funcionamiento de SDL, a demas de cerrar las superficies creadas.
+
+Ya con esto listo podemos comenzar a crear ventanas, aquí tienen un ejemplo de todo esto funcionando.
 
 ~~~cpp
-//agregamos las librerias necesarias
-#include <SDL.h>
+#include <iostream>
+#include <SDL.h> 
 #include <stdio.h>
-
-//agregamos como constantes las dimensiones de la ventana
-const int ANCHO_VENTANA = 640;
-const int ALTO_VENTANA = 480;
 
 int main(int argc, char* args[])
 {
-    //Creamos la ventana en la que se renderizara todo como nulo
-    SDL_Window* ventana = NULL;
+	SDL_Init(SDL_INIT_EVERYTHING); // iniciamos SDL
+	SDL_Window* ventana = SDL_CreateWindow("Ventana de prueba", 100, 100, 640, 480, SDL_WINDOW_SHOWN); // creamos la ventana
 
-    //Creamos la superficie que tendra la ventana
-    SDL_Surface* superficiePantalla = NULL;
+	if (!ventana) { // comprobamos que no hayan errores en la creacion de la ventana
+		std::cout << "Algo ha fallado al crear la ventana! Error: " << SDL_GetError() << std::endl;
+	}
 
-    //Iniciamos SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-    }
-    else
-    {
-        //Creamos Ventana
-        ventana = SDL_CreateWindow("Creando tu primera ventana", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
-        if (ventana == NULL) // si la ventana no se ha creado
-        {
-            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError()); // mostrar error
-        }
-        else
-        {
-            //obtenemos la superficie de la ventana
-            superficiePantalla = SDL_GetWindowSurface(ventana); 
+	SDL_Surface* superficieVentana = SDL_GetWindowSurface(ventana); // creamos la supperficie
+	SDL_UpdateWindowSurface(ventana); // actualizamos la superficie
+	
+	SDL_Delay(2000); // ESPERAMOS 2 SEGUNDOS (SOLO PARA QUE NO SE CIERRE AL INSTANTE)
 
-            //llenamos la superficie con el color blango
-            SDL_FillRect(superficiePantalla, NULL, SDL_MapRGB(superficiePantalla->format, 0xFF, 0xFF, 0xFF));
+	// PROCESO DE CIERRE
+	SDL_DestroyWindow(ventana); // PRIMERO DESTRUIMOS LA VENTANA
 
-            //Actualizamos la superficie
-            SDL_UpdateWindowSurface(ventana);
-
-            //Esperamos 5 segundos
-            SDL_Delay(5000);
-        }
-    }
-    // Destruimos la ventana
-    SDL_DestroyWindow(ventana);
-
-    //Salimos del sub sistema de SDL
-    SDL_Quit();
-
-    return 0;
+	// Y ELIMINAMOS LOS DATOS DE NUESTRAS VENTANAS Y SUPERFICIES
+	ventana = NULL;
+	superficieVentana = NULL;
+	SDL_Quit(); // POR ULTIMO CERRAMOS SDL
+	return 0;
 }
 ~~~
 
 ---
 
-## Separando nuestro codigo
+## Modularizando 
 
-Como ya vimos en el ejemplo anterior, hay una forma de crear una ventana que se encuentra dentro de una misma función (**específicamente la función main**), esto puede funcionar para ejemplos cortos, pero en proyectos reales como videojuegos lo mejor es separar nuestro código, esto por que en si a la hora del desarrollo, lo mejor es generar un código **modular**.
+Una idea fundamental para el funcionamiento eficaz del código es el "**Modularizarlo**" así preparamos nuestro desarrollo para futuras ediciones, facilitándonos el agregar funcionalidades nuevas y aumentar el tamaño de nuestro proyecto.
 
-Para así ir agregando elementos sin mayor complicación con el tiempo.
-
-Un ejemplo facil de lo que ya hicimos seria el siguiente:
+En este caso como en muchos otros es posibles y la forma que aplicamos para lo anteriormente visto seria la siguiente:
 
 ~~~cpp
-#include <SDL.h> // agregamos las librerias
-#include <stdio.h> // agregamos las librerias
+#include <iostream>
+#include <SDL.h> 
+#include <stdio.h>
 
 bool init(); // creamos una funcion para iniciar sdl
 void close(); // creamos otra funcion para cerrar sdl
 
-//agregamos como constantes las dimensiones de la ventana
-const int ANCHO_VENTANA = 640;
-const int ALTO_VENTANA = 480;
-
-// creamos la ventana como una variable global
-SDL_Window* ventanaGlobal = NULL;
-
-// la superficie que contendra la ventana
-SDL_Surface* gScreenSurface = NULL;
+// CREAMOS LA VENTANA Y SUPERFICIE COMO ELEMENTOS GLOBALES
+SDL_Window* VENTANA_G = NULL;
+SDL_Surface* SUPERFICIE_VENTANA_G = NULL;
 
 int main(int argc, char* args[])
 {
-    // iniciar SDL y creamos una ventana
-    if (!init())
+    if (!init()) // si la funcion 
     {
         printf("Failed to initialize!\n");
     }
     else
     {
-        SDL_UpdateWindowSurface(ventanaGlobal); // Actualizamos la superficie
-        SDL_Delay(2000); // Esperamos 2 segundos
+        SDL_UpdateWindowSurface(VENTANA_G); // Actualizamos la superficie
+        SDL_Delay(5000); // Esperamos 2 segundos
     }
     close(); // luego de todo cerramos la ventana
     return 0;
@@ -148,49 +144,133 @@ int main(int argc, char* args[])
 bool init()
 {
     bool success = true;
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) // devuelve 0 al ser eccitoso pero si es menor
     {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        printf("SDL no se ha iniciado correctamente! SDL_Error: %s\n", SDL_GetError()); // mostramos un mensaje de error
         success = false;
     }
     else
     {
-        // creamos la ventana
-        ventanaGlobal = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
-        if (ventanaGlobal == NULL) // si la ventana no se ha creado
+        // creamos la ventana (si en la posicion de la ventana ponemos SDL_WINDOWPOS_UNDEFINED centramos la ventana)
+        VENTANA_G = SDL_CreateWindow("Ventana de prueba", 100, 100, 680, 460, SDL_WINDOW_SHOWN);
+        // CREAMOS LA SUPERFICIE
+        if (VENTANA_G == NULL) // si la ventana no se ha creado
         {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-            success = false; // la funcion no ha sido eccitosa
+            success = false; // la funcion no ha sido exitosa
         }
         else
         {
             // obtenemos la superficie de la ventana
-            gScreenSurface = SDL_GetWindowSurface(ventanaGlobal);
+            SUPERFICIE_VENTANA_G = SDL_GetWindowSurface(VENTANA_G);
         }
     }
     return success;
 }
 
-void close() // cerramos la ventana
+void close()
 {
-    //Destroy window
-    SDL_DestroyWindow(ventanaGlobal);
-    ventanaGlobal = NULL;
-
-    //Quit SDL subsystems
-    SDL_Quit();
+	SDL_DestroyWindow(VENTANA_G); // PRIMERO DESTRUIMOS LA VENTANA
+	VENTANA_G = NULL;
+	SUPERFICIE_VENTANA_G = NULL;
+	SDL_Quit(); // POR ULTIMO CERRAMOS SDL
 }
 ~~~
 
 ---
 
-# Mostrando imagenes
+# Agregar imágenes en SDL
 
-Ya habiendo transformado nuestro código a algo mas fácil de escribir y entender podemos continuar con algo mas como lo es **mostrar imágenes en pantalla**, antes de continuar debes ser consiente que mostraremos imágenes en formato **BMP** que nos permite referenciar las imágenes como bloques de código en memoria, para hacer mas eficiente la carga.
+El proceso de agregar imagenes no es tan complejo como podrias creer, pero antes debes entender un concepto basico, el concepto de los **BMP**.
 
-Primero tendremos que preparar todo, en mi caso iré al archivo de mi proyecto y agregare la carpeta **`Assets/Images`** en la cual estará la imagen **Banana.bmp** (recuerda que esta carpeta debe estar posicionada donde se encuentre nuestro proyecto en si (si estas en **VS** es la carpeta con el archivo "**sdl2-test.vcxproj**"))
+Usualmente consumimos 2 tipos de "imagenes" en el mundo digital:
 
-Para hacer esto tenemos que hacer lo siguiente:
+1. **Vectoriales**: Son un conjunto de cálculos matemáticos que permiten la generación teórica de líneas y formas, estas se caracterizan por usualmente mantener su definición sin importar del aumento que se le aplique a la imagen.
+   1. **Bitmaps**: Son imágenes generadas por medio de un "sistema de pixeles" o pequeños elementos cuadrados que poseen valores numéricos que representan el color de los mismos.
+
+A la hora de ingresar imágenes en nuestra ventana estas prioritariamente deben ser un Bitmap **con extensión `.bmp`**(con ciertos cambios puede ser un png, jpg u otros, pero eso se vera mas adelante).
+
+Y técnicamente hablando **las imágenes son superficies** esto es un elemento en el que nos adentraremos mas adelante.
+
+Las imágenes poseen varias formas de ser trabajadas y utilizadas, algunas de estas son:
+
+1. **Carga de bitmaps**: hacemos la búsqueda de los elementos que nos interese mostrar en pantalla (y muestra error en caso que no se logre).
+
+   ~~~cpp
+   SDL_Surface* imagen = SDL_LoadBMP( "Carpeta/imagen.bmp" ); // primero buscamos la imagen a uttilizar
+   
+   if ( !imagen ) {
+   	// la imagen no se ha encontrado (se creativo)
+   }
+   ~~~
+
+   **Importante:**
+
+   Imagina las ventanas como una **mesa**, mientras que la "**superficie**"  es **el espacio disponible para posicionar elementos en la misma**, **mientras mas elementos posicionamos, menos espacio habrá para objetos futuros**, por lo que algo esencial para trabajar con las superficies de forma eficiente es **limpiarlas/vaciarlas**.
+
+   Esto también se aplica a las imágenes cuando dejan de utilizarse y para lograrlo debemos hacer lo siguiente:
+
+   ~~~cpp
+   // si dejamos de usar una imagen o superficie dehbemos limpiarla con:
+   SDL_FreeSurface(imagen); // en este caso limpiamos la imagen
+   ~~~
+
+   ---
+
+2. **Guardado de bitmaps**: otra utilidad necesaria de vez en cuando es lo contrario a la carga de **bitmaps**, **el guardarlos**, tan simple como eso.
+
+   Para esto simplemente usamos lo siguiente:
+
+   ~~~cpp
+   // esta funcion devuelve 0 si es exitosa, menos de 0 si algo falla
+   int resultado = SDL_SaveBMP( superficie_a_guardar, "Carpeta/guardado.bmp" );
+   
+   if ( resultado < 0 ) {
+   	// el guardado no se ha concretado (se creativo)
+   }
+   ~~~
+
+   en este caso `superficie_a_guardar` es la superficie que en efecto será guardada y el lugar donde se guardara junto al nombre del archivo.
+
+   ---
+
+3. **Blitting de superficies**: este es el proceso de "dibujar una superficie en otra" permitiendo cosas como dibujar una imagen dentro de la superficie entregada a la ventana.
+
+   ~~~cpp
+   // creamos el destino en el que se mostrara en nuestra superficie
+   SDL_Rect destino;
+   destino.x = 100; // eje x
+   destino.y = 50; // eje y
+   
+   // esta funcion devuelve 0 si es exitosa, menos de 0 si algo falla
+   // (imagen a imprimir, null, superficie en la que se imprimira la imagen, destino de la superficie donde se pondra la imagen)
+   int resultado = SDL_BlitSurface(imagen, NULL, superficieVentana, &destino); 
+   if ( resultado < 0 ) {
+   	// blit fallado (se creativo)
+   }
+   ~~~
+
+   ---
+
+4. **Escalado de imágenes**: este funciona similar al blitting de imágenes pero contiene mas datos a tomar en cuenta:
+
+   ~~~cpp
+   SDL_Rect destino;
+   destino.x = 100; // posicion en el eje x
+   destino.y = 50; // posicion en el eje y
+   destino.w = 200; // escalado en el eje x
+   destino.h = 100; // escalado en el eje y
+   
+   int resultado = SDL_BlitScaled( imagen, NULL, superficieVentana, &destino );
+   
+   if ( resultado < 0 ) {
+   	// blit fallado (se creativo)
+   }
+   ~~~
+
+Un ejemplo claro de la carga de una imagen seria:
+
+
 
 ~~~cpp
 #include <SDL.h> 
