@@ -1,33 +1,16 @@
 # React Js
 
-**Documentación hecha por Rodrigo Seguel**
+**Documentación escrita por Rodrigo Seguel**.
 
-Desde el inicio de los tiempos, los desarrolladores web han buscado formas fáciles de hacer interfaces de usuario tan dinámicas como efectivas, esto es posible con Html,Css y JavaScript vanilla, pero se vuelve una tarea notablemente mas compleja de lo que debería, por eso estamos aquí.
+El mundo del desarrollo web es uno en constante crecimiento, no solo en la gente que se adentra al mismo sino que también en las herramientas que se pueden usar en este.
 
-React Js es una biblioteca de código abierto para JavaScript enfocada en facilitar el proceso de creación de "**single page applications**" o "**aplicaciones de una sola pagina**", este nos permite hacer grandes modificaciones al **DOM** desde nuestro JavaScript de forma muy sencilla, facilitando el proceso de esto utilizando algo llamado "**Virtual DOM**".
+Por eso mismo no es poco común ver herramientas, complementos, frameworks u bibliotecas que nos entreguen funcionalidades tan útiles que decidan permanecer como una parte del desarrollo web actual, como lo es en nuestro caso la tecnología de la que se trata esta documentación, me refiero a **React.Js**.
 
-React Js esta desarrollado por Facebook y su comunidad, este lleva siendo una de las bibliotecas mas utilizadas y amadas para JavaScript desde el 2013 llegando al punto de ser actualmente la mas usada y amada en Front-End development estando presente en miles de aplicaciones web como son Facebook, Instagram, Netflix, entre muchos mas.
+Este framework desarrollado por facebook (Meta) y su comunidad lleva siendo una de las bibliotecas mas utilizadas a la fecha actual dado su facilidad de uso y lo increíblemente útil que es para hacer "**Single page applications**" (aplicaciones de una pagina) gracias a su capacidad de ser tan modular como tu lo desees.
 
-Los requisitos para aprender este son:
+Esto gracias a un aumento en la facilidad de uso del **DOM** de JavaScript gracias a un elemento llamado **Virtual Dom** y aun mas por medio de un lenguaje llamado **JSX** que utilizaremos para crear estos **componentes** en nuestra pagina uniendo tanto HTML como JavaScript en una misma base.
 
-+ Html
-+ Css
-+ JavaScript
-
-Sin mas que divagar, comencemos.
-
----
-
-## Por que React?
-
-Como ya mencione React Js es una biblioteca enfocada al Front-End, a demás de entregarnos la posibilidad de "modular" nuestras aplicaciones web, tanto como permitirnos hacer cosas mas complejas gracias al sistema de "componentes" que nos entrega React Js.
-
-Recomiendo el aprendizaje de este por principalmente 4 razones:
-
-1. Es cómodo de usar: Su integración modular nos entrega la posibilidad de dividir nuestra aplicación en pequeñas secciones cada una con una función y mas componentes "hijo" para hacer así iteraciones mas y mas complejas con nuestra aplicación.
-2. Es muy requerido: Al ser una de las bibliotecas mas utilizadas en JavaScript es muy fácil encontrar trabajos que requieran de este como uno de los principales requisitos.
-3. Alto desempeño: React Js si es algo es rápido y nos permite hacer cambios a nuestra web sin tener que "recargar" nuestra pagina.
-3. Soporta renderizado en el servidor: Cuando una pagina web tiene renderizado de parte del cliente pero no del servidor ocurre un problema común y es que no se muestra en los buscadores web, por suerte React Js si nos permite acceder a esta funcionalidad.
+Sin mas que agregar, comencemos.
 
 ---
 
@@ -68,33 +51,89 @@ Listo ahora podemos cerrar todo a excepción de nuestro editor y la pagina de Lo
 
 ---
 
-## Estructura del proyecto
+## La estructura de un proyecto (carpetas)
 
-En la sección anterior quizás abras notado que al terminar la creación del proyecto con React se habrán creado una gran cantidad de elementos y carpetas en el mismo, ahora te enseñare el uso y función de cada una.
+Los proyectos de React al ser creados nos darán un conjunto grande de carpetas y archivos que requeriremos en el uso del mismo, por ello las repasaremos por aquí y hablaremos de que se puede hacer con ellos.
 
-las carpetas y archivos son:
+El comando **`npx create-react-app`** nos suele generar una carpeta con los siguientes archivos:
 
-+ Readme.md: este archivo es un markdown que podemos usar como documentación o nota para otros desarrolladores que vean nuestro proyecto.
++ **node_modules**: una carpeta llena de modulos de node (no los elimines, son necesarios para que esta funcione).
++ **public**: Aquí encontramos los datos que serán públicos al hacer el build de la pagina (el Html base, imágenes, css, etc...).
++ **src**: Aquí esta nuestra base de código, aquí haremos nuestras aplicaciones y componentes de react.
++ **.gitignore**: archivo de Git (recomiendo no tocar).
++ **package y package-lock**: archivo encargado de almacenar paquetes entre otros elementos del programa.
++ **README**: archivo donde escribiremos nuestra documentación del proyecto.
+
+Estos archivos tendran dentro de si muchos elementos, haremos una vista a 2 en especifico, siendo estos:
+
+* **public**: En esta carpeta tendremos múltiples elementos, entre estos los unicos de relativa importancia serian el archivo:
+  * index.html: Este es nuestro html base, aquí tendremos cosas como el titulo de la pagina, icono, u otros elementos fuera de react en si.
+  * robots.txt: Su principal idea es permitir a nuestra pagina el ser indexada por buscadores.
+* **src**: en esta pagina igual tendremos múltiples elementos útiles pero los importantes son:
+  * index.js: es en si el unico archivo necesario ya que nos permite mostrar en el html un elemento especifico que llama nuestros componentes de react.
+  * app.js: anteriormente mencione que solo es necesario index.js pero también usaremos este para específicamente crear nuestros componentes.
+  * index.css y app.css: estos son archivos de estilo para ambos **.js** recomiendo guardarlos solo por la necesidad de hacer todo mas fácil.
+
+Técnicamente hablando con simplemente mantener estos archivos podríamos tener un programa funcional (por temas de facilidad eliminare al resto).
 
 ---
 
-+ Package.json: este archivo se encarga de compilar al informacion de nuestro proyecto, agregando cosas como el nombre del proyecto, su version, si es privado o no, dependencias, scripts, validadores de escritura y buscadores soportados por el proyecto.
+## La estructura de un proyecto (código)
+
+Obviamente un conjunto de carpetas no son lo único que hace falta entender para llevar a cabo un producto como este, en esta sección repasaremos todos los elementos ejecutándose en nuestro proyecto.
+
++ **La base (index.html)**: como ya mencione anteriormente, en la carpeta de **public** tendremos un archivo de html el cual **limpiándolo un poco** debería verse de la siguiente forma.
+
+  ~~~html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <!--los meta datos de aqui no nos importan por ahora, pero deben estar aqui-->
+    </head>
+    <body>
+      <noscript>You need to enable JavaScript to run this app.</noscript> <!--en caso qeu javascript no este activado-->
+      <div id="root"></div> <!--Nuestro elemento de react!!!-->
+    </body>
+  </html>
+  ~~~
+
+  Como notaras tenemos un div con un id "root" este elemento es donde va a mostrarse los elementos de react que creemos en nuestra aplicación, pero primero debemos definir el elemento "root" así que:
 
   ---
 
-+ Package-lock.json: es un archivo usado por el funcionamiento interno de React, no hay que tocarlo.
++ **La conexión (index.js)**: en este archivo tenemos lo que viene a ser la definición de lo que se mostrara en nuestro div "root" y se ve de la siguiente forma:
+
+  ~~~jsx
+  import React from 'react'; // importamos react
+  import ReactDOM from 'react-dom/client'; // importamos el virtual dom
+  import './index.css'; // agregamos un css a nuestro programa
+  import App from './App'; // y traemos nuestra aplicacion
+  // import reportWebVitals from './reportWebVitals'; // este import lo usamos para la funcion reportWebVitals()
+  
+  // en esta constante traemos el dato donde vamos a renderisar nuestro react
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  
+  // y finalmente seleccionamos que se va a renderizar
+  root.render(
+    <React.StrictMode>
+      <App /> <!-- este elemento lo traemos desde el import de arriba -->
+    </React.StrictMode>
+  );
+  
+  // reportWebVitals(); // esta funcion la usamos para mostrar elementos sobre rendimiento
+  ~~~
+
+  Como abras visto en especial aquí es donde podemos hacer todo, especialmente en el render podemos agregar lo que queramos para hacer todo mas fácil, pero lo que hacemos es modularizarlo, para así poder trabajar de forma mas organizada y ordenada, por ultimo veamos nuestras aplicaciones.
 
   ---
 
-+ .gitignore: nos permite "ignorar" ciertos archivos para que la subida a Git o GitHub sea mas eficiente, rápida y fácil.
++ **La aplicación (app.js)**: aquí empezaremos a crear nuestros componentes, técnicamente podemos eliminar todo el archivo y dejarlo de la siguiente forma:
 
-  ---
+  ~~~jsx
+  export default App; // esto debera estar siempre al final (sirve para enviar nuestra funcion al index.js)
+  ~~~
 
-+ src: es una carpeta que contiene el código de react, tanto archivos como otros que utilizaremos para poder proceder con nuestro proyecto de forma efectiva.
-
-  ---
-
-+ public: es la pagina en la que encontramos el template de Html de la pagina, aquí simplemente veremos todos los datos utilizados por la pagina principal que no pertenecen a React, al ver por ejemplo el archivo "**index.html**" notaras que en su **body** no hay nada y aun así podremos ver cosas en la pagina, esto es por que React edita cosas para Html y Css, pero se escribe totalmente en JavaScript.
+  Dependiendo de el editor que utilicemos nos mostrara un error, pero eso lo repararemos en un rato mas.
 
 ---
 
@@ -136,120 +175,134 @@ Este en si se puede definir como un "Falso Dom" que nos facilita la comunicació
 
 ---
 
-## Hola Mundo
-
-Para iniciar con React primero borraremos todo lo que se encuentre en la carpeta "**src**" para que así podamos iniciar desde 0.
-
-Con esto listo vamos a crear en la misma un archivo de JavaScript con el nombre "**index.js**" y le importaremos todas las dependencias necesarias de react al mismo, el archivo debería quedar de la siguiente forma:
-
-~~~javascript
-// importamos react y el dom de react
-import React from 'react';
-import reactDom from 'react-dom';
-
-// recuerda que segun el dom los elementos son nodos definidos por etiquetas html
-// este elemento funciona como un DOM virtual
-const element = <h1>Hello World!</h1>;
-
-// si hacemos lo siguiente deberia devolvernos un objeto representando al elemento de html en la consola
-console.log(element);
-
-// renderizamos todo lo que le demos al dom virtual en el elemento traido con el getElementById osea el div de html
-reactDom.render(element, document.getElementById("root"));
-
-~~~
-
-Por si no lo mencione, en la carpeta "**public**" podremos encontrar un archivo de Html con el nombre "**index.html**", este tiene un div que funciona como contenedor para nuestra aplicación y lo demás que encontremos en el cuerpo del archivo, se ejecutara en caso que por ejemplo no este activado el JavaScript del buscador.
-
----
-
 # Componentes
 
-Los componentes son una parte fundamental para el desarrollo web moderno, imagínalo como pequeñas secciones de nuestra pagina que pueden ser lo que quieras, un botón, un cuadro en blanco o una imagen, que a demás tiene "componentes hijo", un texto, otro botón entre muchos otros.
+Los componentes son la parte principal de React, estos se definen como **funciones o clases que retornan un elemento de html con una funcionalidad predefinida** y que transformaremos en etiquetas para mas tarde utilizarlas con facilidad.
 
-La gracia de los componentes como concepto es su "reutilización posterior" ya que la idea de estos es que se puedan hacer una vez y si lo requerimos poder crearlos nuevamente.
+Como ya mencione se dividen en 2:
 
-Un ejemplo de componente por ejemplo seria un post de Instagram, este es un componente con la siguiente estructura:
+## Componentes de clases
 
-+ Cuadro en blanco
-  + Imagen
-  + Sección de botones
-    + Me gusta
-    + Comentar
-    + Compartir
-    + Guardar
-  + Sección de opciones y cuenta
-    + Imagen de perfil y nombre de quien subio la foto
-    + Opciones para la publicación
-  + Sección de comentarios
+Los componentes en clases son como es obvio **clases que nos renderizan un elemento que al ser llamados podemos reutilizar como etiquetas en jsx**
 
-Esta estructura se repite en cada una de las publicaciones que podemos ver en Instagram, por lo que si creamos un componente con estos elementos, podemos replicarlo para que se copie cada vez que hay una publicación nueva.
-
-En si estos no son mas que Funciones las cuales retornan un valor, siendo este un código JSX el cual contiene todos los elementos y componentes dentro de nuestro componente.
-
-## Creando componentes
-
-Para crear un componente primero necesitamos de 3 cosas en especifico, el código donde estamos renderizando nuestro React "**Index.js**" y un código que se encargue de generar esos componentes, ahora crearemos un archivo "principal de renderización de datos" llamado "**App.js**" a demas de obvio el html "**index.html**" que se crea por defecto en la carpeta "public".
-
-En el "**App.js**" hacemos lo siguiente
+ejemplo:
 
 ~~~react
-import React from "react"; // importamos react
+import { Component } from 'react' // importamos la funcionalidad de react
 
-const Componente = <h1>Hola bro, como estas?</h1> // esto es un componente basico
+class App extends Component { // creamos una clase llamada App
+  render() { // con esta funcion renderizamos el componente
+    return( // y retornamos un valor (este debe ser un elemento jsx)
+      <div>
+        <h1>este es un componente</h1>
+        <h2>puede estar compuesto de varios elementos</h2>
+        <h3>y al llamar a la clase app en index.css</h3>
+        <h1>se posicionaran todos al mismo tiempo</h1>
+      </div>
+    )
+  }
+}
 
-export default Componente; // exportamos la funcion "Componente"
+export default App; // esto ya no dara error ya que ahora poseemos una clase llamada App
 ~~~
 
-En el código de "**Index.js**" haremos lo siguiente:
-
-~~~react
-// importamos react y el dom de react
-import React from 'react';
-import reactDom from 'react-dom';
-
-import Componente from './App'; // importamos la funcion "Componente"
-
-// renderizamos todo lo que le demos al dom virtual en el elemento traido con el getElementById osea el div de html
-reactDom.render(<Componente/>, document.getElementById("root"));
-
-~~~
-
-Un extra, podemos hacer esto:
-
-~~~react
-import React {Component} from 'react';
-
-// y a la hora de hacer un componente como clase solo habra que hacer lo siguiente:
-class Componente extends Component {}
-~~~
+Con estos elementos ahora siempre que  llamemos el elemento App mostraremos este componente en la pantalla.
 
 ---
 
-## Componentes funcionales
+## Estados
 
-El nombre de "componente funcional" es mas que solo una forma de mencionar que un componente "**funciona**", este hace referencia a  que el mismo esta anidado a una funcion como identificador, en lugar de a una variable como anteriormente ya vimos.
+Los estados son datos ingresados en nuestros componentes y elementos los cuales referencian alguna opcion u otro elemento.
 
-por ejemplo:
+Estos son muy similares a los props, con la diferencia de que los props son publicos mientras que estos son privados, osea **solo el mismo componente puede cambiar sus estados**.
 
-~~~jsx
-// este es un "componente funcional"
-function Componente() {
-    return <h1>Hola bro, como estas?</h1>
-}
+Para explicar la similitud con los props tengo primero que dar un ejemplo:
 
-// estos componentes se pueden aplicar igualmente en funciones flecha como:
-const Componente = () => {<h1>Hola bro, como estas?</h1>} // recuerden que las funciones flecha retornan por defecto
+~~~react
+// como ya mencione a la hora de crear un prop es como si hicieramos un objeto imaginario con las propiedades del mismo
+// en este caso es similar solo que estos efectivamente son objetos reales
+// para usarlos principalmente tenemos que hacer nuestros componentes con una clase de la siguiente forma:
 
-// tambien podemos hacer lo mismo por medio de una clase por ejemplo:
-class Componetne extends React.Component {
+class Componente extends React.Component {\
+    
+	// creamos un objeto con los estados que querramos revisar
+    state = { 
+        // aqui van nuestros estados por ejemplo:
+        estaVivo: true
+    }
+    
     render() {
-        return <h1>Hola bro, como estas?</h1>
+        if (this.state.estaVivo) {
+	        return <h1>Esta vivo :D</h1>            
+        } else {
+            return <h1>Esta muerto :c</h1>
+        }
     }
 }
 
-// y al referenciarlo se hace de la misma forma que los componentes normales
+// si ejecutamos esto y estaVivo es verdadero se mostrara el mensaje de "Esta vivo :D" de lo contrario se mostrara el "Esta muerto :c"
 ~~~
+
+Técnicamente podemos utilizarlos como variables que representan estados del mismo elemento y que por cierto debes llamar como un objeto del mismo ya que la privacidad del mismo evita que accedas a otros a diferencia de los props.
+
+Por lo que si por ejemplo llamas 3 veces a este componente, puedes hacer que individualmente cada uno de ellos pueda tener un estado distinto. 
+
+Ahora probemos hacer algo mas dificil, en especifico algo como cambiar internamente el estado de nuestro elemento, esto lo haremos de la siguiente forma:
+
+~~~React
+class Component1 extends React.Component { // creamos nuestra clase
+
+    // creamos un objeto para nuestros estados
+    state = {
+        estaVivo: true
+    }
+    
+    render() {        
+        if (this.state.estaVivo) { // si esta vivo
+	        return(
+                <div>
+                    <h1>Esta vivo :D</h1>
+                    <button onClick={() => this.setState({estaVivo: false})}>Matar :c</button>
+                </div>
+            ) 
+                  
+        } else { // de no ser asi
+            return(
+            <div>
+                <h1>Esta muerto :c</h1>
+                <button onClick={() => this.setState({estaVivo: true})}>Revivir :D</button>
+            </div>
+        )
+
+        }
+    }
+}
+~~~
+
+De este ejemplo puedes sacar 2 cosas importantes:
+
+1. Para editar un estado internamente se debe usar la función **`this.setState({estado: valor})`**.
+
+2. Para accionar un botón o recibir un clic desde un elemento podemos usar **`onClick = { // codigo javascript}`** para ejecutar al dar clic en un elemento, tambien nos permite ejecutar funciones de las siguientes formas:
+
+   ~~~React
+   // si tenemos una funcion simple como:
+   function matar() {
+       this.setState({estaVivo: false});
+   }
+   
+   // debemos usar:
+   <button onClick={this.matar.bind(this)}>Revivir :D</button>
+   
+   // --------------------------------------------------------------
+   
+   // si tenemos una funcion en linea como:
+   const matar = () => this.setState({estaVivo: false});
+   
+   // podemos hacer:
+   
+   <button onClick={this.matar}>Revivir :D</button>
+   ~~~
 
 ---
 
@@ -402,211 +455,63 @@ const App = () => {
     en este caso en vez de llegar un objeto con todo lo que tiene nuestro componente referenciado,
     haremos uno solo con las propiedades necesarias.
 */ 
-~~~
 
----
-
-## Estados
-
-Los estados son datos ingresados en nuestros componentes y elementos los cuales referencian alguna opcion u otro elemento.
-
-Estos son muy similares a los props, con la diferencia de que los props son publicos mientras que estos son privados, osea **solo el mismo componente puede cambiar sus estados**.
-
-Para explicar la similitud con los props tengo primero que dar un ejemplo:
-
-~~~react
-// como ya mencione a la hora de crear un prop es como si hicieramos un objeto imaginario con las propiedades del mismo
-// en este caso es similar solo que estos efectivamente son objetos reales
-// para usarlos principalmente tenemos que hacer nuestros componentes con una clase de la siguiente forma:
-
-class Componente extends React.Component {\
-    
-	// creamos un objeto con los estados que querramos revisar
-    state = { 
-        // aqui van nuestros estados por ejemplo:
-        estaVivo: true
-    }
-    
-    render() {
-        if (this.state.estaVivo) {
-	        return <h1>Esta vivo :D</h1>            
-        } else {
-            return <h1>Esta muerto :c</h1>
-        }
-    }
+// otra forma de hacer esto con los props seria haciendo un destructoring a los props en si de la siguiente forma:
+const ParrafoNombre = ({props}) => { // referencuamos los datos a pasar (solo estado aun que no lo usemos y el children)
+    const {edad} = props; // ahora al referirnos a edad en realidad estaremos llamando al prop de edad
+    return <p>{edad}</p>
 }
 
-// si ejecutamos esto y estaVivo es verdadero se mostrara el mensaje de "Esta vivo :D" de lo contrario se mostrara el "Esta muerto :c"
-~~~
-
-Técnicamente podemos utilizarlos como variables que representan estados del mismo elemento y que por cierto debes llamar como un objeto del mismo ya que la privacidad del mismo evita que accedas a otros a diferencia de los props.
-
-Por lo que si por ejemplo llamas 3 veces a este componente, puedes hacer que individualmente cada uno de ellos pueda tener un estado distinto. 
-
-Ahora probemos hacer algo mas dificil, en especifico algo como cambiar internamente el estado de nuestro elemento, esto lo haremos de la siguiente forma:
-
-~~~React
-class Component1 extends React.Component { // creamos nuestra clase
-
-    // creamos un objeto para nuestros estados
-    state = {
-        estaVivo: true
-    }
-    
-    render() {        
-        if (this.state.estaVivo) { // si esta vivo
-	        return(
-                <div>
-                    <h1>Esta vivo :D</h1>
-                    <button onClick={() => this.setState({estaVivo: false})}>Matar :c</button>
-                </div>
-            ) 
-                  
-        } else { // de no ser asi
-            return(
-            <div>
-                <h1>Esta muerto :c</h1>
-                <button onClick={() => this.setState({estaVivo: true})}>Revivir :D</button>
-            </div>
-        )
-
-        }
-    }
-}
-~~~
-
-De este ejemplo puedes sacar 2 cosas importantes:
-
-1. Para editar un estado internamente se debe usar la función **`this.setState({estado: valor})`**.
-
-2. Para accionar un botón o recibir un clic desde un elemento podemos usar **`onClick = { // codigo javascript}`** para ejecutar al dar clic en un elemento, tambien nos permite ejecutar funciones de las siguientes formas:
-
-   ~~~React
-   // si tenemos una funcion simple como:
-   function matar() {
-       this.setState({estaVivo: false});
-   }
-   
-   // debemos usar:
-   <button onClick={this.matar.bind(this)}>Revivir :D</button>
-   
-   // --------------------------------------------------------------
-   
-   // si tenemos una funcion en linea como:
-   const matar = () => this.setState({estaVivo: false});
-   
-   // podemos hacer:
-   
-   <button onClick={this.matar}>Revivir :D</button>
-   ~~~
-
----
-
-## Agregando Css
-
-Como es relativamente obvio, podemos agregarle un css a nuestros componentes y esto podemos lograrlo de varias formas siendo estas:
-
-### Estilo en linea
-
-Como quiza recuerden de css, podemos en algunos elementos utilizar "estilo en linea" osea en html hacer algo como lo siguiente:
-
-~~~html
-<p style="color: #fff">Hola!!!, ¿como estas?</p>
-~~~
-
-Esto en Html no era muy recomendado pero en React puede ser muy útil y en este funcionaria de la siguiente forma:
-
-~~~jsx
-// creamos el estilo ya sea como clase
-const estilo_clase = {
-    color: "#fff",
-    margin: "0 auto",
-}
-
-// o como funcion
-const estilo_funcion = () => ({
-    color: "#111",
-    margin: "0 auto",
-});
-
-// para llamarlos podemos hacer:
-<p style={estilo_clase}>Texto 1 (clase)</p>
-<p style={estilo_funcion()}>Texto 2 (funcion)</p>
-~~~
-
-pero las funciones nos dejan volvernos un poco locos gracias a lo siguiente:
-
-~~~jsx
-// o como funcion
-const estilo_funcion = (cl = "#456") => { // creamos la funcion con un parametro (este sera por defecto)
-    color: cl; // referenciamos el parametro
-    margin: "0 auto";
-}
-
-<p style={estilo_funcion()}>Texto 2 (funcion)</p> // en este caso el color del mismo sera (#456)
-<p style={estilo_funcion("#234")}>Texto 2 (funcion)</p> // en este caso el color del mismo sera (#234)
-~~~
-
-y ya para combinar estilos podemos hacer lo siguiente:
-
-~~~jsx
-// si tenemos por ejemplo una clase de estilo
-const estilo_clase = {
-    boxShadow: '0 5px 3px rgba(0, 0, 0, 0.5)'
-}
-
-// a demas de una funcion de estilo con algo distinto
-const estilo_funcion = (cl = "#456") => { // creamos la funcion con un parametro (este sera por defecto)
-    color: cl, // referenciamos el parametro
-    margin: "0 auto",
-}
-
-// para unirlos podemos hacer:
-<p style={...estilo_clase, ...estilo_funcion("#234")}>Texto 2 (funcion)</p> // ahora los 2 estilos se estarian aplicando
-~~~
-
----
-
-### Estilo por archivo
-
-El estilo pro archivo funciona exactamente igual que como lo usaríamos normalmente en un proyecto web sin usar react, por medio de otro archivo que es importado a nuestro archivo principal en el que escribiremos css puro sin complicaciones.
-
-El único contra que tiene esto es que si en algún momento llegamos a "eyectar" nuestro código podrían haber problemas con los archivos importados, pero fuera de esto **(mas aun siendo algo muy poco común)**, no nos debería generar mayor problema.
-
-*Supongamos que hemos hecho un archivo llamado "archivo.css" en la misma carpeta que nuestro "App.js"*
-
-~~~react
-import React from "react"; // importamos react
-import ./archivo.css // instanciamos el css
-
-// creamos nuestro componente
-function Componente() {
+const App = () => {
     return (
-        <h1 id="Saludo">Hola bro, como estas?</h1> // si queremos acceder a un elemento css por su id hacemos lo siguiente
-        // lo mismo ocurriria con otros elementos EXCEPTO si queremos hacer esto por medio de clases
-        // para ello en lugar de usar class="" debemos hacer algo como lo siguiente:
-        <h1 className="Saludo">Hola bro, como estas?</h1> 
-        // esto por que class es una keyword de JavaScript, por lo que pueden haber errores
+    	<div>
+        	<ParrafoNombre edad="19">Rodrigo Seguel</ParrafoNombre>
+        </div>
     );
 }
-
-export default Componente; // exportamos la funcion "Componente"
 ~~~
 
-Ahora desde nuestro "archivo.css" podríamos hacer algo como lo siguiente:
+---
 
-~~~css
-#Saludo {
-    border 1px solid #000;
-    /* aqui puedes agregar el estilo que desees */
+## Cuando se renderiza un componente
+
+Como recordaras, los componentes en clases tienen la función "**render**" (en los componentes en funciones esta escondido), esta se dedica a mostrar en pantalla nuestro componente y cada vez que tengamos que re-renderizar o actualizar la vista de un componente debemos ejecutar esta misma función.
+
+Esto podemos hacerlo cuando un estado reciba un cambio (por medio de **`this.setState({})`**) la **`funcion()`** render será ejecutada (en este caso también se ejecutara para los componentes que están dentro de otro componente).
+
+---
+
+## Componentes funcionales
+
+Los componentes funcionales son la parte importante de los componentes, a pesar de tener 2 tipos estos son los que deberias estar utilizando especialmente por su facilidad y utilidad.
+
+La sintaxis de un componente funcional podria ser la siguiente:
+
+~~~jsx
+// en una funcion normal:
+function App() {
+  return( // las funciones normales requieren el return, mientras que las funciones flecha no
+    <div>
+      <h1>este es un componente</h1>
+    </div>
+  )
+}
+
+// en una funcion flecha:
+const App = () => {
+    <div>
+        <h1>este es un componente</h1>
+    </div>
+  )
 }
 ~~~
 
-## 
+las funciones se dividen en 2 tipos:
 
+1. funciones puras: funciones que al ser ejecutadas siempre darán el mismo valor de retorno (los componentes de react siempre serán de estos).
+2. funciones impuras: funciones que al ser ejecutadas, siempre darán valores distintos de retorno (por ejemplo el valor de una fecha)
 
+## Hooks
 
-
-
-
+Los hooks son...
 
