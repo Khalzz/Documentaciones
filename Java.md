@@ -1519,16 +1519,3 @@ public ArrayList<Usuario[]> Read() { // llamamos la funcion que ya creamos en la
 ---
 
 **Ya finalmente podemos exportar nuestra base de datos como archivo sql y ahí ya podríamos trabajar con el mismo desde otro gestor si así lo necesitamos**.
-
-
-
-## Extra 
-
-Para hacer esto debemos ir a la pestania de librerias en el netbeans, dar clic derecho en la misma y seleccionamos la opcion "Add Library", en esta seleccionamos la opcion "Create", ahi le agregaremos el nombre a nuestra libreria (en este caso "LibSql") y lo seleccionamos como "class library", finalmente damos en el boton "Add Jar Folder" y seleccionas el archivo java de tu libreria, por ultimo simplemente bguscas esta libreria en el selector de librerias y le das en "add library".
-
-## CRUD
-
-+ create
-+ read
-+ update
-+ delete

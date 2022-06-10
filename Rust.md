@@ -1,281 +1,298 @@
 # Rust
 
-**Documentación hecha por: Rodrigo Andres Seguel Nuñez (khalzz).**
+**Documentación hecha por Rodrigo Seguel**
 
-Rust es mágico, este es un lenguaje multi-propósito y multi-paradigma que puede tanto funcionar como lenguaje de bajo nivel (interactúa directamente con el hardware) tanto como lenguaje de alto nivel (referente a su depuración).
+La fuerza de **C++** junto a la belleza de **JavaScript** pasando por la facilidad de **Python** con un pequeño toque de amor proveniente de un delicioso pie recién hecho por tu madre, **Rust** es un lenguaje difícil de explicar, es una comunión notable de distintos elementos que pueden hacerte pasar por emociones como confianza, duda y hasta horror pero tranquilo, es mas fácil de lo que crees.
 
-Este lenguaje salido el 2015 busca el ser un lenguaje con grandes capacidades similar a c o c++ pero con una sintaxis mas sencilla, de hecho este lenguaje lo conocí gracias al ser el numero 1 como la tecnología mas amada por programadores en stack overflow en su encuesta del año 2017, 2018, 2019 y 2020.
+Creado el 2010 este se ha denotado como **"El lenguaje mas amado por programadores"** según las encuestas hechas por **Stack Overflow** los años **2017, 2018, 2019, 2020 y 2021** por razones notables y las que te harán amarlo también.
 
-Y este al ser un lenguaje complejo como c y c++ además de ser multi propósito, nos permite usarlo tanto en **desarrollo de sistemas** (sistemas operativos, programas y apps, juegos además de muchos otros "sistemas"), **desarrollo web**, entre otros.
-
-Cabe recalcar que esta documentación la basare en el orden que se puede encontrar en la documentación oficial del lenguaje y otras documentaciones similares.
-
-Además esta documentación acepta que algunos conceptos los conoces de forma mínima.
+La mejor parte de este lenguaje es su funcionalidad, imagínate un lenguaje tan fácil como es **Python** o **JavaScript** pero con la potencia de **C++** hasta el punto de permitirte hacer incluso **sistemas operativos** con el mismo, tanto otros trabajos complejos como el **desarrollo de videojuegos**.
 
 ---
 
-## Indice
+# Primeros pasos
+
+Como es obvio iniciaremos por el principio, en esta sección repasaremos cosas como la creación de proyectos, la arquitectura de los mismos, un hola mundo entre otros que nos ayudaran a iniciarnos con el lenguaje en si.
 
 ---
 
-# Programación básica
+## Instalando Rust
 
-En esta parte de la documentación veremos lo que se suele aplicar en todos los lenguajes de programación comunes y la forma en la que estos se manejan en este lenguaje aun que algunos se verán mas adelante o se profundizaran mas adelante.
+Para instalar **Rust**, tenemos que adentrarnos en una aventura épica pasando por valles derruidos que poseen peligros inimaginables.
 
----
+Ahora hablando en serio para instalar **Rust** debes ingresar en la [siguiente pagina](https://www.rust-lang.org/learn/get-started) y simplemente seguir la guía de instalación según tu sistema, **para instalarlo en Windows** simplemente presiona el botón de instalar (32-bit o 64-bit) y al instalar simplemente selecciona "instalación común".
 
-## Conceptos básicos
-
-Antes de iniciar con lo básico del lenguaje y lo especial del mismo, veremos cosas basicas del mismo, desde como crear un archivo de rust nuevo hasta como hacer comentarios, entre alguna y otras cosas necesarias para iniciarte en **la magia de rust**.
+Listo, ya tienes **Rust** instalado!!!.
 
 ---
 
-### Crear proyecto nuevo
+## Creando un proyecto
 
-antes de crear el proyecto de rust tendré que recalcar que yo estaré trabajando con ubuntu 20.04 aun que en realidad en cualquier sistema unix funcionara de forma similar.
+Para obviamente empezar a trabajar en un proyecto debemos crear el mismo, primero abriremos una terminal, vamos a la carpeta donde deseemos tener el mismo y ejecutaremos el comando **`cargo new nombre-del-proyecto`**, esto creara una carpeta con ese nombre en el que estará almacenado nuestro proyecto.
 
-Para crear un proyecto necesitamos entrar en la carpeta que queramos tener como almacenador de el mismo, en este mismo debemos llamar la terminal y ingresar el comando `cargo new NombreProjecto` (como creo que es obvio el `NombreProjecto` puede cambiar a preferencia del programador).
+Al terminar la creación del proyecto podremos ejecutar el proyecto con **`cargo run`**, pero ten cuidado, si te sale un error debes **comprobar que estes dentro de la carpeta del proyecto para ejecutarlo** no en la carpeta donde creaste este mismo.
 
-Luego de esto existirá una carpeta que tendrá los siguientes archivos de importancia:
-
-+ src (carpeta donde ira nuestros archivos de código)
-  + main.rs (archivo principal donde se ejecuta nuestro código fuente)
-+ Cargo.toml (archivo donde se almacenaran las dependencias de nuestro código y otros datos)
+Mas que el **`cargo run`** tendremos mas formas de ejecutar el código pero por ahora utilizaremos esta forma de trabajo, con un editor y la terminal abiertos al mismo tiempo.
 
 ---
 
-### Hello world
+## La arquitectura de nuestros proyectos
 
-Al hacer lo anteriormente mencionado, se creara en el archivo `main.sr` un hello world o hola mundo que se supone nos muestra algunas cosas muy básicas del mismo lenguaje.
+Al crear un proyecto veremos los siguientes componentes:
 
-El mismo es de la siguiente forma:
++ **src**:  Esta carpeta posee todos los elementos que conforman la parte funcional de nuestro programa (aquí va nuestro código).
+  + **main.rs**: Este es el archivo creado como base de nuestro proyecto, donde se encuentra nuestro "Hola mundo" y donde empezaremos a escribir código.
++ **target**: Esta carpeta se encuentra llena de elementos relevantes al debugging de nuestro proyecto, builds, pruebas entre otros muchos otros.
++ **cargo.lock**: En este archivo almacenamos los paquetes que funcionaran y harán efecto en nuestro proyecto cuando los necesitemos.
++ **cargo.toml**: Este archivo nos permite almacenar ciertos datos de nuestro proyecto como el nombre, la versión, la "edición" y las dependencias del mismo.
+
+Aun que a pesar de todo los archivos de importancia real son **src** y **cargo.toml** y conociendo estos ya tendremos lo básico para comenzar.
+
+---
+
+## Hello World
+
+Al crear nuestro proyecto entraremos en **main.rs**, este archivo se presentara ante nosotros como "el archivo básico" en el que escribiremos nuestro código y nos recibirá de la siguiente forma:
 
 ~~~rust
-fn main(){
-	println!("Hello world")
+fn main() {
+    println!("Hello, world!"); // este codigo no requiere de un ; pero por eleccion esta puesto (este es opcional)
 }
 ~~~
 
-**cabe recalcar que hay ocasiones en las que los `;` son opcionales pero eso lo veremos mas adelante**.
+Como veras, este "programa inicial" es muy complejo y nos permite sacar las siguientes conclusiones:
 
-pero aquí logramos concluir algunas cosas del hola mundo que son los siguientes:
+- nuestro código fuente debe ir en una función con el nombre `main`.
+- usamos "println!" para **imprimir texto en pantalla**
+- para llamar un `macro o funcion interna` debemos usar `!` esto se profundizara mas adelante.
+- para iniciar una función debemos usar la palabra `fn` seguido de su nombre, parámetros y llaves.
 
-+ nuestro código fuente debe ir en una función con el nombre  `main`.
-+ usamos "println!" para **imprimir texto en pantalla**
-+ para llamar un `macro o funcion interna` debemos usar `!` esto se profundizara mas adelante.
-+ para iniciar una función debemos usar la palabra `fn` seguido de su nombre, parámetros y llaves.
+### Comentarios
 
-Para correr este archivo Requeriremos otro comando de `cargo` que es `cargo run`, para usarlo nuestra terminal debe tener abierta la carpeta donde esta nuestro proyecto de rust.
+Los comentarios son una parte fundamental para el desarrollo, ya sea educar o simplemente como un recordatorio, la necesidad de estos supera a cualquier otro elemento pero para utilizarlos obviamente debes saber como funcionan.
 
-Como extra puedo mencionar que los comentarios se hacen al igual que c++,c#,kotlin, entre otros lenguajes que ya trabajamos:
+Los comentarios en si son en efecto comentarios, no generan cambios en la funcionalidad del código y el posicionamiento de los mismos no genera problemas:
 
 ~~~rust
-//haciendo asi comentarios de una linea
+// asi podemos hacer un comentario de una linea
+// tendremos que usar eñ "//" por cada linea de comentario
+// cuando escribes esta clase de comentarios deben estructurarse como "// comentario" con un espacio entre las barras y el mensaje
 
 /*
-	y asi comentarios multi-linea
+	asi podemos hacer un comentario multi linea, este no requiere algo por cada linea escrita,
+	todo lo que se encuentre aqui sera un comentario,
+	y la estructura del mismo se basa en iniciar el bloque y el mensaje va con una tabulacion
 */
 ~~~
 
----
-
-## Hello cargo
-
-Cargo es el administrador de paquetes de rust y se usa para en efecto "administrar paquetes" ademas de dar varias otras funciones y facilitar el desarrollo para el usuario.
-
-de hecho ya vimos una función de cargo que fue usar `cargo new` para crear un proyecto y el usar `cargo run` para ejecutar nuestro código.
-
-Cargo suele ser un archivo con extencion `.toml` o tom's obvious, minimal language y aquí va las características de nuestros paquetes y su sintaxis es la siguiente:
-
-~~~toml
-[package]
-name = "hello_cargo"
-version = "0.1.0"
-authors = ["Your Name <you@example.com>"]
-edition = "2018"
-
-[dependencies]
-~~~
-
-Las lineas entre corchetes son **encabezados de sección** o como podríamos llamar un tipo de "titulo" para cada sección de nuestro código.
-
-Las 4 lineas siguientes dan la "info" de el desarrollador o equipo de desarrollo del proyecto y esta parte se puede hacer mas compleja añadiendo mas información a la misma.
-
-La ultima linea es un encabezado que representa que bajo esa debemos añadir las dependencias de nuestro proyecto y reitero, esto se vera mas adelante.
+Es cosa tuya elegir cual y cuando usarlo, tanto como si quieres usarlo o no.
 
 ---
 
-## Variables y constantes
+## Println!
 
-Las variables y constantes, tan necesarias y a la vez algo tan sencillo que a todos nos inicia en el gran mundo de la programación.
+Todos los lenguajes de programación tienen su propio "**`println()`**" una función que te permita mostrar elementos, datos o mensajes en la terminal puede ser de mucha utilidad para encontrar errores o simplemente para hacer programas básicos con los que probar nuestras habilidades.
 
-Estas se dividen en 2:
-
-+ variables: datos almacenados cuyo valor puede cambiar
-+ constantes: datos almacenados cuyo valor es inmutable, no pueden cambiar
-
-### Variables
-
-las variables se crean con la siguiente sintaxis:
+En python tenemos **`print()`**, en JavaScript tenemos **`console.log()`** y aquí en Rust tenemos el **`println!()`** este lo debemos utilizar de la siguiente forma:
 
 ~~~rust
-let nombreVariable = "dato de la variable";
+// en caso que queramos hacer un mensaje plano hacemos:
+println!("Hola, este mensaje puedes editarlo");
+
+// en otro caso si queremos agregar variables al mensaje podemos hacer una de las siguientes opciones:
+// agregamos el mensaje y en orden entregamos los datos que iran en las llaves
+println!("Hola, mi nombre es {} y tengo {} años", nombre, edad); 
+
+// agregamos el mensaje y ingresamos directamente donde iran los datos de las variables entre las llaves
+println!("Hola, mi nombre es {nombre} y tengo {edad} años");
 ~~~
 
-También podemos tener variables nulas o sin dato asignado, de la siguiente forma:
-
-~~~rust
-let nombreVariable;
-~~~
-
-Las variables por defecto tienen una característica especial y que a comparación de otros lenguajes, aquí las variables por defecto son "inmutables" de una forma muy especial, pues este solo puede recibir un nuevo dato en caso que el por defecto sea nulo, pero ese no se puede cambiar luego de asignado.
-
-O como ejemplo directo:
-
-~~~rust
-//podemos hacer lo siguiente
-let nombre;
-//y luego ENTREGARLE un valor
-nombre = "Rodrigo";
-~~~
-
-Esto es permitido, pero:
-
-~~~rust
-//si hacemos lo siguiente
-let nombre = "Rodrigo";
-//e intentamos cambiar de valor haciendo
-nombre = "Javiera";
-//nos entregara un error de sintaxis
-~~~
-
-para corregir esto hay que transformar la variable en mutable de la siguiente forma:
-
-~~~rust
-//hacemos la variable un mutable
-let mut nombre = "Rodrigo";
-//al cambiar la variable
-nombre = "Javiera";
-//esto no mostrara errores de sintaxis
-~~~
-
-Así es como directamente funcionan las variables.
-
-Cabe resaltar que las variables deben usar CamelCase para declararse.
-
-### Constantes
-
-Las constantes son ya otra historia y son mucho mas fáciles de usar.
-
-Estas no permiten el que se le añada o se cambie su valor, si son de un tipo y valor, se mantendrá por siempre del mismo tipo y valor.
-
-Para crear una constante lo único que debemos hacer es cambiar la palabra `let` por `const` , esta constante generara un error si intentamos usar el `mut` con el mismo pero ademas hay que marcar el tipo de dato como ejemplo directo se hacen de la siguiente forma:
-
-~~~rust
-const NUMERO: i32 = 12;
-~~~
-
-Y luego podemos iterar con el, pero como dato extra, el nombre de las constantes suele estar totalmente en mayúsculas, si no nos genera una alerta.
+Ahora solo se creativo y utilízalo para hacer pruebas, para recibir errores o simplemente haz locuras, diviértete, para eso sirve esta pequeña funcion.
 
 ---
 
-​	Usualmente a la hora de trabajar con variables y constantes funcionan igual que en otros lenguajes, por ejemplo si queremos usar una variable en una función usaremos:
+# Variables y constantes
+
+Las variables son la piedra angular de todo lenguaje de programación, **nos permiten almacenar datos en la memoria ram** mientras este se ejecuta y nos entregan la capacidad de poder trabajar sobre estos, cambiándolos, mezclándolos entre otras muchas operaciones variables que veremos en esta sección.
+
+Pero antes de continuar daré un espacio para poder diferenciar entre todos estos:
+
++ **Variables**: son datos almacenados en memoria que **dependiendo de su mutabilidad** pueden o no cambiar su valor predefinido (**`let`**).
++ **Constantes**: son datos almacenados en memoria que por defecto **no pueden cambiar su valor predefinido** (**`const`**).
+
+## Variables mutables e inmutables
+
+Las variables como ya mencione, **permiten o no que su valor cambie según su mutabilidad** dado a que al crear estas variables tendremos 2 opciones para hacerlas:
+
+1. **Variables inmutables**: son las **variables creadas por defecto** se crean con la palabra clave **`let`** y no pueden cambiar su valor básico, por ejemplo:
+
+   ~~~rust
+   let a = 5;
+   a = 10; // esto nos generara un error dado que en efecto, no se puede cambiar el valor de una variable inmutable
+   ~~~
+
+2. **Variables mutables**: son las **variables creadas por defecto** se crean con la palabra clave **`let`** + **`mut`**y estas si pueden cambiar su valor por defecto, por ejemplo:
+
+   ~~~rust
+   let b = 5;
+   b = 10; // esto funcionara correctamente
+   ~~~
+
+Al declarar variables debes saber 2 cosas, podemos limitar el tipo de dato pero esto no es obligatorio (indagaremos en esto mas adelante) a demás de que **no podemos definir el nombre de una variable con mayúsculas** ósea técnicamente podemos, pero no es recomendable, es mas nuestro editor lo marcara como una "**advertencia**".
+
+*por ejemplo:*
 
 ~~~rust
-nombreFuncion(Variable);
+let PI = 3.14; // esto nos genera errores
+let pi = 3.14 // esto funcionara totalmente
 ~~~
-
-Pero a la hora de imprimir una variable por su nombre tendremos que hacer algo mas complejo, en este caso debemos usar llaves para luego añadir el nombre de variable en el mismo usando `"{}", var_a_usar`.
-
-Por ejemplo:
-
-~~~rust
-let nombre = "Rodrigo";
-println!("mi nombre es {}", nombre);
-~~~
-
-Al imprimir el mensaje se entregara un mensaje que dirá `mi nombre es Rodrigo` , pero si queremos añadir mas de una variable podríamos hacer lo siguiente:
-
-~~~rust
-let nombre = "Rodrigo";
-let apellido = "Seguel";
-
-//imprimimos los 2 mensajes con
-println!("mi nombre es {} y mi apellido es {}", nombre, apellido);
-~~~
-
-Y se mostrara el mensaje `mi nombre es Rodrigo y mi apellido es Seguel`.
 
 ---
 
-## tipos de datos 
+## Constantes
 
-Anteriormente mencionamos el tema de los "tipos de datos" pues es en efecto estos representan que es cada variable, ejemplo si este es una cadena de texto, un numero entero, un numero decimal, una lista, etc...
+Las constantes como ya mencione son datos almacenados en memoria que por defecto **no pueden reasignar su valor**, estas requieren de un tipo de dato estatico ya que al no cambiar su valor debemos estar seguro de para que lo utilizaremos, este usualmente se utiliza para cosas como datos especificos que se mantendran constantes.
 
-Estos se especifican escribiendo la variable de la siguiente manera por ejemplo:
+*por ejemplo:*
 
- `let nombre: tipoDeDato = valor;` o en su defecto como ejemplo mas claro `let numero: u8 = 4;`
+~~~rust
+const PI: f64 = 3.14159265359; // las constantes por comodidad se recomiendan ser nombradas totalmente en mayusculas
+~~~
 
-### Tipos de datos numéricos
+Seguro notaras que son muy iguales a las **variables inmutables** y de forma externa lo son, pero hay una gran diferencia que nos pueden hacer decidirnos por las constantes, siendo este el **scope** del programa.
 
-Los números enteros son los números (sin coma flotante) incluyendo al 0 y los negativos, lo que en otros lenguajes se llaman **integers**  solo que en este caso se dividen en 2 tipos:
+Indagaremos mas adelante en esto pero el "**scope**" de una **condicional**, **función**, **clase**, **bucle**, **etc...** se define por las llaves del mismo, osea:
 
-+ firmados (tienen la posibilidad de trabajar con signo negativo)
-+ no firmados (no nos permite el trabajar con signos)
+~~~rust
+// el scope global es lo que se define difectamente fuera de cualquier funcion, condicion, clase, bucle etc
+const PI: f64 = 3.14159265359; // esta constante se encuentra en el scope global
 
-**Para sacar el numero máximo de cada uno de estos se usa el calculo de (2^numero de bits) *por ejemplo: un i8 va del -128 al 127 y un u8 va del 0 al 255)* esto es así para almacenar con mas presicion los números sin sobrecargar la memoria ram **
+fn main() { // el scope de esta funcion empieza aqui
+    
+    let nombre = "Rodrigo"; // esta variable se encuentra en el scope de la funcion main
+    
+    if (1 == 1) {// el scope de esta condicional empieza aqui
+        println!("mi nombre es {nombre}"); // podemos acceder a la variable en cualquier scope interno dentro de nuestra funcion
+    } // el scope de la condicional termina aqui
+} // el scope de esta funcion termina aqui
 
-| longitud | firmados (-) | no firmados |
-| :------: | :----------: | :---------: |
-|  8bits   |      i8      |     u8      |
-|  16bits  |     i16      |     u16     |
-|  32bits  |     i32      |     u32     |
-|  64bits  |     i64      |     u64     |
-| 128bits  |     i128     |    u128     |
-|   arch   |    isize     |    usize    |
+// si creamos una variable dentro de un scope como es "nombre", no podemos referenciarlo fuera del mismo.
+~~~
+
+Pero como decía, las constantes pueden ser creadas en el scope global, para ser referenciadas en todo el proyecto.
+
+---
+# Tipos de datos
+
+Los tipos de datos son un concepto muy apegado a las variables y constantes, ya que nos permiten teóricamente y directamente definir que ira en los datos, definiendo la naturaleza de estos datos, seleccionando tanto si son **números enteros**, **números con coma flotante**, **cadenas de texto**, **entre otros...**
+
+Aun que la función de esto es mas que solo definir si nuestro dato será o no un numero, una mas importante aun es administrar la utilización de memoria para mejorar el rendimiento de nuestro programa llegando a permitirnos incluso la cantidad de bytes a los que nuestras variables podrán acceder.
+
+Pero antes de proceder tenemos que entender un poco de teoria.
+
+---
+
+## Los datos en su interior
+
+Los computadores funcionan con electricidad que nos puede entregar 2 datos distintos según el paso de esta, los míticos **1** y **0** tan representados en el mundo a la hora de hablar de informática, representando el **1** como el paso de energía mientras que el **0** representa lo contrario respectivamente **este sistema de 1 y 0 lo aplicamos a un valor el cual llamamos bit**.
+
+En si los bits representan **el paso y no paso de la electricidad**, pero para transformar esto en **datos** los unimos **en grupos de 8**, creando así lo que conocemos como **Bytes**
+
+Los **Bytes** son la unión de datos análogos (**bits**) para transformarlos en información digital, de una forma que es tanto legible para nuestros computadores a demás de utilizable por el usuario final.
+
+Al ser un sistema principalmente basado en bits hay veces que pueden haber ciertas confusiones en temas de por ejemplo velocidades de descarga, o simplemente de conocimiento en informática, por ejemplo **que un dato utilice 4 Bytes significa que es un dato de 32 bits**.
+
+*Un dato importante, hay que saber distinguir Bytes de bits, usualmente los Bytes se referencian con la B mayúscula y representan la información de nuestro ordenador, mientras que los bits se representan con la b minúscula, de hecho es uno de los métodos que suelen usar las compañías de wifi para engañarte vendiéndote Mb (Megabits) en lugar de MB (MegaBytes)*.
+
+De esta forma podemos definir valores numéricos de la siguiente forma.
+
+```
+00000001 esto seria equivalente a 1 (esto es 1Byte = 8bits)
+00000010 esto seria equivalente a 2
+00000100 esto seria equivalente a 4
+
+00000000 00000001 esto seria equivalente a 1 (esto es 2Bytes = 16bits)
+00000000 00000000 00000001 esto seria equivalente a 1 (esto es 3Bytes = 24bits)
+00000000 00000000 00000000 00000001 esto seria equivalente a 1 (esto es 4Bytes = 32bits)
+```
+
+Y como ya mencione, en base a la cantidad de bits se define el rango de números posibles.
+
+---
+
+## Tipos de datos numéricos
+
+Los números enteros son los números (sin coma flotante) incluyendo al 0 y los negativos, lo que en otros lenguajes se llaman **integers** solo que en este caso se dividen en 2 tipos:
+
+- **firmados** (tienen la posibilidad de trabajar con signo negativo), utiliza el ultimo bit del dato para seleccionar si tiene un signo o no.
+
+  *ejemplos:*
+
+  + **10000001 = -1**
+  + **00010001 = 17**
+  + **01111111 = 127** 
+
+- **no firmados** (no nos permite el trabajar con signos), estos en lugar de utilizar el ultimo bit para seleccionar el signo lo usa para numeros
+
+  *ejemplos:*
+
+  + **10000001 = 129**
+  + **00000011 = 3**
+  + **11111111 = 255**
+
+En si podemos obtener estos valores basándonos en la cantidad de bits que obtendremos de la siguiente tabla
+
+| longitud | firmados (-) | valores firmados                                             | sin firmar | valores sin firmar                    |
+| -------- | ------------ | ------------------------------------------------------------ | ---------- | ------------------------------------- |
+| 8bits    | i8           | Min(-128) - Max(127)                                         | u8         | Min(0) - Max(255)                     |
+| 16bits   | i16          | Min(-32.768) - Max(32.767)                                   | u16        | Min(0) - Max(65,535)                  |
+| 32bits   | i32          | Min(-2.147.483.648) - Max(2.147.483.647)                     | u32        | Min(0) - Max(4.294.967.295)           |
+| 64bits   | i64          | Min(-9,223,372,036,854,775,808) - Max(9,223,372,036,854,775,807) | u64        | Min(0) - Max((2^64)-1)                |
+| 128bits  | i128         | (2^128)−1 para obtener el valor                              | u128       | (2^128)−1 para obtener el valor       |
+| arch     | isize        | Definido según los bits del ordenador                        | usize      | Definido según los bits del ordenador |
 
 **El dato arch varia dependiendo del computador de quien ejecuta el programa, si es un computador de 64 bits sera en efecto 64 bits y en un computador de 32 bits sera 32 bits.**
 
-Tambien podemos escribir otros tipos de datos con estos enteros como lo serian :
+También podemos escribir otros tipos de datos con estos enteros como lo serian :
 
-+ Decimales (0_01) = (0,01) solo que no sirven ambos, en este caso solo el primero
-+ Hexadecimal (0xff)
-+ Octal (0o77)
-+ Binario (0b1111_0000)
-+ Byte (b'A') en este caso solo puede ser u8
+- Decimales (0_01) = (0,01) solo que no sirven ambos, en este caso solo el primero
+- Hexadecimal (0xff)
+- Octal (0o77)
+- Binario (0b1111_0000)
+- Byte (b'A') en este caso solo puede ser u8
 
 ---
 
-#### Coma flotante
+### Coma flotante
 
 Como ya sabemos los números decimales son bastante necesarios a la hora de iterar con números en nuestras variables.
 
 En este caso solo hay 2 tipos:
 
-+ `f32` decimales de 32 bits (mayor precisión)
-+ `f64` decimales de 64  bits (mayor velocidad)
+- `f32` decimales de 32 bits (mayor precisión)
+- `f64` decimales de 64 bits (mayor velocidad)
 
 Por defecto suelen ser de 64 bits.
 
 ---
 
-#### Operaciones numéricas
+### Operaciones numéricas
 
 Para operar con números de forma constante requeriremos de hacer operaciones matemáticas, para esto tenemos los siguientes operadores:
 
-| operador |   definición   |
-| :------: | :------------: |
-|    +     |      suma      |
-|    -     |     resta      |
-|    *     | multiplicación |
-|    /     |    división    |
-|    %     |     modulo     |
+| operador | definición     |
+| -------- | -------------- |
+| +        | suma           |
+| -        | resta          |
+| *        | multiplicación |
+| /        | división       |
+| %        | modulo         |
 
 También esta el operador de igualdad `=` este nos permite por ejemplo añadir datos a una variable, aun que en este caso no lo tomaremos como un operador numérico pues no se usa a la hora de hacer operaciones matemáticas en rust.
 
 ---
 
-### Tipos de datos booleanos
+## Tipos de datos booleanos
 
 Los booleanos con el tipo de dato **`bool`**se distinguen por solo tener 2 datos y estos son `true` y `false` o en su defecto verdadero y falso.
 
@@ -283,10 +300,10 @@ Estos también se aplican en los condicionales que son un tema que veremos mas a
 
 Una variable booleana se verían así:
 
-~~~rust
+```rust
 let Variable: bool = true;
 let Variable2: bool = false;
-~~~
+```
 
 También como extra enseñare los tipo de datos char.
 
@@ -294,38 +311,38 @@ Estos tienen la particularidad de que solo pueden contener 1 carácter como seri
 
 Estos se crean de la siguiente forma:
 
-~~~rust
+```rust
 let variable: char = 'a';
 //o tambien pueden ser
 let variable = 'a';
-~~~
+```
 
 **Recordar que a diferencia de un string este usa comillas simples en lugar de dobles**.
 
 ---
 
-### Tipos de datos (colecciones)
+## Tipos de datos (colecciones)
 
 Las colecciones como dice su nombre son conjuntos de datos unidos a una variable o constante especifica, estos nos permite iterar entra varios datos en especial y los principales tipos de colecciones son los siguientes:
 
 ---
 
-#### Tuplas
+### Tuplas
 
 Las tuplas son agrupaciones de datos que se caracterizan por ser inmutables, no se pueden añadir datos a una tupla ni puedes eliminar datos del mismo.
 
 Una tupla se crea de la siguiente manera:
 
-~~~rust
+```rust
 let VariableTupla: (tipos,de,datos) = (datos,de,tupla);
 //o en su defecto y con un ejemplo mas claro
 //let + nombre + (tipo de datos) = (datos segun su tipo)
 let VariableTupla: (i8,bool,i16) = (12,true,500);
-~~~
+```
 
 Si queremos llamar un especifico de una tupla, debemos primero asignar esos datos a un valor, de la siguiente forma:
 
-~~~rust
+```rust
 //primero determinamos la tupla
 let VariableTupla: (i8,i8,i8) = (2,3,4);
 //luego determinamos un nuevo "indice" a cada valor
@@ -336,239 +353,311 @@ a = 2
 b = 3
 c = 4
 */
-~~~
+```
 
-Osea que si por ejemplo queremos imprimir en pantalla el numero 3 debemos hacer
+O sea que si por ejemplo queremos imprimir en pantalla el numero 3 debemos hacer
 
-~~~rust
+```rust
 println!("{}", b); //esto mostrara el numero del indice llamado (en este caso el 4)
-~~~
+```
 
 Aun que también existe un método que es usando `nombreTupla.IndiceDeValor` o como ejemplo lo haríamos de la siguiente forma:
 
-~~~rust
+```rust
 //declaramos una tupla
 let tupla: (i8,i8,i8) = (1,2,3);
 //si quiero llamar el valor "2" podemos llamarlo usando "tupla.1"
 println!("{}",tupla.1);
-~~~
+```
 
-Cabe recordar que el indice va desde el 0 en adelante y este siendo el primer dato ademas de que este `tupla.indice` puede añadirse a otra variable o constante y llamarla desde ahí.
+Cabe recordar que el índice va desde el 0 en adelante y este siendo el primer dato además de que este `tupla.indice` puede añadirse a otra variable o constante y llamarla desde ahí.
 
 ---
 
-#### Arrays
+### Arrays
 
-Los array son similares a las tuplas pero diferentes en particular, estos se diferencian principalmente que al crearlos debemos usar una sintaxis mas sencilla, todos los datos deben ser del mismo tipo y es mas facil llamar sus datos por un indice.
+Los array son similares a las tuplas pero diferentes en particular, estos se diferencian principalmente que al crearlos debemos usar una sintaxis mas sencilla, todos los datos deben ser del mismo tipo y es mas fácil llamar sus datos por un índice.
 
 Su sintaxis es la siguiente:
 
-~~~rust
+```rust
 let nombreArray = [1,2,3,4,5];
-~~~
+```
 
 En este caso creamos un array con números (5 específicamente) aun que también podemos crear el array diciendo el tipo de datos que tendrá y la cantidad de los mismos de la siguiente manera:
 
-~~~rust
+```rust
 let nombreArray: [tipoDeDato;cantidadDeDatos] = [datos,del,array];
 //o como ejemplo directo
 let numeros: [i8;5] = [1,2,3,4,5];
-~~~
+```
 
 **Cabe recordar que donde definimos el tipo de datos y a cantidad de datos, lo que los divide es un punto y coma, no solo una coma.**
 
 El array no nos permitirá el ingresar o eliminar datos del mismo y para llamar un dato del mismo por ejemplo en un print podremos hacer lo siguiente:
 
-~~~rust
+```rust
 //definimos un array
 let nombreArray [1,2,3,4,5];
 //imprimimos el numero 3 del array (el indice 2)
 println!("{}", nombreArray[2]);
-~~~
+```
 
-Ademas podemos crear "arrays automatizados" de una forma pero el truco es que el dato que le daremos se repetirá el numero de veces que elijamos por ejemplo:
+Además podemos crear "arrays automatizados" de una forma pero el truco es que el dato que le daremos se repetirá el numero de veces que elijamos por ejemplo:
 
-~~~rust
+```rust
 let nombreArray = [dato a repetir; numero de veces a repetir];
 //o como ejemplo directo
 let nombreArray = [3; 5];
 //esto nos creara un array cuyos datos son [3,3,3,3,3]
-~~~
+```
 
 ---
 
-## Funciones
+# Operadores
 
-Las funciones son necesarios en cada lenguaje que repaso y que repasaras, estos nos permite aplicar bloques de código con mas control de lo usual e incluso estructurarlo de forma mas fácil.
+A la hora de trabajar con múltiples datos vamos a querer hacer distintos tipos de "operación" que aplicar a los datos con los que estaremos constantemente trabajando.
 
-Al iniciar un proyecto nuevo en rust se genera una función main con la siguiente sintaxis:
+En general hay tres tipos de operadores que nos interesan, y son:
 
-~~~rust
-fn main() {
-    //aqui va el codigo fuente
-}
-~~~
+------
 
-Esta función lo que hace es ser siempre la primera en ejecutarse de forma obligatoria y ahi llamaremos las otras funciones que queramos usar.
+## Operadores aritméticos
 
-La sintaxis de una función es la siguiente:
+Es un tipo de operador que manipula datos de forma "matemática", estos datos usualmente son de tipo **Number** ya sean enteros o decimales.
 
-~~~rust
-//indicador de funcion + nombre + (parametros) {bloque de codigo}
+*estos son:*
 
-/*
-y que recordar que el nombre de una funcion requiere de guion bajo
-no de camelCase como en las variables
-*/
+| operadores  | definición                                                   |
+| ----------- | ------------------------------------------------------------ |
+| `+`         | suma                                                         |
+| `-`         | resta                                                        |
+| `*`         | multiplicación                                               |
+| `**`        | potencia (este no es soportado por IE)                       |
+| `/`         | división (su resultado siempre es decimal)                   |
+| `%`         | modulo (residuo)                                             |
+| `++`        | aumentar en 1                                                |
+| `--`        | disminuir en 1                                               |
+| `-x`        | negación unitaria (da el negativo de un dato)                |
+| `+true` (1) | positivo unitario (convierte en Number un dato que no lo sea) |
 
-fn nombre_funcion() {
-    //codigo a usar
-}
-~~~
+------
 
-Cabe recordar que si no usamos la palabra `fn` nuestra función (vaga la redundancia) no funcionará.
+## Operadores de asignación (básicos)
 
----
+Es un tipo de operador que permite asignar información de un dato a otro, ya sea para editarlos, mostrar que estos son el mismo dato, entre otros tipos de acciones que se pueden hacer con estos operadores
 
-Si queremos llamar una función en nuestro main solo debemos escribir el nombre seguido de los parámetros a añadir dentro de paréntesis por ejemplo:
+ejemplo: `datoX = datoY` en este caso el "=" es el operador de asignación
 
-~~~rust
-fn main() {
-    funcion_secundaria();
-}
+| operadores abreviados | definición                   | operadores extendidos |
+| --------------------- | ---------------------------- | --------------------- |
+| `x = y`               | asignar o igualar datos      | `x = y`               |
+| `x += y`              | suma en asignación           | `x = x + y`           |
+| `x -= y`              | resta en asignación          | `x = x - y`           |
+| `x *= y`              | multiplicación en asignación | `x = x * y`           |
+| `x /= y`              | división en asignación       | `x = x / y`           |
+| `x %= y`              | modulo en asignación         | `x = x % y`           |
+| `x **= y`             | exponente en asignación      | `x = x**y`            |
 
-fn funcion_secundaria() {
-    //codigo a usar
-}
-~~~
+------
 
----
+## Operadores de comparación
 
-Los parámetros de una función funcionan como un "Creador de variables para las funciones", este como ejemplo podríamos mostrarlo de la siguiente forma:
+Estos nos permiten hacer comparaciones en base a dos datos y que **como resultado nos entregue un true si equivalen lo mismo o un false si no**.
 
-~~~rust
-fn main(){
-    //en este caso añadimos el numero 5 a la variable numero
-	funcion_secundaria(5);
-}
-    
-//el prametro se agrega escribiendo (nombreVariable: TipoDeDato)
-fn funcion_secundaria(numero: i8)
-    println!("el valor de numero es {}", numero);
-}
-~~~
+*ejemplo de uso:*
 
-Pero ademas pueden existir múltiples variables añadidas en los parámetros y solo se deben escribir con una coma entre medio, por ejemplo:
+```rust
+true == true //si ambos datos tienen el mismo valor nos va a retornar un "true"
+true == false //sino nos retornara un "false"
 
-~~~rust
-fn main(){
-    //en este caso añadimos el numero 5 a la variable numero
-	funcion_secundaria(5,10);
-}
-    
-//el prametro se agrega escribiendo (nombreVariable: TipoDeDato)
-fn funcion_secundaria(numero: i8,segundoNumero: i8)
-    println!("el valor del primer numero es {}", numero);
-	println!("el valor del segundo numero es {}", segundoNumero);
-}
-~~~
+let booleano = 1 == 0;  //tambien podemos asignarlo a una variable
+//en este caso el valor de la misma sera "false" dado que 1 no es igual a 0
+```
+
+Pero hay varios otros operadores que podemos usar para hacer comparaciones.
+
+| operador | definición    |
+| -------- | ------------- |
+| `==`     | igual         |
+| `!=`     | no igual      |
+| `>`      | mayor que     |
+| `>`      | menor que     |
+| `>=`     | mayor o igual |
+| `<=`     | menor o igual |
 
 ---
 
-El retorno de las funciones es la capacidad de devolver un valor al código fuente, por ejemplo si ingresamos un dato y lo queremos editar para trabajar con el mismo en el código fuente, esto en otros lenguajes requiere de la palabra `return` en el caso de rust esto no es necesario siempre pues la mayoría de funciones devuelven la ultima expresión de forma implícita.
+## Operadores lógicos
 
-Pero para que el retorno funcione debemos usar `->` luego de decir los parámetros de nuestra función ademas de añadir luego el tipo de dato a entregar, por ejemplo:
+Cuando trabajemos con condicionales habrán momentos donde querremos hacer "comparaciones" entre dos valores en las mismas condicionales o incluso validar dos al mismo tiempo.
 
-~~~rust
-fn funcion() -> i8 {
-    5
+**Los operadores lógicos se dividen en 3 tipos principales y para verlos los comparare con los mismos operadores pero del lenguaje Python aun que también se usan en otros lenguajes de la misma manera.**
+
+### Conjugación lógica
+
+el operador de conjugación es `and` y sirve para evaluar si el valor o condición del lado izquierdo **y** el del lado derecho se cumplen.
+
+| Rust | Conjugación | Python |
+| ---- | ----------- | ------ |
+| &&   | y           | and    |
+
+Este operador se puede mencionar como **multiplicación lógica**.
+
+| condición 1 | conjugación | condición 2 | resultado |
+| ----------- | ----------- | ----------- | --------- |
+| false(0)    | &&(*)       | false(0)    | false(0)  |
+| false(0)    | &&(*)       | true(1)     | false(0)  |
+| true(1)     | &&(*)       | false(0)    | false(0)  |
+| true(1)     | &&(*)       | true(1)     | true(1)   |
+
+### Disyunción lógica
+
+El operador de disyunción es `or` y sirve para evaluar si la condición del lado izquierdo **o** el del lado derecho se cumplen.
+
+| Rust | disyunción | python |
+| ---- | ---------- | ------ |
+| \|\| | o          | or     |
+
+Este operador se puede mencionar como **unión o suma lógica**.
+
+| condición 1 | conjugación | condición 2 | resultado |
+| ----------- | ----------- | ----------- | --------- |
+| false(0)    | \|\|(+)     | false(0)    | false(0)  |
+| false(0)    | \|\|(+)     | true(1)     | true(1)   |
+| true(1)     | \|\|(+)     | false(0)    | true(1)   |
+| true(1)     | \|\|(+)     | true(1)     | true(1)   |
+
+### Negación lógica
+
+El operador de negación es `not` se encarga de **transformar** booleanos de true a false y viceversa
+
+| Rust | Negación | python |
+| ---- | -------- | ------ |
+| !    | no       | not    |
+
+Este operador funciona así:
+
+| negación | booleano | resultado |
+| -------- | -------- | --------- |
+| !        | true     | false     |
+| !        | false    | true      |
+
+------
+
+# Condicionales
+
+A la hora de ejecutar nuestro código es probable que queramos "comprobar datos" y que dependiendo de esta "comprobación" podamos ejecutar un bloque de código u otro.
+
+Esto lo logramos con las **condicionales**.
+
+Las condicionales son "comprobadores" que en base a ciertas **"condiciones"** ven si ejecutaran el código que tendrán entre llaves `{}`.
+
+*su sintaxis es la siguiente*
+
+```rust
+//condicional (condicion){
+if (numero === 1) { //si se cumple la condicion (nos da como resultado un true)
+    //se ejecutara lo que ingresemos aqui
 }
+```
 
-fn main() {
-    let numero = funcion();
-    println!("el valor de numero es {}", numero)
+Y hay tres tipos de condicionales:
+
+------
+
+## If
+
+El if es la primera condicional que debemos utilizar siempre (dado que las demás requieren de este para funcionar).
+
+La función de un if seria en base a la frase "**`si` (condición) es verdadera {ejecutar el código aquí}**".
+
+*funciona de la siguiente forma:*
+
+```rust
+let numero = 1;
+
+if (numero === 1) { //si la condicional nos da como resultado "true"
+    //ejecutar este codigo
+} 
+```
+
+deben recordar que **las condiciones que ingresemos en una condicional deben estar entre paréntesis**.
+
+------
+
+## Else if
+
+Este es "una continuación" del anteriormente mencionado así funcionando como un **sino**, mientras que el if se basaba en la frase "**si (una condición se cumple) {ejecutar código}**" el else if continua con la frase **sino, si (otra condición se cumple) {ejecutar código}**.
+
+*funciona de la siguiente forma:*
+
+```rust
+let numero = 2;
+
+if (numero === 1) { //en este caso esta condición no se cumple
+    //este código no se ejecuta
+} else if (numero === 2) { //en este caso la condición si se cumple
+    //ejecutar este código
 }
-~~~
+```
 
- Aun que si queremos devolver un dato anterior al ultimo dado podemos usar la palabra `return`.
+------
 
----
+## Else
 
-## Control de flujo
+Este de por si es lo que me gusta llamar un tipo de "condicional relajado" dado que este es muchísimo mas fácil que los otros condicionales ya vistos.
 
-El control de flujos también es esencial en la programación, los if statement, los loops y otros temas son necesarios pues sin estos es casi imposible hacer un programa que tenga algún tipo de "interacción humana" e incluso otros tipos, por lo que mostraremos la función de gran parte de ellos.
+Este se basa en intentar hacer un "ultimatum" con la frase **sino {ejecutar código}** así señalando que si ni una condición se cumple, el código continuara con esta condición.
 
----
+*funciona de la siguiente forma:*
 
-### Operadores de lógica condicional
+```rust
+let numero = 3;
 
-A la hora de usar las condicionales requerimos de operadores, para comparar, unir y transformar el resultado de estas condicionales y estas son las siguientes:
-
-| operador  |                         descripción                          |
-| :-------: | :----------------------------------------------------------: |
-| && (and)  | nos permite preguntar si 2 condicionales son true (condición1 && condición 2) |
-| \|\| (or) | nos permite elegir o comparar entre 2 condiciones y ver si una de esas es true usando (condición1 \|\| condición2) |
-|  ! (not)  | nos permite transformar una condición en su opuesto (!condiciónTrue = false) |
-
----
-
-### Condicionales
-
-Las condicionales se dividen en 3 distintos `if`, `else if` y `else` los últimos 2 se complementan entre si y necesitan del if de forma necesaria para funcionar.
-
-Estos funcionan de la siguiente forma:
-
-~~~rust
-if condicional { //si esta condicion se cumple
-    //ejecuta codigo
-} else if condicional { //sino si esta condicion se cumple
-    //ejecuta codigo
-} else { //sino 
-    //ejecuta este codigo
+if (numero === 1) { //esta condicion es falsa
+    //este codigo no se ejecuta
+} else if (numero === 2) { //esta condicion es falsa
+    //este codigo no se ejecuta
+} else { //si ni una de las condiciones es true, este se ejecutara si o si
+    //ejecutar codigo
 }
-~~~
-
-Pero en este caso se puede añadir también a una variable de por ejemplo la siguiente forma:
-
- ~~~rust
-let condicional = if true {5} else {6};
- ~~~
-
-Y si en este caso usamos println para imprimir la variable se mostrara el dato 5 a no ser que ese true cambie, en ese caso se mostrara el valor 6.
+```
 
 ---
-### Bucles
+
+# Bucles
 
 Los bucles se dividen en principalmente 3 tipos `loops`, `while` y `for`.
 
-Estos tienen como característica principal que mientras nosotros queramos o aveces de forma infinita. se repetirán una y otra vez hasta que su condicional sea falsa o que rompamos el bucle.
+Estos tienen como característica principal que mientras nosotros queramos o a veces de forma infinita. se repetirán una y otra vez hasta que su condicional sea falsa o que rompamos el bucle.
 
----
+------
 
-#### Bucles loop
+## Bucles loop
 
 El bucle loop es un bucle que se repetirá de forma infinita hasta que queramos que este se rompa usando la palabra `break` o presionando `ctrl`+`c`.
 
 La sintaxis es la siguiente:
 
-~~~rust
+```rust
 loop{
     //codigo a repetir infinitamente
 }
-~~~
+```
 
 Este puede devolver un dato si lo añadimos a una variable usando por ejemplo:
 
-~~~rust
+```rust
 let numero = 3;
 let varLoop = loop{
     numero += 1;
 }
-~~~
+```
 
-La variable sera 3+1 y ira aumentando cada vez que este loop se repita y si por ejemplo queremos terminar este loop podríamos usar un if por ejemplo usando:
+La variable será 3+1 y ira aumentando cada vez que este loop se repita y si por ejemplo queremos terminar este loop podríamos usar un if por ejemplo usando:
 
-~~~rust
+```rust
 let numero = 3;
 
 let mut varLoop = loop{
@@ -577,46 +666,46 @@ let mut varLoop = loop{
         break; //rompe el bucle
     }
 }
-~~~
+```
 
 En este caso lo que ocurrirá es que a la variable numero se le sumara 1 hasta que el resultado sea 10, luego de esto el bucle se romperá.
 
----
+------
 
-#### Bucle while
+## Bucle while
 
 El bucle while se identifica por técnicamente por ser un tipo de "condicional" pero cuyo código se repite como un bucle hasta que esa condición se vuelva `false`.
 
 Su sintaxis es la siguiente:
 
-~~~rust
+```rust
 while condicional{
     //codigo
 }
-~~~
+```
 
 O como ejemplo practico con esto se puede usar así:
 
-~~~rust
+```rust
 let mut numero = 1;
 
 while numero < 10{ //mientras la variable sea menor que 10
     numero += 1; //se suma 1 a la variable
     println!("{}", numero); //se imprime el valor de la variable
 }
-~~~
+```
 
 En este caso se genera un fin de el bucle y así se trabaja con el bucle while.
 
----
+------
 
-#### Bucle for
+## Bucle for
 
 el bucle for a diferencia de los otros bucles este itera con una colección, ya sea viendo los datos en la misma o iterando con el numero de datos en una colección en si.
 
 su sintaxis es la siguiente:
 
-~~~rust
+```rust
 //creamos una coleccion a iterar, en mi caso usare un array
 let numeros = [1,2,3,4,5];
 
@@ -625,21 +714,80 @@ let numeros = [1,2,3,4,5];
 for i in numeros.iter() {
     //codigo que se repetira 5 veces
 }
-~~~
+```
+
+
 
 el `.iter()` es una función que nos permite iterar en nuestra colección.
 
-Ademas podríamos hacer un cambio, envés de hacer una colección antes en la que iterar, podemos iterar en un conteo de la siguiente forma:
+Además podríamos hacer un cambio, envés de hacer una colección antes en la que iterar, podemos iterar en un conteo de la siguiente forma:
 
-~~~rust
+```rust
 for i in (1..5).rev(){
     //codigo que se repetira 5 veces
 }
-~~~
+```
 
 ese 1..5 nos genera un tipo de "lista o colección" que tiene como datos los números desde el 1 hasta el 5 pero esta opción se vera mas a profundidad mas adelante.
 
 ---
+
+# Funciones
+
+Las funciones son "bloques de código" que podemos ejecutar en una "llamada posterior", la idea de los mismos es dejar una parte de nuestro código sin ejecutar hasta que sea pertinente, para editar datos o generar efectos diversos en los que ya tenemos.
+
+La sintaxis de una función es la siguiente:
+
+~~~rust
+fn NombreDeLaFuncion() {
+    // aqui va el codigo a ejecutar
+}
+~~~
+
+Esa es una función en su expresión mas básica y para ejecutar el código que se encuentra en su interior debemos llamarlo con **`NombreDeLaFuncion()`** donde lo deseemos llamar, ya sea dentro del main, de una condicional, un bucle u otra funcion.
+
+---
+
+## Parámetros
+
+Los parámetros de una función no son mas que datos que le entregamos al mismo para trabajar, estos se presentan como la clase de "datos" que ingresamos entre los paréntesis para hacer una función... funcionar.
+
+Un ejemplo de estos seria el siguiente:
+
+~~~rust
+fn main() {
+    suma(5, 10); // al llamar la funcion le pasamos los valores segun lo que agreguemos en los parametros
+}
+
+fn sma(a: i8, b: i8) { // creamos nuestra funcion con los datos "a" y "b" ambos como integers de 8 bits
+    println!("{}", a+b); // y ejecutamos algo para mostrarlos
+}
+~~~
+
+Entonces **al agregar parámetros a una función debemos agregar el nombre de la misma junto a su tipo de dato**.
+
+---
+
+## Retorno de datos
+
+Una opción que nos entregan las funciones es servir mas que solo un "ejecutado de acciones" sino que también como un dato, a lo que me refiero es a lo siguiente:
+
+~~~rust
+fn main() {
+    println!("{}", suma(5,10)); // aqui podemos llamar la funcion como un dato
+}
+
+fn suma(a:i8, b:i8) -> i8 { // creamos la funcion y le entregamos 2 datos a demas de seleccionar que retornaremos un int de 8 bits
+    a+b // aqui ingresamos el dato a retornar (no es necesario agregar un return)
+}
+
+// segun este ejemplo podriamos incluso hacer algo como:
+let mut total_suma = suma(5,10); // el valor de esta variable sera lo que nos devuelva la funcion
+~~~
+
+---
+
+
 
 # La propiedad
 
@@ -706,6 +854,3 @@ Estas reglas son:
     ~~~
 
     Como ya dijimos la variable 1 al estar entre las llaves `{}` esta dentro del alcance de su función `main` mientras que la variable 2 esta fuera de la misma.
-
----
-
