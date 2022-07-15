@@ -179,7 +179,17 @@ Este en si se puede definir como un "Falso Dom" que nos facilita la comunicació
 
 Los componentes son la parte principal de React, estos se definen como **funciones o clases que retornan un elemento de html con una funcionalidad predefinida** y que transformaremos en etiquetas para mas tarde utilizarlas con facilidad.
 
-Como ya mencione se dividen en 2:
+Los componentes tienen un "**ciclo de vida**" compuesto por 3 estados que lo definen, siendo estos:
+
+1. **Montado**: Es cuando "un componente es instanciado en el DOM" siendo este proceso ejecutado solo una vez por componente.
+2. **Actualizado**: Es cuando "un componente presenta cambios en sus **states** o **props**" siendo este ejecutado múltiples veces o ninguna por componente.
+3. **Desmontado**: Es el ultimo estado de un componente, este se ejecuta solo una ves antes de que el componente en si sea desmontado del DOM.
+
+El proceso de actualizado es de relativa importancia ya que este es quien se encargara de permitirnos visualizar los cambios efectuados en el componente por medio de **una nueva ejecución de la renderización del componente (el método render en caso de una clase)**.
+
+Debo recordar que esta actualización se ejecutara solo en ciertos casos, siendo estos cuando se presente **un cambio en los states** o **un cambio en los props** del componente.
+
+**En si hay 2 tipos de componentes**:
 
 ## Componentes de clases
 
@@ -210,7 +220,7 @@ Con estos elementos ahora siempre que  llamemos el elemento App mostraremos este
 
 ---
 
-## Estados
+### Estados
 
 Los estados son datos ingresados en nuestros componentes y elementos los cuales referencian alguna opcion u otro elemento.
 
@@ -306,7 +316,7 @@ De este ejemplo puedes sacar 2 cosas importantes:
 
 ---
 
-## Props
+### Props
 
 Los Props o propiedades son lo que llamaríamos "parámetros de una etiqueta" pero agregados a los conceptos de componente que conocemos de React y que nos permite hacer mas interactivos nuestros elementos de JSX.
 
@@ -411,7 +421,7 @@ ahora le estaríamos pasando tanto el **children** (el dato ingresado en la etiq
 
 ---
 
-### Object destructoring
+#### Object destructoring
 
 La "desestructuración de objetos" es una forma de trabajar con los mismos segun las propiedades que nos permiten acceder de forma mas explicita y limitada a los datos que queremos pasar como props, quiza en componentes muy pequeños no sea de tanta ayuda pero en componentes mas grandes puede ser de vital importancia.
 
@@ -473,14 +483,6 @@ const App = () => {
 
 ---
 
-## Cuando se renderiza un componente
-
-Como recordaras, los componentes en clases tienen la función "**render**" (en los componentes en funciones esta escondido), esta se dedica a mostrar en pantalla nuestro componente y cada vez que tengamos que re-renderizar o actualizar la vista de un componente debemos ejecutar esta misma función.
-
-Esto podemos hacerlo cuando un estado reciba un cambio (por medio de **`this.setState({})`**) la **`funcion()`** render será ejecutada (en este caso también se ejecutara para los componentes que están dentro de otro componente).
-
----
-
 ## Componentes funcionales
 
 Los componentes funcionales son la parte importante de los componentes, a pesar de tener 2 tipos estos son los que deberias estar utilizando especialmente por su facilidad y utilidad.
@@ -511,7 +513,124 @@ las funciones se dividen en 2 tipos:
 1. funciones puras: funciones que al ser ejecutadas siempre darán el mismo valor de retorno (los componentes de react siempre serán de estos).
 2. funciones impuras: funciones que al ser ejecutadas, siempre darán valores distintos de retorno (por ejemplo el valor de una fecha)
 
-## Hooks
+---
 
-Los hooks son...
+### Hooks
 
+Los hooks son un elemento de los componentes funcionales que te permiten acceder a ciertas características que de otra forma requerirían ser hechos desde una clase para contar con estos.
+
+En si **React** nos entrega la posibilidad de utilizar tanto:
+
++ **Componentes de clase**.
++ **Componentes funcionales**.
+
+Y con el tiempo se ha adaptado una ideologia y preferencia ante los componentes funcionales por su facilidad y utilidad.
+
+En el caso de los **Componentes de clases** hay ciertos elementos de estos que por ejemplo no son directamente accesibles desde una función, como lo es el acceso a la función **`Render()`** o el acceso a los "**States**" de forma explicita, para funcionalidades como estas es que están los **hooks**.
+
+En si los hooks tienen 2 reglas fundamentales, siendo estas:
+
++ **No instancies hooks dentro de un scope distinto al de la funcion**: queda totalmente prohibido **instanciar** hooks dentro de **condicionales, bucles, u otros scopes que no sean la base de la funcion/componente** y se recomienda que sea ingresado en el nivel mas alto **al inicio**.
++ **No llamarlos** en otro lugar que no sean **componentes de react** ni **custom hooks**
+
+**Los hooks mas utilizados son**:
+
++ **`useState()`**: El hook **`useState()`** es la forma con la que accedimos a los "**States**" desde un **componente funcional**, este funciona de la siguiente forma:
+
+  ~~~react
+  import React, { useState } from 'react';
+  
+  // imagina que haremos un contador
+  function Contador() {
+  	// Declaramos un nuevo estado con el nombre "conteo" y utilizaremos setConteo() para cambiar su valor.
+  	const [conteo, setConteo] = useState(0); // por ultimo agregamos el hook useState() para generar el State con un valor base
+  	// el valor del conteo por defecto sera 0 en este caso (el valor por defecto es el parametro de useState)
+      
+  	return (
+      	<div>
+        		<p>Me has clickeado {conteo} veces</p>
+        		<button onClick={() => setConteo(conteo + 1)}> <!--el conteo aumentara en 1 en cada click-->
+          		Clickeame
+        		</button>
+  		</div>
+  	);
+  }
+  ~~~
+
+  Aun que en si el **`useState()`** se puede usar en mas que solo números, por ejemplo:
+
+  ~~~react
+  const [conteo, setConteo] = useState(0); // en caso de un numero
+  const [nombre, setNombre] = useState('Rodrigo'); // en caso de un nombre(texto) (por defecto sera Rodrigo)
+  const [vivo, setConteo] = useState(true); // en caso de un booleano (por defecto sera verdadero)
+  ~~~
+
+  Y importante saber que **cada vez que se llame el setter de un `useState()` se volverá a ejecutar el componente en si, o sea que el Render se ejecutara nuevamente**.
+
+  ---
+  
++ **`useEffect()`**: Este hook se encarga de generar "**efectos secundarios**" cuando se presencie algún cambio **basado en algún elemento del componente**.
+
+  *funciona de la siguiente forma*:
+
+  ~~~react
+  import React, { useState, useEffect } from 'react';
+  
+  function Contador() {
+  	const [conteo, setConteo] = useState(0);
+      
+    // este es nuestro efecto secundario
+    useEffect(() => { // cada vez que ocurra un cambio se ejecutara esta funcion
+      console.log("Has presionado en el contador"); 
+    });
+      
+  	return (
+      	<div>
+        		<p>Me has clickeado {conteo} veces</p>
+        		<button onClick={() => setConteo(conteo + 1)}>
+          		Clickeame
+        		</button>
+  		</div>
+  	);
+  }
+  ~~~
+
+  Aun que el hook contiene una "funcionalidad escondida a simple vista" la cual son las **dependencias**.
+
+  Los hooks de efectos nos permite agregar una lista de elementos a revisar y de los que **nuestra ejecución depende**, dándonos las siguientes posibilidades:
+
+  + **Sin dependencia**: en caso de que no se encuentre nada en las dependencias, **la función se ejecutara siempre que se actualice el componente**.
+
+    *un componente sin dependencia se vería de la siguiente forma:*
+
+    ~~~react
+    useEffect(() => { // siempre que se ejecute la actualizacion del componente se ejecutara 
+    	console.log("Has presionado en el contador"); 
+    });
+    ~~~
+
+  + **Con dependencias vacias**: en caso de que se encuentre una lista vacía, **la función se ejecutara solo una vez cuando se actualice el componente**.
+
+    *un componente con dependencias vacías se ve de la siguiente forma:*
+
+    ~~~react
+    useEffect(() => {
+    	console.log("Has presionado en el contador"); 
+    }, []); // agregamos la lista vacia al final de la funcion
+    ~~~
+
+  + **Con dependencias**: en caso de que se encuentre una dependencia, **la función se ejecutara siempre que se detecte un cambio en ese dato específicamente**.
+
+    *un componente con dependencia se ve de la siguiente forma:*
+
+    ~~~react
+    const [conteo, setConteo] = useState(0);
+        
+      useEffect(() => {
+        console.log("Has presionado en el contador");
+      }, [conteo]); // cada vez que se detecte un cambio en el estado "conteo" se ejecutara el hook
+    ~~~
+
+    ---
+
+    

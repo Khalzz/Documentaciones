@@ -305,7 +305,7 @@ let Variable: bool = true;
 let Variable2: bool = false;
 ```
 
-También como extra enseñare los tipo de datos char.
+**como extra encontramos los char**.
 
 Estos tienen la particularidad de que solo pueden contener 1 carácter como seria `A`, `B` o `c` entre muchos otros.
 
@@ -321,9 +321,11 @@ let variable = 'a';
 
 ---
 
-## Tipos de datos (colecciones)
+## Tipos de datos compuestos
 
-Las colecciones como dice su nombre son conjuntos de datos unidos a una variable o constante especifica, estos nos permite iterar entra varios datos en especial y los principales tipos de colecciones son los siguientes:
+Estos tipos de datos (como su nombre lo menciona), son aquellos cuya base esta conformada por otros tipos de datos, ya sean numericos o escalares.
+
+Hay varios tipos de datos que cuentan como "compuestos" y estos son los siguientes:
 
 ---
 
@@ -778,7 +780,7 @@ fn main() {
 }
 
 fn suma(a:i8, b:i8) -> i8 { // creamos la funcion y le entregamos 2 datos a demas de seleccionar que retornaremos un int de 8 bits
-    a+b // aqui ingresamos el dato a retornar (no es necesario agregar un return)
+    return a+b // aqui ingresamos el dato a retornar (no es necesario agregar un return pero lo hago por legibilidad)
 }
 
 // segun este ejemplo podriamos incluso hacer algo como:
@@ -787,23 +789,25 @@ let mut total_suma = suma(5,10); // el valor de esta variable sera lo que nos de
 
 ---
 
+# Ownership
 
+El concepto de **"Ownership"** es una de las piedras angulares de Rust y una de sus características mas especiales.
 
-# La propiedad
+Aquí aprenderás ciertos conceptos de memoria, y entraremos en ella para poder entender el concepto de "**ownership**".
 
-La propiedad es un "aspecto" importante de rust, de hecho según la documentación es un tema sencillo pero la verdad es un tema importante y grande a tomar en cuenta en el lenguaje.
+Todos los lenguajes administran la memoria de formas distintas, te entregan la posibilidad de hacer lo que quieras con todo o directamente envían a un "basurero" la información a la cual ya no se da uso.
 
-Todos los lenguajes tienen que administrar la memoria del dispositivo en el que trabaja mientras este se esta ejecutando, algunos lenguajes cuando dejan de usar memoria ram simplemente arrojan a un "basurero" esos datos sin usar.
-
-Esto usualmente genera problemas de rendimiento en varias ocasiones, lo que Rust hace es usar lo que los creadores llaman un "sistema de propiedad" que administra la memoria del sistema a la hora de la compilación, así sin interrumpir el rendimiento del programa como destruir el rendimiento de la computadora del usuario si esta es de bajos recursos.
+Esto usualmente genera problemas de rendimiento en varias ocasiones, Rust corrige esto mediante el "**ownership**" administrando la memoria a la hora de la compilación, y no interrumpir el rendimiento del programa, a diferencia de otros lenguajes que lo hacen en tiempo de ejecucion.
 
 ---
 
 ## Stack y heap
 
-La memoria ram es un tipo de "intermediario" entre disco duro y procesador, esta entrega la información lista para el uso al procesador y así este ultimo puede iterar en esos datos, pero ademas este nos permite almacenar datos por todo el lapso en el que nuestro código se este ejecutando.
+La memoria ram es un tipo de "intermediario" entre disco duro y procesador, esta prepara la información para que así el procesador logre iterar sobre esos datos, pero además este nos permite almacenar datos por todo el lapso en el que nuestro código se este ejecutando.
 
-Mientras nuestro código se ejecuta, este le pedirá datos constantemente al disco duro y almacenara algunos datos de no tanta importancia en la misma memoria ram, esto ultimo al final puede ser útil, el problema es que cuando hay datos en la memoria ram que ya no utilizamos, esta la seguirá almacenando constantemente y esto generara que esa memoria se sature tarde o temprano generando así problemas de rendimiento e incluso en diversos dispositivos de bajos recursos pueden generar un congelamiento total del mismo.
+Mientras nuestro código se ejecute, pedirá constantemente datos a la memoria, dejando estos datos almacenados hasta que el mismo programa deje de funcionar, el problema esta cuando dejamos de necesitar datos **en el tiempo de desarrollo**.
+
+En otros lenguajes estos serán almacenados en lo que se conoce como "**garbage collector**" o basurero, donde se guardaran los datos que ya no se están utilizando, otros lenguajes directamente te entregan todo el poder y la información seguirá utilizando memoria hasta que el programa se cierre, generando de forma temprana esos problemas de rendimiento o crasheos en otros casos.
 
 La memoria ram tiene sus métodos específicos para poder trabajar con estos datos y estos son como `stack` y `heap`.
 
@@ -811,35 +815,46 @@ La memoria ram tiene sus métodos específicos para poder trabajar con estos dat
 
 ### Stack
 
-El stack o "pila" es una lista estructurada o `Estructura de datos ` que almacena los datos que llegan y salen de la memoria ram, haciendo esto con el método **`LiFo`** o Last in First out (el ultimo que entra es el primero que sale) osea que la información en este caso podemos pensarla como un grupo de platos.
+El stack o "pila" es una **lista estructurada** o **Estructura de datos** que almacena los datos en la memoria ram, los datos se mueven por ella con el método **LiFo** o Last in First out (ultimo en entrar, primero en salir).
 
-Si pones un plato sobre otro a la hora de querer sacar alguno deberás sacar el ultimo que añadiste, siendo en este y como ejemplo gráfico el de mas arriba, aquí seria algo muy similar.
+O sea que para entenderlo mejor podemos verlo como un conjunto de platos, a la hora de hacer una fila de platos, siempre que colocas uno en la cima, será el primero en ser sacado, ya que por comodidad no es eficiente el eliminar los platos que se encuentren al fondo.
 
-En este caso añadir datos a esta pila se le llamaría "empujar hacia la pila" y eliminarlos se le conoce como solo "sacar de la pila".
+**El stack es donde Rust almacena los datos cuyo valor en temas de bits es conocido y se mantiene durante el tiempo de ejecucion**, datos como: **numeros enteros**, **numeros con comas flotantes**, **datos booleanos** o **chars**, esto por que son en si datos que dependen enteramente de su tamaño en la memoria.
 
-La pila de por si es rápida pues antes de ejecutar el código puede ya asignar ese espacio al mismo, como si invitara a 4 personas a una cena y ya supiera exactamente donde se sentaran todos pues esta seguro de en que sitio ira cada uno, haciendo mas efectiva y fácil el ordenarlos.
+Con un **i32** por ejemplo, este se guarda en **el stack** ya que:
+
+1. Tiene un tamaño fijo durante la ejecución.
+2. Tiene un tamaño de 32 bits.
+3. La variable y su valor serán almacenados en el stack.
 
 ---
 
 ### Heap
 
-El heap (montón) es otra `Estructura de datos` la cual de por si a diferencia de la pila es mas "desordenada" que el stack aun que esta suele tener un tipo de orden que se crea en la marcha.
+El heap o "montón" es otra **Estructura de datos** la cual de por si a diferencia de la pila es mas "**desordenada**" que el stack, aun que esta suele tener un tipo de orden que se crea en la marcha.
 
-Esto se debe a que aquí irán los datos cuyo tamaño no conocemos ademas de los datos que quizá ni siquiera sabemos si su tamaño aumentara o disminuirá mientras se ejecuta el código.
+Esto debido a que el heap es un lugar donde se almacenaran datos mutables o sea que **su tamaño no es conocido** o **que su tamaño puede mutar en tiempo de ejecución**, siendo estos datos como: **arrays**, **tuplas** o **strings**.
 
-Usando la analogía de la cena, seria como si a esa misma cena solo invitara amigos en general pero no supiera quienes vendrán o si estos vendrán con mas gente, por lo que debería organizar los datos durante la marcha. 
+Con un **Vector** por ejemplo, este seria guardado en el **el heap** ya que:
+
+1. Los vectores son mutables, ya que la cantidad de elementos en ellos pueden cambiar.
+2. Su tamaño puede variar durante la ejecución (por ejemplo al pasarle un dato con **`array.push(4);`**).
+3. La **representación de la variable** y **un pointer** estarán almacenados en el heap, este pointer referenciara una posición de memoria en el stack, aquí es donde se almacenara nuestra información interna del vector.
+4. En caso de que eliminemos el vector con **`drop(vector);`** se borraran tanto los datos en el Heap como los que están en el Stack.
+
+*Un pointer no es mas que una referencia a la "dirección de memoria" en la que un dato se almacena.*
 
 ---
 
-## Reglas de la propiedad
+## Reglas del "ownership"
 
-Como cada tema nuevo de programación, la propiedad contiene reglas que hay que seguir y en las que preocuparse a la hora de trabajar con este.
+El concepto de **"ownership"** a demás, posee múltiples reglas que nos permiten saber o conocer mejor el comportamiento del mismo.
 
 Estas reglas son:
 
-+ Cada valor en rust tiene una variable a la cual se le conoce como `el propietario o dueño`.
++ **Cada valor** en Rust **tiene una variable a la cual se le conoce como "el propietario" o "owner"`**.
 
-+ Estos valores solo pueden tener 1 propietario o dueño a la vez.
++ Estos valores **solo pueden tener 1 propietario o owner a la vez**.
 
 + Cuando el propietario sale del alcance, el valor se eliminara.
 
@@ -848,9 +863,76 @@ Estas reglas son:
     ~~~rust
     fn main(){
         let variable1 = "Esta variable esta dentro del alcance de la funcion main"
-    }
+    } // al llegar aqui el valor se elimina y la variable desaparece
     
     let variable2 = "Esta variable esta fuera del alcance de la funcion main"
     ~~~
 
     Como ya dijimos la variable 1 al estar entre las llaves `{}` esta dentro del alcance de su función `main` mientras que la variable 2 esta fuera de la misma.
+
+O mejor visto en código:
+
+~~~rust
+let mut saludo = String::from("hola");
+let saludo2 = saludo; // al hacer esto no creamos un nuevo espacio en memoria para la variable 2
+
+// de ahora en adelante no existe [variable1, "este valor esta apegado a un dueño"] en la memoria
+// de ahora en adelante solo existe [variable2, "este valor esta apegado a un dueño"] en la memoria
+~~~
+
+Esto por que los datos en si intercambiaron "**propiedad**" y como la variable 1 dejo de ser "**dueño**" de su valor, será eliminado del heap, por lo tanto si por ejemplo intentamos luego hacer lo siguiente:
+
+~~~rust
+println!("{}",saludo); // notaremos que no nos sera permitido y nos dara un error
+~~~
+
+Y así es como nos encargamos de muchos problemas de memoria en Rust.
+
+---
+
+# Borrowing
+
+Otra de las piedras angulares de Rust, el borrowing es una forma de "prestarse valores entre una variable y otra".
+
+Como ya vimos en la sección anterior en ciertos lenguajes podemos hacer lo siguiente:
+
+~~~python
+# al crear datos que se compartan el valor
+saludo = "hola" 
+saludo2 = saludo
+
+# ambos valores seran validos
+print(saludo)
+print(saludo2)
+~~~
+
+En el caso de rust esto no es posible por que al haberse dado el "**ownership**" a otro dato el "**saludo**" original ya no es valido.
+
+Pero hay una forma de que ambos tengan el mismo valor sin necesidad de tomar el "ownership" de otra variable y esto es "clonándola", esto nos permitiría tener otra vez el valor de una variable, mientras ambas variables representan su propio espacio en la memoria, sin afectar la una a la otra.
+
+En base a esto determinamos que:
+
+~~~rust
+let mut saludo = String::from("hola");
+let saludo2 = saludo;
+// al hacer esto el valor de "saludo" sera entregado a "saludo2" y el "saludo" original desaparecera
+
+let mut saludo = String::from("hola");
+let saludo2 = saludo.clone();
+// al hacer esto clonamos los valores, osea que saludo y saludo2 tendran ambos distintos espacios en memoria
+// osea si eliminamos la primera variable la segunda seguira funcionando y viceversa
+~~~
+
+El borrowing en si nos permite no "clonar" un valor pero el "referenciarlo" funcionando así de una forma como **las referencias** en c++, utilizando el & para señalar cuando estamos referenciando un valor, solo que en este caso el signo va en el valor, no en el nombre de la variable.
+
+Por ejemplo:
+
+~~~rust
+let mut saludo = String::from("hola");
+let saludo2 = &saludo;
+// al hacer esto estamos referenciando exactamente la misma posicion de memoria que esta utilizando el saludo original.
+// asi no utilizamos mas memoria, simplemente llamamos el valor ya existente en memoria por medio de un "alias"
+~~~
+
+---
+
