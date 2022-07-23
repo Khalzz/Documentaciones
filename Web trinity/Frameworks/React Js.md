@@ -569,7 +569,7 @@ En si los hooks tienen 2 reglas fundamentales, siendo estas:
 
   ---
   
-+ **`useEffect()`**: Este hook se encarga de generar "**efectos secundarios**" cuando se presencie algún cambio **basado en algún elemento del componente**.
++ **`useEffect()`**: Este hook se encarga de generar "**efectos secundarios**" cuando se presencie algún cambio **basado en algún elemento del componente** como por ejemplo seria hacer una actualización en el **DOM**.
 
   *funciona de la siguiente forma*:
 
@@ -631,6 +631,7 @@ En si los hooks tienen 2 reglas fundamentales, siendo estas:
       }, [conteo]); // cada vez que se detecte un cambio en el estado "conteo" se ejecutara el hook
     ~~~
 
-    ---
-
-    
+  
+  ---
+  
++ 

@@ -791,13 +791,11 @@ let mut total_suma = suma(5,10); // el valor de esta variable sera lo que nos de
 
 # Ownership
 
-El concepto de **"Ownership"** es una de las piedras angulares de Rust y una de sus características mas especiales.
+**Rust** contiene una característica especifica que lo diferencia a muchos otros lenguajes, siendo esta el concepto de **Ownership**.
 
-Aquí aprenderás ciertos conceptos de memoria, y entraremos en ella para poder entender el concepto de "**ownership**".
+Mientras otros lenguajes tienen algo conocido como un **Garbage collector** encargado de analizar y eliminar los datos que no se utilizan, Rust utiliza como alternativa esta forma mas **segura** de trabajar con valores sin uso.
 
-Todos los lenguajes administran la memoria de formas distintas, te entregan la posibilidad de hacer lo que quieras con todo o directamente envían a un "basurero" la información a la cual ya no se da uso.
-
-Esto usualmente genera problemas de rendimiento en varias ocasiones, Rust corrige esto mediante el "**ownership**" administrando la memoria a la hora de la compilación, y no interrumpir el rendimiento del programa, a diferencia de otros lenguajes que lo hacen en tiempo de ejecucion.
+Entregándole enteramente al programador la posibilidad de elegir que se va a hacer con cada dato que se crea, administrando la memoria a la hora de la compilación, y no interrumpir el rendimiento del programa, a diferencia de otros lenguajes que lo hacen en tiempo de ejecución.
 
 ---
 
@@ -815,7 +813,7 @@ La memoria ram tiene sus métodos específicos para poder trabajar con estos dat
 
 ### Stack
 
-El stack o "pila" es una **lista estructurada** o **Estructura de datos** que almacena los datos en la memoria ram, los datos se mueven por ella con el método **LiFo** o Last in First out (ultimo en entrar, primero en salir).
+El stack o "pila" es una **lista estructurada** o **Estructura de datos** que almacena los datos en la memoria ram, los datos se mueven por ella con el método **LiFo** o **Last in First out** (ultimo en entrar, primero en salir).
 
 O sea que para entenderlo mejor podemos verlo como un conjunto de platos, a la hora de hacer una fila de platos, siempre que colocas uno en la cima, será el primero en ser sacado, ya que por comodidad no es eficiente el eliminar los platos que se encuentren al fondo.
 
@@ -823,9 +821,9 @@ O sea que para entenderlo mejor podemos verlo como un conjunto de platos, a la h
 
 Con un **i32** por ejemplo, este se guarda en **el stack** ya que:
 
-1. Tiene un tamaño fijo durante la ejecución.
-2. Tiene un tamaño de 32 bits.
-3. La variable y su valor serán almacenados en el stack.
+1. **Tiene un tamaño fijo durante la ejecución.**
+2. **Tiene un tamaño de 32 bits.**
+3. **La variable y su valor serán almacenados en el stack.**
 
 ---
 
@@ -892,47 +890,103 @@ Y así es como nos encargamos de muchos problemas de memoria en Rust.
 
 # Borrowing
 
-Otra de las piedras angulares de Rust, el borrowing es una forma de "prestarse valores entre una variable y otra".
+Otra de las características importantes de **Rust** es el "**Borrowing**.
 
-Como ya vimos en la sección anterior en ciertos lenguajes podemos hacer lo siguiente:
+Esta característica se define como la capacidad de "Adquirir" el valor de otra variable **sin necesidad de adquirir su ownership** así permitiendo la existencia de ambas variables.
 
-~~~python
-# al crear datos que se compartan el valor
-saludo = "hola" 
-saludo2 = saludo
-
-# ambos valores seran validos
-print(saludo)
-print(saludo2)
-~~~
-
-En el caso de rust esto no es posible por que al haberse dado el "**ownership**" a otro dato el "**saludo**" original ya no es valido.
-
-Pero hay una forma de que ambos tengan el mismo valor sin necesidad de tomar el "ownership" de otra variable y esto es "clonándola", esto nos permitiría tener otra vez el valor de una variable, mientras ambas variables representan su propio espacio en la memoria, sin afectar la una a la otra.
-
-En base a esto determinamos que:
+Como ya vimos en la sección anterior si intentamos hacer algo como lo siguiente:
 
 ~~~rust
 let mut saludo = String::from("hola");
-let saludo2 = saludo;
-// al hacer esto el valor de "saludo" sera entregado a "saludo2" y el "saludo" original desaparecera
+let saludo2 = saludo; // al hacer esto no creamos un nuevo espacio en memoria para la variable 2
 
+print!("{}", saludo)
+~~~
+
+Nos encontraremos con un error, ya que actualmente el valor de **"Hola"** dejo de pertenecer a la variable **"saludo"**, para solucionar esto tendríamos que **entregar una copia del valor de "saludo" a "saludo2"**
+
+*Para esto simplemente tenemos que hacer lo siguiente:*
+
+~~~rust
 let mut saludo = String::from("hola");
 let saludo2 = saludo.clone();
 // al hacer esto clonamos los valores, osea que saludo y saludo2 tendran ambos distintos espacios en memoria
 // osea si eliminamos la primera variable la segunda seguira funcionando y viceversa
+
+print!("{}", saludo) // por lo que esto seguiria siendo valido
 ~~~
 
-El borrowing en si nos permite no "clonar" un valor pero el "referenciarlo" funcionando así de una forma como **las referencias** en c++, utilizando el & para señalar cuando estamos referenciando un valor, solo que en este caso el signo va en el valor, no en el nombre de la variable.
-
-Por ejemplo:
+A pesar del **`clone()`** en el ejemplo anterior, el **Borrowing** no es tanto "**clonar valores**" sino el **referenciar su posición en la memoria por medio de pointers** por lo que por ejemplo también podemos acceder a estos "valores referenciados" con el símbolo "**`&`**" funcionando de la siguiente forma:
 
 ~~~rust
 let mut saludo = String::from("hola");
 let saludo2 = &saludo;
 // al hacer esto estamos referenciando exactamente la misma posicion de memoria que esta utilizando el saludo original.
 // asi no utilizamos mas memoria, simplemente llamamos el valor ya existente en memoria por medio de un "alias"
+print!("{}", saludo) // por lo que esto seguiria siendo valido
 ~~~
+
+La diferencia entre utilizar el **`.clone()`** y el símbolo **`&`** es que el clone en efecto crea otro espacio en la memoria con una nueva variable y un nuevo valor (a pesar de que este sea el mismo a la variable anterior) por lo que cada cambio generado será independiente a la otra variable.
+
+Mientras que el símbolo **`&`** hace referencia al lugar de la memoria en la que se almacena el valor anterior, por lo que simplemente guardamos el nombre de la variable, el valor del mismo ocupa el mismo sitio en ambas y el cambio en una variable se presentara en la otra.
 
 ---
 
+# Structs
+
+Un **Struct** o **Estructura**, es un tipo de dato customizado que te permite **empaquetar datos y nombrarlos según una relación que los unifique** y así entregarle un "significado" a este conjunto de datos. 
+
+En si los **Structs** son como una clase en la que **solo definiríamos los atributos de la misma**, ya que un **Struct** esta hecho simplemente **para almacenar valores en forma de variables** mas no funcionalidades como los **métodos** de una clase convencional.
+
+---
+
+## Definiendo e instanciando Structs
+
+Para definir un **Struct** empezaras entregando directamente los valores que lo compondrán especificando el tipo de dato de cada uno.
+
+*Por ejemplo:*
+
+~~~Rust
+struct Jugador {
+   	nombre: String,
+    vidas: u8,
+    estaVivo: bool,
+}
+~~~
+
+Ya al haber creado esta base podremos instanciarlo de la siguiente forma:
+
+~~~rust
+fn main() {
+        let mut jugador1 = Jugador { // al ser mutable podemos editar todos los valores del mismo
+        nombre: String::from("Rodrigo"),
+        vidas: 3,
+        estaVivo: true,
+    };
+    // podemos interactuar con los datos escribiendo "instancia.dato"
+    print!("{}", jugador1.nombre);
+    
+    // gracias al mut podemos cambiar el valor de un dato
+    jugador1.nombre = String::from("Ariel");
+}
+~~~
+
+También tenemos otra forma de instanciar estos **Structs** gracias a algo que llamaremos "**Instancias Funcionales**" siendo estas funciones a las que se le entregaran los datos a rellenar y retornara el **Struct** especificado de la siguiente forma:
+
+~~~rust
+struct Jugador { // creamos el struct base
+   	nombre: String,
+    vidas: u8,
+    estaVivo: bool,
+}
+
+fn construir_jugador(nombre:String, vidas:u8) -> Jugador { // creamos la funcion constructora que cambiasra el nombre y las vidas
+    Jugador {
+        nombre:nombre,
+        vidas:vidas,
+        estaVivo:true,
+    }
+}
+~~~
+
+En este caso creamos una función que al ser ejecutada le entregaremos el nombre y la cantidad de vidas de nuestro jugador, así instanciando un nuevo jugador con estos elementos.
