@@ -14,29 +14,15 @@ Por cualquier duda también recomiendo echarle un vistazo a [esta documentación
 
 ## ¿Que es OpenGl?
 
-OpenGl (Open Graphic Library) es una **api de gráficos**, multi-lenguaje y multi-plataforma que nos permite por medio de código **interactuar con gráficos 2D y 3D** o sea en términos simples es "un conjunto de funciones que nos dejan interactuar con gráficos en 2D y 3D" permitiéndonos en el proceso "acceder" a nuestra GPU.
-
-Técnicamente hablando, OpenGl a pesar de "**permitirnos acceder a ciertas funciones para renderizar gráficos**" este no debe considerarse como una librería, en este caso OpenGl no requiere que descargues esas funciones para poder aplicarlas en tus proyectos, dado que OpenGL y las funciones referente a este **son llamadas desde los drivers de la GPU**.
-
-Este tiene muchos usos en torno al desarrollo de contenido 2D y 3D, tanto como renderizar el contenido de una aplicación, realidad virtual y el principal de todos y en especifico en lo que nos centraremos durante esta documentación, "**el desarrollo de video juegos**".
-
-Como ya mencione, **OpenGl** es "multi-lenguaje" o sea que el mismo puede ser ejecutado tanto con Java, C#, C++, entre muchos otros. y en nuestro caso, lo utilizaremos en el lenguaje **C++**.
-
-Como ya lo mencionamos OpenGl es un **api** que nos permite interactuar con ciertas funciones orientadas al procesamiento de gráficos aun que no es el único, también existen otros como DirectX o Vulkan entre otros.
-
 Las diferencias principales entre estos es que tanto OpenGl y Vulkan dependen de la GPU, por lo que el sistema en el que se use no es tan importante, mientras que DirectX (o mejor dicho Direct3D) es una api que depende totalmente del sistema **dado que es exclusivo de Windows**, por lo que es optimo para este sistema, pero habrá que buscar otras opciones para Linux y Mac
 
-Vulkan es igual mente un api grafico multiplataforma solo que es una iteración mas novedosa, mas incluso suponiendo que OpenGl se lanzo al publico el año **1992** mientras que Vulkan el **2016** y al acceder a funciones aplicadas a tarjetas mas novedosas, nos permite interactuar con estas a un mayor rendimiento.
 
-Aun así trabajaremos con OpenGl dado que su uso es mucho mas simple que el de Vulkan para la gente nueva en el mundo de la programación.
 
 ---
 
 ## Pre-requisitos
 
-Antes de iniciar a trabajar con OpenGl debemos hacer algunas cosas básicas, en este caso y lo principal es "crear una ventana", el problema es que implementar esto a mano significaría hacerlo 1 vez por cada sistema operativo dado que cada uno renderiza las ventanas de formas distintas, para evitar esto nosotros usaremos una librería que nos permite hacer esto llamada **GLFW**.
 
-Esta es una librería de C++ que nos permite interactuar con ventanas de forma multiplataforma (para windows y mac hay una versión "**preparada**", en el caso de Linux hay que hacer unos pasos extra).
 
 Lo que haremos será descargar la librería desde [este link](https://www.glfw.org/download.html), específicamente recomiendo **descargar "el archivo pre compilado de windows de 32 bits"** para mayor facilidad en windows (luego veremos la forma de hacer lo mismo en otras plataformas).
 
@@ -126,23 +112,13 @@ while (!glfwWindowShouldClose(window)) // mientras que la ventana (window) no es
 
 # OpenGl moderno
 
-OpenGl como ya mencionamos salió originalmente el año **1992** en su versión 1.0, una versión algo rara del mismo mientras que el año **1997** salió la versión 1.1, la cual "montaría las bases de lo que actualmente es OpenGl", el problema es que Windows por defecto solo tiene acceso a OpenGl 1.1 por lo que requerimos lograr acceder a las funciones que se añadieron en versiones posteriores de OpenGl.
-
-Otro tema anteriormente mencionado es que OpenGl en si no es una librería, por lo que para acceder a estas funciones faltantes no hace falta simplemente descargarlas y añadirlas a nuestros proyectos, especialmente por que estas versiones mas "novedosas de OpenGl" están incluidas en el driver de nuestra tarjeta grafica.
-
-Para esto debemos "recibir la declaración de esas funciones" desde el driver de nuestra gpu accediendo así a el archivo `.dll` de estos y llamar las funciones como "pointers" o sea no referenciando la función en si, **sino a su espacio en la memoria**.
-
 Ahora, hacer esto de forma manual seria solo un dolor de cabeza dado que dejaría de ser "multiplataforma"  dado que manualmente deberíamos buscar este `.dll` manualmente, para evitar esto utilizaremos una librería.
 
 ---
 
 ## GLEW
 
-**GLEW** es una librería que no nos permitirá "iniciar estas funciones en nuestro código" sino por nosotros hará la búsqueda de los archivos `.dll` y nos permitirá acceder a las funciones que se encuentran dentro de estos, sin generar problemas si el usuario utiliza otra tarjeta grafica y/o otros drivers.
 
-Este lo encontramos [en el siguiente enlace](http://glew.sourceforge.net/) y descargamos los binarios para windows (en este caso por el bien de la documentación si hiciéramos un proyecto mas complejo utilizaríamos la opción "source" pero por ahora no los veremos) entonces iremos a la opción "**Binaries Windows 32-bit and 64-bit**".
-
-Al descargarlo tendremos un archivo `.zip`, luego de extraerlo tendremos una carpeta, para utilizarla con mayor facilidad recomiendo renombrarla **GLEW** y llevarla a la carpeta "**dependencies**" en la que anteriormente añadimos **GLFW**.
 
 Dentro de la carpeta **GLEW** veremos una carpeta "lib" y una "include" ambos tenemos que enlazarlos desde los archivos a nuestro proyecto entrando en las propiedades de la solución (desde visual studio) y hacemos lo siguiente:
 
@@ -244,7 +220,7 @@ std::cout << glGetString(GL_VERSION) << std::endl;
 
 ---
 
-# Vertex Buffers
+# Vertex Buffers y Shaders
 
 Anteriormente mostré una prueba con OpenGl donde mostraba un triangulo en pantalla con el siguiente código:
 
@@ -325,4 +301,6 @@ glDrawArrays(GL_TRIANGLES, 0, 3);
 ~~~
 
 Y como ya hice mención, esto en teoría **debería** mostrar nuestro triangulo en pantalla, pero como ya mencione, aun debemos hacer el shader para esto por lo que aun quedan unos pasos antes de poder renderizar un triangulo con OpenGl.
+
+---
 

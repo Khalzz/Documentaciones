@@ -990,3 +990,132 @@ fn construir_jugador(nombre:String, vidas:u8) -> Jugador { // creamos la funcion
 ~~~
 
 En este caso creamos una función que al ser ejecutada le entregaremos el nombre y la cantidad de vidas de nuestro jugador, así instanciando un nuevo jugador con estos elementos.
+
+---
+
+## Métodos (impl)
+
+Los métodos son **funciones implementados dentro de una estructura como una clase o como un struct** su utilidad es entregar funcionamientos que **interactúen con los datos de la misma estructura** tomando esta estructura como los anteriormente mencionados **clases y structs**.
+
+Para poder hacer estos métodos tendremos que **crear una implementación de la estructura** en la que agregaremos estas funciones o métodos.
+
+*La sintaxis de un método (para un struct) es el siguiente:*
+
+~~~rust
+// creamos un struct
+struct Jugador {
+    nombre: String,
+    vidas: U8,
+}
+
+// creamos una "implementacion" del struct
+impl Jugador {
+    fn mostrar_datos(&self) -> String { // creamos un metodo que nos entrega el nombre y vidas del jugador 
+        // usamos la funcion format para concatenar un string con un int
+        return format!("nombre:{}, vidas:{}", self.nombre.clone(), self.vidas) // cuando retornas un string debes tener un clon
+    }
+}
+
+fn main() {
+    let jugador1 = Jugador { // creamos nuestra instancia del jugador
+        nombre: String::from("Rodrigo"), // le entregamos un nombre
+        vidas: 3, // y una cantidad de vidas
+    };
+
+    print!("{}", jugador1.mostrar_datos()); // al llamar esta funcion, recibiremos los datos segun el return de nuestro metodo
+}
+~~~
+
+En los métodos podemos llevar a cabo cualquier otra capacidad que tengan las funciones ya que en su esencia **un método es una función**.
+
+---
+
+# Enums
+
+Los Enums son **otra estructura de datos** definidos como una lista de valores posibles de cierto elemento, continuaremos con el ejemplo del jugador para mostrar un resumen de sus funcionalidades.
+
+La sintaxis de un enum es simple ya que en terminos basicos funcionan como listas implementados de la siguiente forma:
+
+~~~rust
+enum Direcciones { // este enum hara referencia a las direcciones posibles a las que podra moverse nuestro jugador
+	// las posibilidades del mismo enum serian:
+    Arriba,
+    Abajo,
+    Izquierda,
+    Derecha,
+}
+
+// ahora creamos un struct donde un valor de "direccion" definira hacia donde se esta moviendo
+struct Jugador {
+    direccion: Direcciones
+}
+
+fn main() {
+    let Jugador1 = Jugador{direccion: Direcciones::Arriba}; // ahora creamos nuestro jugador con el valor de direccion "Arriba"
+    
+    match Jugador1.direccion {
+        Direcciones::Arriba => print!("Estas viendo arriba"),
+        Direcciones::Abajo => print!("Estas viendo abajo"),
+        Direcciones::Izquierda => print!("Estas viendo a la izquierda"),
+        Direcciones::Derecha => print!("Estas viendo a la derecha"),
+    }
+}
+~~~
+
+En este ejemplo utilizamos un struct por comodidad, pero en caso de que quieras hacer el dato como una función única también es posible.
+
+---
+
+## Control de posibilidades
+
+Al utilizar el Enum como una "**lista de posibilidades**" debemos tener una forma de acceder a estos valores para entregar una funcionalidad en cada una de estas posibilidades.
+
+Por ello podemos acceder a la palabra clave **match**, esta nos permite revisar los las variaciones de un dato que este anclado a el **enum** y según cada posibilidad nos permitirá ejecutar un bloque de código.
+
+*Por ejemplo:*
+
+~~~rust
+fn main() {
+    let Jugador1 = Jugador{direccion: Direcciones::Arriba}; // continuando con el ejemplo anterior
+    
+    match Jugador1.direccion { // creamos un match que revisara por la direccion del jugador 1
+        Direcciones::Arriba => print!("Estas viendo arriba"), // en caso de que la direccion sea "arriba" imprimir mensaje
+        Direcciones::Abajo => {
+        	print!("Estas viendo abajo")   
+            // en caso de que quieras utilizar un bloque de codigo debes usar llaves ({}) y una coma al final
+        },
+        Direcciones::Izquierda => print!("Estas viendo a la izquierda"),
+        Direcciones::Derecha => print!("Estas viendo a la derecha"),
+    }
+}
+~~~
+
+---
+
+# Manejando proyectos en crecimiento
+
+A la hora de crear proyectos "**reales**" puede que estos crezcan de una forma incontrolable, haciendo necesario el separar en módulos nuestro código, dividiendo funcionalidades así haciendo mas fácil no solo la funcionalidad de nuestro código sino también su legibilidad.
+
+Por eso Rust entrega una gran cantidad de elementos específicamente diseñados para facilitar esto.
+
+Todo esto se presenta permitiendonos acceder a los siguientes conceptos:
+
+- **Packages:** Una característica de **Cargo** que te permite construir, probar y compartir **Crates**
+- **Crates:** Un "árbol de módulos" que produce una librería o ejecutable (**con árbol me refiero a su estructura de carpetas dentro de carpetas**).
+- **Modules** y **use:** Te permiten controlar la **organización**, el **scope** y **la privacidad de los "paths"** 
+- **Paths:** Es una forma de "nombrar" un elemento como a los **structs**, **funciones** o **módulos** (este nombre es al que accederás desde otros elementos).
+
+---
+
+## Packages y Crates
+
+El sistema de "paquetes y cajas" de **Cargo** es el que se encargara de modularizar nuestro codigo.
+
+Un **package** es un conjunto de **crates** que entregan ciertas funcionalidades y cada paquete contiene un archivo **Cargo.toml** el cual define como se construira este paquete.
+
+Un **crate** se puede dividir en **crates simples** o **crates librerías** u en términos simples un **crate simple** no es mas que que un código compilable que posee una función **`main()`** definiendo lo que ocurrirá cuando se ejecute este **crate**.
+
+Por otro lado un **crate librería** es un código **no compilable** ya que no posee una función **`main()`**, la función de estos usualmente es entregar métodos, funciones y otros elementos accesibles desde nuestros **crates** un ejemplo seria un archivo lleno de funciones encargadas de hacer cálculos matemáticos.
+
+En términos simples, **un package es un proyecto de Rust** creado con **`cargo new proyecto`**, mientras que **un crate es un archivo de código de Rust**.
+

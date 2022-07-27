@@ -27,33 +27,15 @@ Actualmente C++ es uno de los lenguajes de programación mas populares, aun que 
 
 C++ es un mundo gigante a explorar pero aun así como supongo es "obvio" debemos empezar desde el inicio.
 
----
-
-## Conocimientos previos
-
-Antes de enseñarte a codificar en si debes ser consiente de algunos "términos" específicos que te ayudaran a entender mas esta documentación **especialmente la introducción si no la entendiste inicialmente**.
-
-Estos términos "importantes" son:
-
-+ **Lenguaje de nivel bajo**: los "niveles de abstracción" representan como el lenguaje se comunica con el ordenador, un lenguaje de alto nivel requiere un interprete para ejecutarse (un programa que transforme el código en lenguaje de maquina y su funcionamiento exitoso depende del sistema), mientras que un lenguaje de bajo nivel se ejecuta por un compilador que directamente transforma nuestros scripts en código nativo.
-
-  ---
-
-+ **Tipado fuerte**: al definir variables de un tipo, estas no pueden transformarse a otro a no ser que se haga una conversión, o sea que si definimos una variable como entero, luego no podemos darle un valor string por ejemplo.
-
-  ---
-
-+ **Tipado estático**: significa que necesitamos "definir" el tipo de dato para las variables.
-
-  ---
-
-+ **Programación orientada a objetos**: Es un tipo de programación que ocupa principalmente un esquema de "clases" y "métodos" (tema que se profundizara mas adelante).
+Por ello en esta sección nos encargaremos de hacer una revisión a todos los elementos necesarios para iniciar nuestros proyectos con c++, desde la "instalación" de las herramientas necesarias, hasta una demostración de los elementos básicos de una aplicación de c++, aquí es donde darás tus primeros pasos.
 
 ---
 
-## Instalando C++
+## Instalando lo necesario
 
-En si para trabajar con C++ vamos a requerir de 2 distintos elementos:
+En términos simples C++ es un lenguaje que viene en casi todo sistema con el que podamos interactuar, el problema es que necesitaremos ciertos elementos para trabajar con este.
+
+Para trabajar con C++ vamos a requerir los siguientes elementos:
 
 + Visual Studio 2019 (puede ser otro IDE o otra versión de Visual Studio, pero esta será la que utilizare para enseñarte).
 + El WorkLoad "**Desktop development with C++**" (obligatorio) y "**Game development with C++**" (opcional). Ambos los encontraremos en la pestaña de "instalación de módulos" o "workloads" al instalar Visual Studio o al abrir "Visual Studio Installer".
@@ -75,7 +57,11 @@ Para eso debemos seguir los siguientes pasos:
 3. En la pestaña "**Configuration**" seleccionamos la opción **"All Configurations"** y en la pestaña **"Platform"** seleccionamos **"All Platforms"**.
 4. Luego de esto buscamos las siguientes opciones:
    + Output Directory: añadimos **`$(SolutionDir)bin\$(Platform)\$(Configuration)\`**
+   
+     Este será el sitio donde se crearan nuestros binarios y archivos `.exe`, estos se posicionaran en **la carpeta del proyecto**, dentro de **la plataforma especificada (x32 o x64)**  y finalmente dentro de la carpeta **debug** veremos los ejecutables.
    + Intermediate Directory: añadimos **`$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\`**
+   
+     Aquí se guardaran nuestros **archivos intermediarios** con una distribución similar a la carpeta de nuestros ejecutables.
 
 Estas ultimas opciones nos permiten seleccionar la forma en la que las carpetas de nuestro proyecto se estructuraran.
 
@@ -197,7 +183,7 @@ Esto ocurre por que `std::cout` requiere que manualmente hagamos un salto de lí
   int main()
   {
       std::cout << "Buenos Dias!!!\n"; // añado la secuencia de escape para generar el salto de linea
-      std::cout << "Buenas Noches!!!"; // no hace falta añadir la secuencia de escape dado que es la ultima linea
+      std::cout << "Buenas Noches!!!";
   }
   ~~~
 
@@ -464,7 +450,8 @@ Y las funciones pueden ser llamadas de múltiples formas (todas estas deben ser 
   
   int main()
   {
-      std::cout << suma(1,2); // le damos 2 parametros y mostramos en la consola el valor retornado de la función
+      // le damos 2 parametros y mostramos en la consola el valor retornado de la función
+      std::cout << suma(1,2); 
   }
   ~~~
 
@@ -480,7 +467,7 @@ Y las funciones pueden ser llamadas de múltiples formas (todas estas deben ser 
   
   int main()
   {
-      int numerosSumados = suma(1,2); // le damos 2 parametros y aplicamos el valor retornado a una variable
+      int numerosSumados = suma(1,2); 
   }
   ~~~
 
@@ -490,7 +477,9 @@ Y las funciones pueden ser llamadas de múltiples formas (todas estas deben ser 
 
 Como ya alguno se habrá dado cuenta nuestra función "**main**" tiene un tipo de dato **int** antes de su nombre, eso significa que ¿debe retornar algún valor?, pues **no**.
 
-En la función main no es necesario usar un return dado que esta es especial y técnicamente lo que hace es "retornar un 0 automáticamente" mientras que en todas las funciones (que no sea **main** ni sean un **void**) necesitamos retornar algún valor para que estas funcionen sin generar errores.
+En términos simples la función `main()` no requiere del retorno de un valor a parte de un 0 que **se ejecuta de forma automática al final de la misma función**, al igual que en todas las funciones que son **void**, pero el `main()` si puede retornar un valor.
+
+**En caso de que la función `main()` retorne 0, la ejecución de la misma se parara en esa línea especifica**.
 
 ---
 
@@ -650,7 +639,7 @@ Todos estos funcionan cuando queremos operar sobre el mismo elemento, por ejempl
 ~~~c++
 int main()
 {
-    short numero = 0; // si quisieramos sumarle 1 a la variable podriamos hacer numero = numero + 1, o tambien:
+    short numero = 0; // podriamos sumarle 1 a la variable haciendo "numero = numero + 1", o tambien:
     numero += 1; // esto nos permite acortar la linea en base a ese operador
 }
 ~~~
@@ -1152,6 +1141,8 @@ bool dato = (ptr == x); // esto dara falso
 bool dato2 = (*ptr == x) // esto nos dara true dado que en este caso el "*" llama el valor dentro del pointer
 ~~~
 
+En términos simples **utilizamos el `*` para mencionar que crearemos un pointer de un tipo de dato** (por ejemplo un `int*` es el pointer de un int) **y el `&` para obtener la posición en memoria**.
+
 ---
 
 # Poo
@@ -1593,17 +1584,20 @@ class nombreClase
 public:
     nombreClase() // este es nuestro constructor
     {
-        std::cout << "el objeto se ha creado" << std::endl; // este mensaje se mostrara al crear el objeto
+        // este mensaje se mostrara al crear el objeto
+        std::cout << "el objeto se ha creado" << std::endl; 
     }
     ~nombreClase() // los destructors llevan el nombre de su clase pero con un "~" antes
     {
-        std::cout << "el objeto se ha destruido" << std::endl // este mensaje se mostrara al destruir el objeto
+        // este mensaje se mostrara al destruir el objeto
+        std::cout << "el objeto se ha destruido" << std::endl 
     }
 };
 
 void funcionPrueba()
 {
-    nombreClase clase; // al estar dentro de una funcion el objeto se creara y estara vivo hasta que la misma termine
+    // al estar dentro de una funcion el objeto se creara y estara vivo hasta que la misma termine
+    nombreClase clase; 
 }
 
 int main()
