@@ -262,7 +262,7 @@ std::cout << glGetString(GL_VERSION) << std::endl;
 
 ---
 
-# Vertex Buffer y Shaders
+# Vertex Buffer
 
 Anteriormente por razones de prueba mostre como hacer un triangulo en **OpenGl** con el siguiente codigo:
 
@@ -297,6 +297,7 @@ Para ello tenemos los **Vertex Buffers**, estos son conjuntos de datos como los 
 Para hacer un Vertex Buffer tenemos que "generarlo/s" por medio de una función, su sintaxis es la siguiente:
 
 ~~~c++
+// esto deberia ir abajo del "glewInit()"
 unsigned int buffer; // creamos primero un unsigned int
 
 // glGenBuffers(cantidad de Buffers, pointer de un int unsigned)
@@ -327,6 +328,7 @@ float triangulo[6] // recomiendo posicionar esto en la seccion de variables de t
 		- ripo de renderizacion
 */
 glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), triangulo, GL_STATIC_DRAW);
+glEnableVertexAttribArray(0); // activamos los vertex seleccionados dandole el "id" = 0
 ~~~
 
 Quizá te preguntes **¿a que te refieres con tipo de renderizado?** en realidad es algo simple, esto define la cantidad de veces que se editara el buffer y la cantidad de veces que se mostrara en pantalla en base a 3 tipos:
@@ -338,9 +340,203 @@ Quizá te preguntes **¿a que te refieres con tipo de renderizado?** en realidad
 Felicidades ahora podemos dibujar en la pantalla utilizando la siguiente lineal de código:
 
 ~~~c++
-// glDrawArrays(la forma a dibujar, el indice del array donde iniciamos, cuantos vertices contar)
+// glDrawArrays(la forma a dibujar, el indice del inicio del vertex activado, cuantos vertices contar)
 glDrawArrays(GL_TRIANGLES, 0, 3);
 ~~~
 
 Lastimosamente al utilizar esta función no veras nada, aun nos faltan ciertos pasos como lo es el hacer un shader, pero por ahora al menos ya puedes decir que tu buffer esta listo.
+
+---
+
+## Atributos de un vertex
+
+A la hora de crear nuestros buffers es probable que te hagas ciertas preguntas, especialmente sobre como es que **OpenGl** sabe interpretar nuestros buffers, como sabe que significa que.
+
+A la hora de hacer un **Vertex Buffer** Tenemos que definir **el como OpenGl leerá nuestros datos**, especificando exactamente que significa cada uno de ellos, si es una posicion, un color, una textura, etc...
+
+**Ojo:** el proceso de entregarle atributos a un vertex debe hacerse después de "seleccionar" (**`glBindBuffer()`**) nuestro buffer y también recomiendo hacerlo después de entregarle los datos al mismo (**`glBufferData()`**).
+
+Para elegir cual es el "layout" de nuestro buffer utilizaremos la función **`glVertexAttribPointer()`**, el mismo posee los siguientes parámetros:
+
++ **Índice**: Este elemento hace referencia al índice del array al que le daremos un tipo de atributo.
+
+  ---
+
++ **Tamaño**:  Es la cantidad de valores que le pasaremos **dependiendo de los vértices**, por ejemplo:
+
+  ~~~c++
+  float triangulo[6]
+  {
+     -0.5f, -0.5f, // en este caso cada vertice equivale a 2 floats
+  	0.0f,  0.5f,
+   	0.5f, -0.5f
+  };
+  ~~~
+
+  Por lo que el "tamaño de un vértice" es de 2 floats.
+
+  ---
+
++ **Tipo de dato**: dependiendo del tipo de dato de los valores del array, por ejemplo en el caso de nuesro triangulo usariamos **`GL_FLOAT`**, para encontrar mas  [Revisa el siguiente enlace](https://docs.gl/gl4/glVertexAttribPointer).
+
+  ---
+
++ **Normalized**: especifica si los valores serán normalizados, **este lo dejaremos con `GL_FALSE`**.
+
+  ---
+
++ **Stride**: define el espacio que hay entre el inicio de un buffer y el inicio del siguiente **en bytes**, esto para saber exactamente cada cuando "inicia el siguiente vertex del buffer".
+
+  Por ejemplo, imagina que tienes el siguiente buffer: **`[[x1],[y1],[z1],[x2],[y2],[z2],[x3],[y3],[z3]]`** y que cada valor del mismo es un **float**.
+
+  Cada valor `x`, `y` & `z` representan coordenadas de los vértices `1`, `2` y `3` respectivamente.
+
+  Como cada valor es un **float**, estos poseen un valor de 4Bytes, suponiendo que hay 3 valores significa que **el stride entre las coordenadas del objeto 1 y las coordenadas del objeto 2 es de 12Bytes (4*3)**.
+
+  O sea que si iniciamos en el índice `0` daremos con el `x1`, si avanzamos 12Bytes llegamos a `x2` y así sucesivamente
+
+  ---
+
++ **Offset**: define el espacio que hay entre el inicio de un atributo de un vertex y el siguiente **en bytes**, esto para por ejemplo saber que valores representan la posición, cuales representan el color, cuales representan las coordenadas de texturas, etc...
+
+  Por ejemplo, imagina que tienes el siguiente buffer: **`[[x1],[y1],[z1],[r1],[g1],[b1],[nx1],[ny1],[nz1]]`** y que cada valor del mismo es un **float**.
+
+  Este buffer pertenece a solo un vertex pero se divide en 3 atributos y su offset se puede calcular según lo siguiente:
+
+  | Indice |      Atributos      | Inicio | offset       |
+  | :----: | :-----------------: | :----: | ------------ |
+  |   0    |  `x1`, `y1`, `z1`   |   0    | 0*4 = **0**  |
+  |   1    |  `r1`, `g1`, `b1`   |   3    | 3*4 = **12** |
+  |   2    | `nx1`, `ny1`, `nz1` |   6    | 6*4 = **24** |
+
+  Esto significa que:
+
+  + **El atributo 0** inicia en el Byte **0** del buffer.
+  + **El atributo 1** inicia en el Byte **12** del buffer.
+  + **El atributo 2** inicia en el Byte **24** del buffer.
+
+Estos últimos valores tanto el **Stride** como el **Offset** son valores relativamente complejos, por lo que existen formas para hacer estos mas fáciles, aun así es preferible que entiendas antes la forma en la que estos valores funcionan.
+
+Finalmente llegando al ejemplo del triangulo suponiendo que nuestro triangulo se estructura asi:
+
+~~~c++
+float triangulo[6]
+{
+    -0.5f, -0.5f,
+     0.0f,  0.5f,
+     0.5f, -0.5f
+};
+~~~
+
+A la hora de utilizar la función haremos lo siguiente:
+
+~~~c++
+/*
+	- primero entregamos el inicio del array (0)
+    - luego pasamos la cantidad de datos que hacen un vertex (2 floats por vertex)
+    - el tipo de dato de los valores (float)
+    - si queremos normalizar (false)
+    - el striide entre un vertex y el siguiente (el tamaño de un float * 2 = 8bytes por vertex
+    - al no tener atributos no hace falta agregar un offset (0)
+*/
+
+// finalmente la funcion se veria de la siguiente forma:
+glVertexAttribPointer(0,2,GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+~~~
+
+Aun que mas adelante ya veremos mas formas de utilizar estas funciones.
+
+---
+
+# Shaders
+
+En las secciones anteriores nos encargamos de crear los datos que representaran nuestras figuras "al menos lógicamente", pero aun nos queda un paso importante.
+
+Y es el programar **los shaders** de nuestras figuras.
+
+Un **shader** es una parte programable de nuestro **graphics pipeline**, **una característica del OpenGl moderno** que nos permite escribir programas en nuestra **GPU**.
+
+---
+
+## Graphics Pipeline
+
+Antes de continuar con lo que es un **shader**, revisaremos un concepto teorico util para entender como **OpenGl** se encargara de tomar nuestros datos y transformarlos finalmente en una forma construida.
+
+Este es el **Graphics pipeline**, el cual podemos definir como **el camino de un vertex/línea/triangulo desde los datos 3D, hasta tu pantalla en 2D**.
+
+Esto dividiéndose en los siguientes pasos:
+
++ **`Vertex Specification`**: Donde configuramos nuestra geometría en el **CPU**.
++ **`Vertex Shader`**: Se ejecuta en cada vértice preocupándose de posicionarlos.
++ **`Tessellation`**: La subdivisión de formas (opcional).
++ **`Geometry shader`**: Genera mas formas desde una forma base (opcional).
++ **`Vertex post-processing`**: Modifica nuestros vertices.
++ **`Primitive assembly`**: Como ensamblamos los datos de nuestra geometría.
++ **`Rasterization`**: El rellenar los pixeles necesarios
++ **`Fragment shader`**: Se ejecuta una vez por cada fragmento/pixel permitiendo dar un color a cada pixel **rasterizado**.
++ **`Per-sample operations`**: Salida de datos.
+
+---
+
+## Escribiendo Shaders
+
+Por ahora nos centraremos en 2 tipos de **shaders**:
+
++ **Vertex Shaders**: Se encarga de la posición de cada **vertex** (se ejecuta por cada **vertex**)
++ **Fragments Shader**: Se encarga de entregar un color por cada pixel **rasterizado** (se ejecuta por cada **pixel**).
+
+Hay mas tipos de **shaders** pero por ahora y en la mayoría de proyectos, estos son los mas utilizados.
+
+### Configurando Shaders
+
+Antes de continuar con la escritura de **shaders**, tendremos que directamente seleccionar ciertos elementos sobre la lectura y compilación de los **shaders**, agregando las siguientes funciones:
+
+~~~c++
+// esta funcion se encargara de compilar nuestro shader
+static unsigned int CompileShader(unsigned int type, const std::string& source)
+{
+    // creamos un shader con el tipo indicado
+    unsigned int id = glCreateShader(type);
+    const char* src = source.c_str(); // tambien podriamos usar &source[0] pero no lo recomiendo
+    glShaderSource(id, 1, &src, nullptr);
+    glCompileShader(id);
+
+    int result;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+
+    if (result == GL_FALSE)
+    {
+        int length;
+        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        // si intentamos hacer "char message[length];" no funcionara por lo que haremos:
+        char* message = (char*)alloca(length * sizeof(char));
+        glGetShaderInfoLog(id, length, &length, message);
+        std::cout << "Failed to compile" << (type == GL_VERTEX_SHADER ? "Vertex" : "Fragment") << std::endl;
+        std::cout << message << std::endl;
+    }
+    return id;
+}
+
+// esta funcion se encargara de cargar y crear el shader
+static int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) 
+{
+    unsigned int program = glCreateProgram(); // primero creamos un "programa"
+    
+    // luego creamos tanto el vertex como el fragment shader
+    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+    // por ultimo ingresamos nuestros shaders al programa, los enlazamos y validamos
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+    glValidateProgram(program);
+
+    // por ultimo eliminaremos los shaders
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
+    return program;
+}
+~~~
 

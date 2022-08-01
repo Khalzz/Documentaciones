@@ -1,8 +1,8 @@
 # SDL2
 
-SDL2 es una librería de desarrollo multiplataforma diseñada para entregar acceso de nivel bajo a **audio**, **input de un usuario** y **hardware grafico** vía **OpenGl, Direct3D, Metal y Vulkan**.
+SDL2 es una librería de desarrollo multiplataforma diseñada para entregar acceso de nivel bajo a **audio**, **input de un usuario** y **hardware grafico** por medio de **OpenGl, Direct3D, Metal y Vulkan**.
 
-Usado tanto para **desarrollo de videojuegos** como para **programas de consumo de multimedia**, SDL (tanto el original como el actual) se ha usado en multiples proyectos de relativa importancia, como son:
+Usado tanto para **desarrollo de videojuegos** como para **programas de consumo de multimedia**, SDL se ha usado en múltiples proyectos de relativa importancia, como son:
 
 * Los motores **Source** y **Golden source** de **valve**.
 * **Half Life 2**.
@@ -15,33 +15,143 @@ Esta librería en su mayoría es usada con el lenguaje **C++** con el que lo usa
 
 ---
 
-# Mis primeros pasos en SDL2
+# Configuración
 
-Como es obvio tenemos que empezar por el principio y la mejor forma es:
+Antes de iniciar escribiendo código tendremos que hacer revisión a ciertos elementos a configurar, por ello haremos un repaso de como llevar esto a cabo en **Visual Studio Code**.
+
+## Requerimientos
+
+Para crear un proyecto en SDL necesitamos los siguientes elementos:
+
+* Un editor de código en este caso **`Visual Studio Code`**.
+* Un compilador de C++ en este caso **`MinGW`**.
+* Un comando para hacer **builds** en nuestro caso será el comando **`make`**
+
+No entregare un tutorial de instalación de estos ya que de por si no son complejos de instalar, aun así recomiendo que busques sus respectivas documentaciones ya que tanto **`MinGw`** como el comando **`make`** requiere de cierta configuración inicial.
 
 ## Creando un proyecto con SDL2
 
-En si esta librería no requiere de una "instalación", lo que si requiere es de una configuración para poder "**aplicarlo en nuestro código**" por lo que haremos lo siguiente:
+Para crear un proyecto de **SDL2** tendremos que hacer un conjunto de carpetas que recomiendo tengan la siguiente estructura:
 
-1. **Creamos un proyecto vacío de c++** (en Visual Studio).
-2. **Descargamos SDL2 en [el siguiente enlace](https://www.libsdl.org/download-2.0.php)** (selecciona la opción SDL2-devel-2.0.20-**VC**.zip (Visual C++ 32/64-bit)) debe traer el VC
-3. El archivo que nos de debemos **extraerlo, renombrarlo (si quieres) y llevarlo a la carpeta de nuestro proyecto** (yo lo llamare "SDL2")
-4. **Entramos a las propiedades del proyecto** en **`Proyect > proyect-name Properties`**.
-5. En la opción "**C/C++**", en esta opción seleccionamos "**Additional include directories**", en esta opción haremos lo siguiente:
-   1. Seleccionamos la flecha abajo y presionamos **`<Edit...>`**.
-   2. Presionamos el botón **New Line** (el botón con el logo de la carpeta).
-   3. Seleccionamos la carpeta **include** dentro de nuestro archivo de la librería.
-   4. Damos **Ok** y **Apply**.
-6. Tras esto en la opción "**Linker**" en "**General**" repetimos un proceso similar al anterior en la opción "**Additional Library Directories**":
-   1. Seleccionamos la flecha abajo y presionamos **`<Edit...>`**.
-   2. Presionamos el botón **New Line** (el botón con el logo de la carpeta).
-   3. Seleccionamos la carpeta **lib** y seleccionamos una opción u otra según nuestro sistema (en mi caso seleccionare **x64**).
-   4. Damos **Ok** y **Apply**.
-7. Por ultimo agregamos el archivo **SDL2.dll** al archivo de nuestro proyecto, para esto:
-   1. Vamos al **Solution Explorer** y damos clic derecho en nuestro proyecto para y damos en **Open Folder in File Explorer**
-   2. Copiamos aquí el archivo **SDL2.dll** que encontramos en la carpeta de nuestra librería (**`SDL2/lib/x64`**)
++ NombreProyecto
+  + assets: aquí posicionaremos nuestros archivos como modelos, imágenes, sonidos, entre otros.
+  + **bin**: aquí agregaremos todos los elementos relevantes para nuestros ejecutables.
+  + **include**: aquí agregaremos todos nuestros archivos con extensión **`.h`**.
+  + **lib**: aquí agregamos todas nuestras librerías.
+  + **src**: aquí es donde estará el código que nosotros nos encargaremos de escribir.
+  + **`Makefile`**: este archivo se encargara de la configuracion de nuestro proyecto.
 
-Listo, con esto hecho ya deberíamos poder trabajar totalmente en nuestro proyecto.
+Ahora **descargaremos SDL2**  [el siguiente enlace](https://www.libsdl.org/download-2.0.php)** (selecciona la versión compatible con **MinGW**).
+
+Ahora para utilizar estos elementos tenemos 2 formas de trabajar:
+
+1. **Agregando la librería desde una carpeta general**.
+
+   Esta forma es la mas cómoda **para la creación de proyectos**, esto por que simplemente **agregaremos nuestros elementos a una carpeta** luego desde nuestros proyectos **haremos referencia a esa carpeta**.
+
+   Un tema de importancia es que cada vez que lo intentes abrir desde un nuevo ordenador, tendrás que crear la misma carpeta en el mismo lugar, o cambiar la configuración del proyecto.
+
+   Para ocupar este método recomiendo ir a tu disco local **`"C:"`** y agregar una carpeta con el nombre **`Development`** y finalmente dentro de este agregaremos uno de las 2 carpetas del archivo descargado:
+
+   + **`i686-w64-mingw32`**: La versión de 32 bits (renombrándolo a **`SDL2_W32`**).
+   + **`x86_64-w64-mingw32`**: La versión de 64 bits (renombrándolo a **`SDL2_W64`**) *utilizaremos este*. 
+
+   Tras esto avanza a la sección de **Configurando Visual Studio Code**.
+
+   ---
+
+2. **Agregando las carpetas de la librería a nuestro proyecto**.
+
+   Esta forma es la mas cómoda si lo que buscamos es **transportabilidad del proyecto**, si planeas abrirlo desde un segundo ordenador, trabajas en equipo o prefieres subirlo a **GitHub** este podría ahorrarte dolores de cabeza a cambio de espacio.
+
+   Ya que debemos agregar archivos de la libreria dentro de nuestro proyecto, por lo que este al final terminara pesando mas para quien desee acceder a este.
+
+   **este es específicamente el que utilizaremos en la documentación**
+
+   En el archivo encontraremos varios elementos, necesito que te fijes en 2 especialmente:
+
+   + **`i686-w64-mingw32`**: La versión de 32 bits.
+   + **`x86_64-w64-mingw32`**: La versión de 64 bits.
+
+   La versión en la que nos fijaremos es en la de 64 bits y dentro de este buscaremos 3 elementos:
+
+   + **`include`**: La carpeta con los "header files" de **SDL2**.
+   + **`lib`**: La carpeta de la librería.
+   + El archivo **`.dll`** dentro de la carpeta **`bin`**.
+
+   Todos estos los llevaremos a nuestro proyecto, mezclando los datos dentro de las carpetas especificas y ingresando el archivo **`.dll`** dentro de la carpeta donde generaremos nuestros ejecutables la que **en nuestro caso es `bin`**.
+
+   ---
+
+Un tema importante es que en cada caso que descarguemos un modulo para **SDL2** (como **SDL_IMAGE**) lo haremos mezclando las carpetas **`include/SDL2`**, **`lib`** y agregaremos todos los archivos **`.dll`** necesarios a la carpeta **`bin`** de nuestro proyecto.
+
+---
+
+## Configurando Visual Studio Code
+
+Por ultimo ya nos quedaría configurar el proyecto dentro de **Visual Studio Code**, en este tendremos que mencionar que carpeta de librerías revisar, que carpeta de "includes" utilizar y otros valores como donde deberíamos crear nuestros ejecutables.
+
+Dentro de nuestra carpeta **`src`** crea un archivo con el nombre "**`main.cpp`**" y crea un "**hola mundo**".
+
+Al hacerlo y ejecutarlo (con f5) veremos que en nuestras carpetas se creara una con el nombre **`.vscode`**, aquí integraremos la configuración de como se generara o leerá nuestro proyecto por el compilador interno de **Visual Studio Code**.
+
+Entre estos archivos veremos uno con el nombre **`tasks.json`** donde encontraremos el campo **`args[]`** donde haremos lo siguiente:
+
+~~~json
+"args": [
+	"-fdiagnostics-color=always",
+	"-g",
+    
+    // nos encargamos de que se ejecuten/lean todos los archivos en "src" con extencion ".cpp"
+	"src\\*.cpp",
+    
+	"-o",
+    // seleccionamos donde se creara nuestro ejecutable (en nuestro caso la carpeta bin)
+	"${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe", // y le damos el nombre del archivo main
+
+    // si utilizamos el metodo de agregar la libreria al proyecto
+    "-Iinclude",
+	"-Llib",
+    
+	"-lmingw32",
+	"-lSDL2main",
+	"-lSDL2"
+]
+~~~
+
+Si utilizamos el método de agregar la librería desde una carpeta general:
+
+~~~json
+// debemos agregar estas lineas bajo el include y lib ya agregados
+"-IC:\\Development\\SDL2_W64\\include",
+"-LC:\\Development\\SDL2_W64\\lib",
+~~~
+
+Listo, ahora por medios de prueba en nuestro **`Main.cpp`** haremos lo siguiente:
+
+~~~c++
+#include <iostream>
+#include <SDL2/SDL.h>
+
+int main(int argc, char* args[]) // sdl necesita estos parametros si o si
+{
+    std::cout << "Hola!";
+    std::cin.get();
+    
+    return 0; // sdl necesita retornar 0 si o si
+}
+~~~
+
+Al presionar **`f5`** se debería generar un ejecutable en nuestra carpeta **`bin`**, al ejecutarlo debería abrirse una terminal con un mensaje y al presiona `enter` esta debería cerrarse.
+
+**Ojo:** existen 2 errores que podrian aparecer al intentar ejecutarlo, uno haciendo mencion a que falta un archivo **.dll** y otro directamente diciendo que el programa no se ha logrado iniciar.
+
+Estos errores pueden aparecer por 2 posibilidades:
+
+1. Te falta un **`.dll`**, revisa los que tengas y busca por si falta alguno.
+2. Estas utilizando un **`.dll`** de 64bits para un proyecto con la librería de 32bits (o viceversa).
+
+Cualquier error aparecido al presionar **`f5`** se debe a que algún paso anterior se ha concertado de forma errónea.
 
 ---
 
@@ -72,19 +182,18 @@ Las ventanas al menos en términos programáticos deben seguir los siguientes pa
 
 4. **Cerrar SDL**
 
-   Cuando puesta ventana llega al final de su vida o la cerramos, tenemos que encargarnos de cerrar el funcionamiento de SDL, a demas de cerrar las superficies creadas.
+   Cuando nuestra ventana llega al final de su vida o la cerramos, tenemos que encargarnos de cerrar el funcionamiento de SDL, a demás de cerrar las superficies creadas.
 
 Ya con esto listo podemos comenzar a crear ventanas, aquí tienen un ejemplo de todo esto funcionando.
 
 ~~~cpp
 #include <iostream>
 #include <SDL.h> 
-#include <stdio.h>
 
 int main(int argc, char* args[])
 {
 	SDL_Init(SDL_INIT_EVERYTHING); // iniciamos SDL
-	SDL_Window* ventana = SDL_CreateWindow("Ventana de prueba", 100, 100, 640, 480, SDL_WINDOW_SHOWN); // creamos la ventana
+	SDL_Window* ventana = SDL_CreateWindow("Ventana de prueba", 100, 100, 800, 600, SDL_WINDOW_SHOWN); // creamos la ventana
 
 	if (!ventana) { // comprobamos que no hayan errores en la creacion de la ventana
 		std::cout << "Algo ha fallado al crear la ventana! Error: " << SDL_GetError() << std::endl;
@@ -110,37 +219,34 @@ int main(int argc, char* args[])
 
 ## Modularizando 
 
-Una idea fundamental para el funcionamiento eficaz del código es el "**Modularizarlo**" así preparamos nuestro desarrollo para futuras ediciones, facilitándonos el agregar funcionalidades nuevas y aumentar el tamaño de nuestro proyecto.
+Un codigo efectivo tanto en su lectura como ejecucion deberia ser una prioridad para nosotros, pero otro elemento que quiza no priorizes tanto es la **modularidad**.
 
-En este caso como en muchos otros es posibles y la forma que aplicamos para lo anteriormente visto seria la siguiente:
+La capacidad de un código de ser separable lo suficiente como para facilitar su uso a la hora de agregad funcionalidades nuevas y aumentar el tamaño del proyecto.
 
-~~~cpp
-#include <iostream>
-#include <SDL.h> 
-#include <stdio.h>
+Existen varias formas de modularizar nuestro, en este caso veremos las siguientes:
 
-bool init(); // creamos una funcion para iniciar sdl
-void close(); // creamos otra funcion para cerrar sdl
+---
 
+### Modularización funcional
+
+Una de las formas es separando nuestro código (al menos lo que tenemos hecho) en funciones, dando una a cada funcionalidad necesitada.
+
+~~~c++
 // CREAMOS LA VENTANA Y SUPERFICIE COMO ELEMENTOS GLOBALES
 SDL_Window* VENTANA_G = NULL;
 SDL_Surface* SUPERFICIE_VENTANA_G = NULL;
 
-int main(int argc, char* args[])
+// empezamos dando una funcion que nos permita cerrar la ventana
+void close()
 {
-    if (!init()) // si la funcion 
-    {
-        printf("Failed to initialize!\n");
-    }
-    else
-    {
-        SDL_UpdateWindowSurface(VENTANA_G); // Actualizamos la superficie
-        SDL_Delay(5000); // Esperamos 2 segundos
-    }
-    close(); // luego de todo cerramos la ventana
-    return 0;
+	SDL_DestroyWindow(VENTANA_G); // PRIMERO DESTRUIMOS LA VENTANA
+	VENTANA_G = NULL;
+	SUPERFICIE_VENTANA_G = NULL;
+	SDL_Quit(); // POR ULTIMO CERRAMOS SDL
 }
+~~~
 
+~~~c++
 bool init()
 {
     bool success = true;
@@ -167,207 +273,401 @@ bool init()
     }
     return success;
 }
-
-void close()
-{
-	SDL_DestroyWindow(VENTANA_G); // PRIMERO DESTRUIMOS LA VENTANA
-	VENTANA_G = NULL;
-	SUPERFICIE_VENTANA_G = NULL;
-	SDL_Quit(); // POR ULTIMO CERRAMOS SDL
-}
 ~~~
 
----
-
-# Agregar imágenes en SDL
-
-El proceso de agregar imagenes no es tan complejo como podrias creer, pero antes debes entender un concepto basico, el concepto de los **BMP**.
-
-Usualmente consumimos 2 tipos de "imagenes" en el mundo digital:
-
-1. **Vectoriales**: Son un conjunto de cálculos matemáticos que permiten la generación teórica de líneas y formas, estas se caracterizan por usualmente mantener su definición sin importar del aumento que se le aplique a la imagen.
-   1. **Bitmaps**: Son imágenes generadas por medio de un "sistema de pixeles" o pequeños elementos cuadrados que poseen valores numéricos que representan el color de los mismos.
-
-A la hora de ingresar imágenes en nuestra ventana estas prioritariamente deben ser un Bitmap **con extensión `.bmp`**(con ciertos cambios puede ser un png, jpg u otros, pero eso se vera mas adelante).
-
-Y técnicamente hablando **las imágenes son superficies** esto es un elemento en el que nos adentraremos mas adelante.
-
-Las imágenes poseen varias formas de ser trabajadas y utilizadas, algunas de estas son:
-
-1. **Carga de bitmaps**: hacemos la búsqueda de los elementos que nos interese mostrar en pantalla (y muestra error en caso que no se logre).
-
-   ~~~cpp
-   SDL_Surface* imagen = SDL_LoadBMP( "Carpeta/imagen.bmp" ); // primero buscamos la imagen a uttilizar
-   
-   if ( !imagen ) {
-   	// la imagen no se ha encontrado (se creativo)
-   }
-   ~~~
-
-   **Importante:**
-
-   Imagina las ventanas como una **mesa**, mientras que la "**superficie**"  es **el espacio disponible para posicionar elementos en la misma**, **mientras mas elementos posicionamos, menos espacio habrá para objetos futuros**, por lo que algo esencial para trabajar con las superficies de forma eficiente es **limpiarlas/vaciarlas**.
-
-   Esto también se aplica a las imágenes cuando dejan de utilizarse y para lograrlo debemos hacer lo siguiente:
-
-   ~~~cpp
-   // si dejamos de usar una imagen o superficie dehbemos limpiarla con:
-   SDL_FreeSurface(imagen); // en este caso limpiamos la imagen
-   ~~~
-
-   ---
-
-2. **Guardado de bitmaps**: otra utilidad necesaria de vez en cuando es lo contrario a la carga de **bitmaps**, **el guardarlos**, tan simple como eso.
-
-   Para esto simplemente usamos lo siguiente:
-
-   ~~~cpp
-   // esta funcion devuelve 0 si es exitosa, menos de 0 si algo falla
-   int resultado = SDL_SaveBMP( superficie_a_guardar, "Carpeta/guardado.bmp" );
-   
-   if ( resultado < 0 ) {
-   	// el guardado no se ha concretado (se creativo)
-   }
-   ~~~
-
-   en este caso `superficie_a_guardar` es la superficie que en efecto será guardada y el lugar donde se guardara junto al nombre del archivo.
-
-   ---
-
-3. **Blitting de superficies**: este es el proceso de "dibujar una superficie en otra" permitiendo cosas como dibujar una imagen dentro de la superficie entregada a la ventana.
-
-   ~~~cpp
-   // creamos el destino en el que se mostrara en nuestra superficie
-   SDL_Rect destino;
-   destino.x = 100; // eje x
-   destino.y = 50; // eje y
-   
-   // esta funcion devuelve 0 si es exitosa, menos de 0 si algo falla
-   // (imagen a imprimir, null, superficie en la que se imprimira la imagen, destino de la superficie donde se pondra la imagen)
-   int resultado = SDL_BlitSurface(imagen, NULL, superficieVentana, &destino); 
-   if ( resultado < 0 ) {
-   	// blit fallado (se creativo)
-   }
-   ~~~
-
-   ---
-
-4. **Escalado de imágenes**: este funciona similar al blitting de imágenes pero contiene mas datos a tomar en cuenta:
-
-   ~~~cpp
-   SDL_Rect destino;
-   destino.x = 100; // posicion en el eje x
-   destino.y = 50; // posicion en el eje y
-   destino.w = 200; // escalado en el eje x
-   destino.h = 100; // escalado en el eje y
-   
-   int resultado = SDL_BlitScaled( imagen, NULL, superficieVentana, &destino );
-   
-   if ( resultado < 0 ) {
-   	// blit fallado (se creativo)
-   }
-   ~~~
-
-Un ejemplo claro de la carga de una imagen seria:
-
-
-
-~~~cpp
-#include <SDL.h> 
-#include <stdio.h>
-
-bool init();
-
-bool loadMedia(); //creamos una funcion que cargue la imagen
-
-void close();
-
-const int ANCHO_VENTANA = 640;
-const int ALTO_VENTANA = 480;
-
-SDL_Window* ventanaGlobal = NULL;
-SDL_Surface* gScreenSurface = NULL;
-
-SDL_Surface* gHelloWorld = NULL; //creamos la imagen que vamos a instanciar en la superficie
-
+~~~c++
 int main(int argc, char* args[])
 {
-    if (!init())
+    if (!init()) // si la funcion 
     {
         printf("Failed to initialize!\n");
     }
     else
     {
-        if (!loadMedia())
-        {
-            printf("Failed to load media!\n");
-        }
-        else
-        {
-            //aplicamos la imagen
-            SDL_BlitSurface(gHelloWorld, NULL, gScreenSurface, NULL);
-            SDL_UpdateWindowSurface(ventanaGlobal); // actualizar la superficie de la ventana
-            SDL_Delay(2000);
-        }
+        SDL_UpdateWindowSurface(VENTANA_G); // Actualizamos la superficie
+        SDL_Delay(5000); // Esperamos 2 segundos
     }
-    // liberar recursos y cerrar
-    close();
+    close(); // luego de todo cerramos la ventana
     return 0;
 }
+~~~
 
-bool init()
+Esta forma es relativamente sencilla principalmente por que nos permite tener cada funcionalidad en el mismo archivo.
+
+---
+
+### Modularización por clases
+
+Otra forma relativamente común es la separación por clases de estas funcionalidades, a lo que me refiero es a lo siguiente:
+
+Primero crearemos un archivo con el nombre **`RenderWindow.hpp`**, aquí definiremos como **header file** la clase que definirá el renderizado de nuestra ventana (recuerda que este va en la carpeta **`include`**).
+
+~~~cpp
+#pragma once // al ser un header file utilizamos esto para que se ejecute solo una vez
+#include <iostream>
+#include <SDL2/SDL.h>
+
+// en este archivo creamos la renderizacion de la ventana como si fuera un objeto
+class RenderWindow
 {
-    bool success = true;
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+public:
+    // esta funcion se encargara de renderizar la ventana
+    RenderWindow(const char* p_title, int p_w, int p_h);
+    
+    // esta funcion se encargara de limpiar la ventana antes de cerrarla
+    void cleanUp();
+private:
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+};
+~~~
+
+Luego definimos directamente la funcionalidad de cada una de estas funciones en un archivo llamado **`renderwindow.cpp`** (recuerda que este debe ir en la carpeta **`src`**).
+
+~~~cpp
+#include <iostream>
+#include <SDL2/SDL.h>
+
+#include "RenderWindow.hpp" // incluimos el header file
+
+RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)  // declaramos la funcion
+    :window(NULL), renderer(NULL)
+{
+   	// creamos la ventana
+    window = SDL_CreateWindow("Ventana de prueba", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
+
+    if (window == NULL) // en caso de que la ventana no se crea
     {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        success = false;
+        std::cout << "Window failed to init. Error:" << SDL_GetError() << std::endl;
     }
-    else
-    {
-        ventanaGlobal = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
-        if (ventanaGlobal == NULL)
-        {
-            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-            success = false;
-        }
-        else
-        {
-            gScreenSurface = SDL_GetWindowSurface(ventanaGlobal);
-        }
-    }
-    return success;
+
+    // nuestro renderizador es directamente nuestra gpu
+    //y este utilizara la ventana para mostrar elementos
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 
-bool loadMedia() // esta funcion se dedicara a cargar la imagen y entregarla en la variable que vamos a utilizar
+// limpiamos la ventana
+void RenderWindow::cleanUp()
 {
-    // carga comletada (flag)
-    bool success = true;
-    // cargamos la imagen
-    gHelloWorld = SDL_LoadBMP("Assets/Images/Banana.bmp");
-    if (gHelloWorld == NULL) // en caso que la imagen no se encuentre
-    {
-        printf("Unable to load image %s! SDL Error: %s\n", "Assets/Images/Banana.bmp", SDL_GetError());
-        success = false;
-    }
-    return success;
+    SDL_DestroyWindow(window);
 }
+~~~
 
-void close()
+Luego en nuestro archivo **`main.cpp`** agregamos lo siguiente:
+
+~~~c++
+#include <iostream>
+#include <SDL2/SDL.h> 
+
+#include "RenderWindow.hpp"
+
+int main(int argc, char* args[])
 {
-    // destruir superficie
-    SDL_FreeSurface(gHelloWorld);
-    gHelloWorld = NULL;
+    if (SDL_Init(SDL_INIT_VIDEO) > 0) { // comparamos que sdl inicie el video correctamente
+        std::cout << "Hey, SDL_Init ha fallado. SDL_ERROR: " << SDL_GetError() << std::endl;
+    }
 
-    SDL_DestroyWindow(ventanaGlobal);
-    ventanaGlobal = NULL;
+    RenderWindow window("Juego", 800, 600); // creamos la ventana
+    
+    SDL_Delay(5000); // esperamos
+
+    window.cleanUp(); // limpiamos la ventana
+    SDL_Quit(); // salimos de sdl
+    
+    return 0;
+}
+~~~
+
+Con esto listo ya no deberían haber problemas, en este caso nos mantendremos con este ultimo método y iremos trabajando sobre este mas adelante.
+
+---
+
+# Eventos
+
+Los eventos son en efecto **acciones hechas por el usuairo** provenientes tanto un mouse, teclado, control, entre otros...
+
+Estos se revisan de forma constante e infinita (hasta que el programa se cierre) en un proceso conocido como "**Event Loop**", que acumulara estos **eventos** en un elemento que conocemos como **"Event Queue"**.
+
+Estos serán leídos de forma constante permitiéndonos generar acciones en respuestas a las mismas.
+
+---
+
+## Event Loop
+
+Como su nombre lo explica, el **"Event Loop"** es **un bucle que se encarga de generar funcionalidades de forma infinita hasta que el programa se cierre**.
+
+Este lo definimos como un bucle infinito que se acabara **en el momento que se encuentre un evento relacionado al cierre del programa**.
+
+Suponiendo que seguimos **la modularizarían por clases** agregaremos lo siguiente al **`main()`** en nuestro archivo **`main.cpp`**.
+
+~~~cpp
+int main(int argc, char* args[])
+{
+    if (SDL_Init(SDL_INIT_VIDEO) > 0) {
+        std::cout << "Hey, SDL_Init ha fallado. SDL_ERROR: " << SDL_GetError() << std::endl;
+    }
+
+    RenderWindow window("Juego", 800, 600);
+    
+    bool gameRunning = true; // este se encargara de mantener nuestro loop en ejecucion
+    SDL_Event event; // generamos un evento
+
+
+    while (gameRunning) // mientras el juego siga en ejecucion
+    {
+        while (SDL_PollEvent(&event)) // la funcion PollEvents busca por eventos en un SDL_Event
+        {
+            // aqui es donde agregaremos nuestros eventos y sus funcionalidades
+            if (event.type == SDL_QUIT)  // si se detecta un evento que represente el cierre
+            {
+                gameRunning = false; // el juego deja de correr
+            }
+        }
+    }
+
+    // cerramos todo
+    window.cleanUp();
     SDL_Quit();
+    
+    return 0;
+}
+~~~
+
+Mientras el programa no se cierre, se mantendrá de forma constante la ejecución de nuestro **Game Loop**.
+
+---
+
+## Revisión de eventos
+
+Como mencione en la sección del **Event Loop**, tendremos un bucle con la función **`SDL_PollEvent()`** la cual se encargara de revisar por si hay algún evento existente.
+
+~~~c++
+while (SDL_PollEvent(&event)) // la funcion PollEvents busca por eventos en un SDL_Event
+{
+	// aqui es donde agregaremos nuestros eventos y sus funcionalidades
+	if (event.type == SDL_QUIT)  // si se detecta un evento que represente el cierre
+	{
+		gameRunning = false; // el juego deja de correr
+	}
+}
+~~~
+
+Y como quizá será obvio, podemos llevar a cabo mas tipos de eventos a parte de solo revisar si hemos o no salido del programa, por ello aquí tienes una lista de los **tipos de eventos** que puedes llevar a cabo.
+
+| Tipo de dato (Uint32)                                        | Tipo de evento | Definición del evento                 |
+| ------------------------------------------------------------ | -------------- | ------------------------------------- |
+| [SDL_WindowEvent](https://wiki.libsdl.org/SDL_WindowEvent)   | **window**     | Evento de ventana                     |
+| [SDL_KeyboardEvent](https://wiki.libsdl.org/SDL_KeyboardEvent) | **key**        | Evento de teclado                     |
+| [SDL_TextEditingEvent](https://wiki.libsdl.org/SDL_TextEditingEvent) | **edit**       | Evento de edición de texto            |
+| [SDL_TextInputEvent](https://wiki.libsdl.org/SDL_TextInputEvent) | **text**       | Evento de escritura de texto          |
+| [SDL_MouseMotionEvent](https://wiki.libsdl.org/SDL_MouseMotionEvent) | **motion**     | Evento de "mover el ratón"            |
+| [SDL_MouseButtonEvent](https://wiki.libsdl.org/SDL_MouseButtonEvent) | **button**     | Evento de "presionar botón del ratón" |
+| [SDL_MouseWheelEvent](https://wiki.libsdl.org/SDL_MouseWheelEvent) | **wheel**      | Evento de "rueda del ratón"           |
+| [SDL_QuitEvent](https://wiki.libsdl.org/SDL_QuitEvent)       | **quit**       | Evento de salida del programa.        |
+
+A demás de estos, hay muchos otros que podrían llamar tu atención, estos puedes encontrarlos [aquí](https://wiki.libsdl.org/SDL_Event).
+
+La comparacion de **`event.type`** nos permite accionar algo **cuando se detecte un evento especifico**, por ejemplo podriamos hacer lo siguiente:
+
+~~~c++
+while (gameRunning) 
+{
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_MOUSEMOTION) 
+        {
+            // daremos este mensaje cada vez que el raton se mueva
+            std::cout << "el raton se esta moviendo\n"; 
+        }
+
+        if (event.type == SDL_KEYDOWN) 
+        {
+            // daremos este mensaje cada vez que se presione una tecla
+            std::cout << "se ha presionado una tecla\n";
+        }
+
+        if (event.type == SDL_QUIT) 
+        {
+            // se cerrara el programa cuando se detecte un evento de cierre
+            gameRunning = false;
+        }
+    }
+}
+~~~
+
+Aun que así definimos eventos de forma general, que ocurre si yo quiero detectar la pulsación de una tecla especifica por ejemplo?
+
+Podemos definir especificamente elementos como la tecla presionada al verificar el tipo de evento y cosas como la accion en particular.
+
+Por ejemplo en el caso de presionar una tecla podemos tener 2 "KeySym" disponibles, siendo estos a que "teclado" responder.
+
++ **scancode**: Se revisara el valor físico que tiene cada tecla (lo que en un teclado puede ser el `;` en otro es la `ñ`).
++ **sym**: Se revisara el valor virtual de cada tecla (permitiendo leer el `;` y la  `ñ` como "la tecla al lado de la `l`").
+
+En el primer caso seriamos sensibles al cambio de teclado de tipo español a ingles, mientras que el segundo seria sensible a **la posición del mismo**.
+
+Ya con esto aclarado podemos pasar a hacer una pequeña prueba:
+
+~~~c++
+while (SDL_PollEvent(&event))
+{
+    if (event.type == SDL_KEYDOWN) // si se presiona una tecla
+    {
+        if (event.key.keysym.sym == SDLK_0) // y su valor virtual es la tecla con el valor "0"
+        {
+            std::cout << "la tecla precionada es el 0\n"; // mostramos mensaje
+        }
+    }
+}
+~~~
+
+Pero otra forma de hacer exactamente lo mismo es por medio de **`States`**, estos son un tipo de **"array"** el cual almacena todos los valores posibles de algún evento, para luego por medio de variables **scancode**.
+
+Este método funciona de la siguiente forma:
+
+~~~c++
+while (SDL_PollEvent(&event))
+{
+    // Primero creamos el estado que se encargara de constantemente leer si se presiona una tecla
+	const Uint8* state = SDL_GetKeyboardState(NULL); 
+    
+    if (state[SDL_SCANCODE_0]) // si el valor de estado es el keycode de la tecla "0"
+    {
+        std::cout << "la tecla precionada es el 0\n"; // mostrar mensaje
+    }
+    // aqui podremos facilmente acceder a las otras teclas como:
+    if (state[SDL_SCANCODE_RIGHT]) // si el valor de estado es el keycode de la tecla "0"
+    {
+        std::cout << "presionaste la flecha a la derecha\n"; // mostrar mensaje
+    }
+}
+~~~
+
+Para encontrar mas de estos "**scancodes**" revisa [el siguiente enlace](https://wiki.libsdl.org/SDL_Scancode).
+
+---
+
+# Manejando imagenes
+
+Como es obvio, a la hora de trabajar en un juego o en otro tipo de proyectos siempre estaremos en búsqueda de mostrar elementos en pantalla.
+
+Dibujos, fotos o texturas, todos estos elementos en si tienen la capacidad de ser mostrados en la pantalla gracias a una librería llamada **`SDL_image`**, la cual podrás encontrar en [el siguiente enlace](https://github.com/libsdl-org/SDL_image/releases).
+
+Su instalación es realmente simple.
+
+1. Descarga una versión de la librería en mi caso será la que contenga "**MinGW**" en el nombre.
+2. Ahí seleccionas la versión compatible con tu versión de "**SDL**", de este archivo copiaremos tanto la carpeta de "**includes**" como la carpeta "**lib**" y las mezclaras con los "**includes**" y "**libs**" del archivo de **SDL** que ya tienes en tu proyecto.
+3. En la carpeta "**bin**" encontraras un archivo con extensión **`.dll`**, agrégalo donde se creara el ejecutable de tu proyecto.
+4. Y finalmente agrega **`"-lSDL2_image"`** a la ultima lineal de nuestro **`tasks.js`**.
+
+En términos básicos, **SDL2** nos permite solo el ingresar imágenes con el formato **`.bpm`**, esta librería nos entrega la posibilidad de utilizar otros formatos, como **`.png`**, **`.jpg`**, **`.gif`**, entre otros...
+
+---
+
+## Agregando nuestra textura
+
+Empezaremos agregando una imagen cualquiera a nuestra carpeta de **`assets`**, en mi caso dentro de este archivo tengo otro con el nombre **`sprites`** y ahi tengo una imagen llamada **`imagen.png`**.
+
+Empezaremos agregando unas lineas a nuestro codigo, empezando por nuestro **`RenderWindow.hpp`** donde agregaremos lo siguiente:
+
+~~~cpp
+class RenderWindow
+{
+public:
+    RenderWindow(const char* p_title, int p_w, int p_h);  
+    
+    SDL_Texture* loadTexture(const char* p_filePath); // esta funcion cargara nuestra textura
+    
+    void cleanUp();
+
+    // funciones de pantalla
+    void clear(); // esta funcion se encargara de limpiar nuestro "render"
+    void render(SDL_Texture* p_text); // esta funcion renderizara una imagen
+    void display(); // esta funcion mostrara en pantalla todo lo que se renderize
+private:
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+};
+~~~
+
+Tras esto simplemente implementamos las funciones nuevas en nuestro archivo **`windowrender.cpp`**,  creando las siguientes funciones:
+
+~~~c++
+SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
+{
+    SDL_Texture* texture = NULL; // creamos una textura vacia
+    texture = IMG_LoadTexture(renderer, p_filePath); // cargamos la imagen en el renderer
+
+    if (texture == NULL) // si a este punto la textura es "null" algo salio mal
+    {
+        std::cout << "La textura no se ha cargado de forma exitosa" << SDL_GetError() << std::endl;
+    }
+
+    return texture; // devolvemos la textura
+}
+
+void RenderWindow::clear()  
+{
+    SDL_RenderClear(renderer); // limpiamos el renderer
+}
+
+void RenderWindow::render(SDL_Texture* p_text) 
+{
+    // copiamos la imagen en el renderer con rotacion y si se voltea
+    SDL_RenderCopy(renderer, p_text, NULL, NULL); 
+}
+
+// esta funcion se encarga de mostrar todos los elementos renderizados en la pantalla
+void RenderWindow::display() 
+{
+    SDL_RenderPresent(renderer); 
+}
+~~~
+
+Finalmente en nuestro **`main.cpp`** haremos lo siguiente:
+
+~~~c++
+int main(int argc, char* args[])
+{
+    if (SDL_Init(SDL_INIT_VIDEO) > 0) {
+        std::cout << "Hey, SDL_Init ha fallado. SDL_ERROR: " << SDL_GetError() << std::endl;
+    }
+
+    RenderWindow window("Juego", 800, 600);
+
+    // cargamos la imagen
+    // usamos ../ para retroceder una carpeta
+    SDL_Texture* texturaRara = window.loadTexture("../assets/sprites/imagen.png"); 
+
+    bool gameRunning = true;
+
+    SDL_Event event;
+
+
+    while (gameRunning) 
+    {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT) 
+            {
+                gameRunning = false;
+            }
+        }
+		
+        // el proceso de carga, renderizado y mostrar la imagen se hace en el game loop
+        window.clear();
+        window.render(texturaRara);
+        window.display();
+    }
+
+    window.cleanUp();
+    SDL_Quit();
+    
+    return 0;
 }
 ~~~
 
 ---
 
-# Programación orientada a eventos
 
-Como es obvio, los videojuegos son mas que una imagen que aparezca en pantalla, estos requieren de cierto nivel de "datos ingresados por el usuario" pero este **input** lo almacenamos en algo llamado "Eventos" que es con lo que trabajaremos ahora.
 
