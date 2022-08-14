@@ -31,13 +31,7 @@ Vulkan es igual mente un api grafico multiplataforma solo que es una iteración 
 
 Aun así trabajaremos con OpenGl dado que su uso es mucho mas simple que el de Vulkan para la gente nueva en el mundo de la programación grafica.
 
----
-
-# GLFW
-
-Hay ciertos elementos que **OpenGl** no permite por defecto, como la creación de ventanas y el input del usuario.
-
-Por ello utilizaremos una librería llamada **GLFW**.
+Esto lo haremos por medio de una librería llamada **GLFW**.
 
 Esta librería multiplataforma nos permite acceder a funcionalidades de **OpenGl** y **Vulkan** entregándonos distintas herramientas que no vienen por defecto con **OpenGl** como son:
 
@@ -47,28 +41,130 @@ Esta librería multiplataforma nos permite acceder a funcionalidades de **OpenGl
 + Manejo de eventos.
 + Entre otros.
 
-Lo que haremos será descargar la librería desde [este link](https://www.glfw.org/download.html), específicamente recomiendo **descargar "el archivo pre compilado de windows de 64 bits"** para mayor facilidad en windows (luego veremos la forma de hacer lo mismo en otras plataformas).
+---
 
-Luego crearemos un **proyecto vacío en c++**, tras esto iremos al archivo del proyecto (mejor dicho al archivo de la solución ósea **donde encontramos el archivo `nombreProyecto.sln`**) y ahí crearemos una carpeta llamada "**Dependencies**" o dependencias en el que haremos una carpeta para **GLFW** en la que ingresaremos desde el archivo zip:
+# Configuración
 
-+ La carpeta "include"
-+ La carpeta "lib" con la versión de nuestro visual studio (en mi caso lib-vc2022) dentro de este veremos varios archivos (solo nos importa el archivo que en mi caso tiene el nombre de "**glfw3.lib**" los demás podemos eliminarlos)
+Antes de iniciar con el código tendremos que "preparar" todo en nuestro proyecto, en este caso utilizaremos **Visual Studio Code** y enseñare la forma en la que puedes crear un proyecto y configurarlo en este editor.
 
-Tras esto debemos enlazar estos archivos a nuestro proyecto entrando en las propiedades de la solución (desde visual studio) y hacemos lo siguiente:
+Antes de continuar toma en cuenta que necesitaremos obviamente el editor **`Visual Studio Code`** a demás de un compilador de C++, en este caso utilizaremos **`MinGW`**.
 
-+ entrando a **`c/c++ > General`** buscaremos la casilla "Additional include directories" y añadimos donde ingresamos la carpeta "include" de nuestro extraíble, en mi caso es **`$(SolutionDir)Dependencies\GLFW\include`**
-+ entrando a **`linker > General`** en "Additional library directories" añadimos donde ingresamos la carpeta "lib" de nuestro extraíble, en mi caso es **`$(SolutionDir)Dependencies\GLFW\lib-vc2022`**.
-+ entrando a **`linker > Input`** en "Additional Dependencies" añadimos **`glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib`** que son las librerías necesarias para el correcto funcionamiento de GLFW.
+---
 
-Al tener todo esto listo, recuerda revisar si tu proyecto esta siendo compilado como uno de **32** o **64** bits, dependiendo de la versión utilizada de **GLFW**, a demás tendrás que seleccionar las librerías especificas.
+## Creando un proyecto
+
+Para crear nuestro proyecto simplemente seguiremos la siguiente estructura de archivos donde posicionaremos nuestros elementos:
+
++ NombreProyecto
+  + **bin**: aquí agregaremos todos los elementos relevantes para nuestros ejecutables.
+  + **include**: aquí agregaremos todos nuestros archivos con extensión **`.h`**.
+  + **lib**: aquí agregamos todas nuestras librerías.
+  + **src**: aquí es donde estará el código que nosotros nos encargaremos de escribir.
+    + **`main.cpp`** este archivo sera donde nosotros 
+
+Con esto listo debes asegurarte de descargar **GLFW** desde [el siguiente enlace](https://www.glfw.org/download.html), aquí descargaremos el binario pre-compilado de Windows para 64 bits.
+
+Ahora para utilizar estos elementos tenemos 2 formas de trabajar:
+
+1. **Agregando la librería desde una carpeta general**.
+
+   Esta forma es la mas cómoda **para la creación de proyectos**, esto por que simplemente **agregaremos nuestros elementos a una carpeta** luego desde nuestros proyectos **haremos referencia a esa carpeta**.
+
+   Un tema de importancia es que cada vez que lo intentes abrir desde un nuevo ordenador, tendrás que crear la misma carpeta en el mismo lugar, o cambiar la configuración del proyecto.
+
+   Para ocupar este método recomiendo ir a tu disco local **`"C:"`** y agregar una carpeta con el nombre **`Development`**, ahí crearemos una carpeta con el nombre **`GLFW_W64`** (también podrías tener la versión de 32 bits creando una carpeta nueva).
+
+   En este agregaremos la carpeta de librería renombrándola a **`lib`** a demás de nuestra carpeta de **`includes`**.
+
+   Dentro de nuestra carpeta **`lib`** encontraremos un archivo **`.dll`** el cual agregaremos a nuestra carpeta **`bin`**.
+
+   ---
+
+2. **Agregando las carpetas de la librería a nuestro proyecto**.
+
+   Esta forma es la mas cómoda si lo que buscamos es **transportabilidad del proyecto**, si planeas abrirlo desde un segundo ordenador, trabajas en equipo o prefieres subirlo a **GitHub** este podría ahorrarte dolores de cabeza a cambio de espacio.
+
+   Ya que debemos agregar archivos de la librería dentro de nuestro proyecto, por lo que este al final terminara pesando mas para quien desee acceder a este.
+
+   en este caso haremos algo similar a el método anterior, solo que en este caso, los elementos de las carpetas **`lib`** y **`includes`** serán directamente agregadas en la estructura de nuestro proyecto.
+
+
+---
+
+## Configurando Visual Studio Code
+
+Por ultimo ya nos quedaría configurar el proyecto dentro de **Visual Studio Code**, en este tendremos que mencionar que carpeta de librerías revisar, que carpeta de "includes" utilizar y otros valores como donde deberíamos crear nuestros ejecutables.
+
+Dentro de nuestra carpeta **`src`** crea un archivo con el nombre "**`main.cpp`**" y crea un "**hola mundo**".
+
+Al hacerlo y ejecutarlo (con f5) veremos que en nuestras carpetas se creara una con el nombre **`.vscode`**, aquí integraremos la configuración de como se generara o leerá nuestro proyecto por el compilador interno de **Visual Studio Code**.
+
+Entre estos archivos veremos uno con el nombre **`tasks.json`** donde encontraremos el campo **`args[]`** donde haremos lo siguiente:
+
+~~~json
+"args": [
+	"-fdiagnostics-color=always",
+	"-g",
+    
+    // nos encargamos de que se ejecuten/lean todos los archivos en "src" con extencion ".cpp"
+	"src\\*.cpp",
+    
+	"-o",
+    // seleccionamos donde se creara nuestro ejecutable (en nuestro caso la carpeta bin)
+	"${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe", // y le damos el nombre del archivo main
+
+    // si utilizamos el metodo de agregar la libreria al proyecto simplemente usariamos:
+	"-Iinclude",
+	"-Llib",
+    
+    // agregamos las librerias
+	"-lopengl32",
+	"-lglfw3",
+	"-lgdi32"
+]
+~~~
+
+Si utilizamos el método de agregar la librería desde una carpeta general:
+
+~~~json
+// debemos agregar estas lineas bajo el include y lib ya agregados
+"-IC:\\Development\\GLFW_W64\\include",
+"-LC:\\Development\\GLFW_W64\\lib",
+~~~
+
+Listo, ahora por medios de prueba en nuestro **`Main.cpp`** haremos lo siguiente:
+
+~~~c++
+#include <iostream>
+#include <GLFW/glfw3.h>
+
+int main(int argc, char* args[]) // sdl necesita estos parametros si o si
+{
+    std::cout << "Hola!";
+    std::cin.get();
+    
+    return 0; // sdl necesita retornar 0 si o si
+}
+~~~
+
+Al presionar **`f5`** se debería generar un ejecutable en nuestra carpeta **`bin`**, al ejecutarlo debería abrirse una terminal con un mensaje y al presiona `enter` esta debería cerrarse.
+
+**Ojo:** existen 2 errores que podrian aparecer al intentar ejecutarlo, uno haciendo mencion a que falta un archivo **.dll** y otro directamente diciendo que el programa no se ha logrado iniciar.
+
+Estos errores pueden aparecer por 2 posibilidades:
+
+1. Te falta un **`.dll`**, revisa los que tengas y busca por si falta alguno.
+2. Estas utilizando un **`.dll`** de 64bits para un proyecto con la librería de 32bits (o viceversa).
+
+Cualquier error aparecido al presionar **`f5`** se debe a que algún paso anterior se ha concertado de forma errónea.
 
 ---
 
 ## Hola GLFW!
 
-Como ya todos sabemos, al iniciar con un nuevo lenguaje  solemos hacer un "Hola Mundo!" y aqui no haremos una exepcion.
+Como ya todos sabemos, al iniciar con un nuevo lenguaje  solemos hacer un "Hola Mundo!" y aquí no haremos una excepción.
 
-La pagina de GLFW nos entrega un codigo basico encargado de crear una ventana vacia el cual se vera como el siguiente:
+La pagina de GLFW nos entrega un código básico encargado de crear una ventana vacía el cual se vera como el siguiente:
 
 ~~~c++
 #include <GLFW/glfw3.h> // llamamos la libreria
