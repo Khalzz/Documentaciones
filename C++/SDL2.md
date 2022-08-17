@@ -771,7 +771,7 @@ Para esto crearemos 2 archivos en nuestro proyecto:
     };
     ~~~
 
-   ---
+---
 
 2. **`entity.cpp`** en nuestra carpeta **`src`**, en este archivo agregaremos lo siguiente:
 
@@ -873,3 +873,65 @@ while (gameRunning)
         window.render(entidad0); // aqui renderizamos nuestra entidad
         window.display();
     }
+~~~
+
+---
+
+### Dibujando múltiples entidades
+
+Probablemente te estés preguntando **¿como puedo instanciar múltiples entidades?** y ahí es donde los arrayas o vectores y bucles entran en juego.
+
+Técnicamente podríamos hacer algo transformando nuestro código en lo siguiente:
+
+Primero agregamos **`#include<vector>`** arriba de nuestro **`main.cpp`** para permitirnos crear arrays dinámicos.
+
+~~~c++
+// creariamos las entidades dentro de una lista como la siguiente
+SDL_Texture* texturaRara = window.loadTexture("../assets/sprites/imagen.png");
+
+std::vector<Entity> plataformas = { Entity(30, 30, texturaRara),
+                                    Entity(60, 30, texturaRara),
+                                    Entity(0, 30, texturaRara),
+                                    Entity(30, 60, texturaRara)};
+~~~
+
+Y luego donde instanciábamos solo una entidad haríamos ahora lo siguiente:
+
+~~~c++
+while (gameRunning) 
+    {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT) 
+            {
+                gameRunning = false;
+            }
+        }
+
+        window.clear();
+    	// este bucle iterara una vez por cada elemento en el vector "plataformas"
+        for (Entity& p : plataformas) // recuerda que Entity es el tipo de dato de "p"
+        {
+            window.render(p);
+        }
+        window.display();
+    }
+~~~
+
+Para agregar una entidad a la lista podemos hacer lo siguiente (antes de renderizar las entidades):
+
+~~~c++
+{
+	Entity plataformaNueva(100, 40, texturaRara); // primero creamos la nueva entidad
+	plataformas.push_back(plataformaNueva); // con esta funcion agregamos elementos a un vector
+}
+~~~
+
+Te darás cuenta que ambas líneas están entre llaves **`{}`**, esto es para permitirnos "destruir" el objeto luego de crearlo y subirlo a la lista.
+
+Ya que este mismo se mantendrá ocupando memoria si no nos deshacemos de el luego de pasarlo a la lista (esto también funciona si creamos una entidad dentro de una clase o de una condición).
+
+---
+
+## Vectores
+

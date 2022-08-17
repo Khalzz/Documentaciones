@@ -62,31 +62,11 @@ Para crear nuestro proyecto simplemente seguiremos la siguiente estructura de ar
   + **src**: aquí es donde estará el código que nosotros nos encargaremos de escribir.
     + **`main.cpp`** este archivo sera donde nosotros 
 
-Con esto listo debes asegurarte de descargar **GLFW** desde [el siguiente enlace](https://www.glfw.org/download.html), aquí descargaremos el binario pre-compilado de Windows para 64 bits.
+Con esto listo debes asegurarte de descargar **GLFW** desde [el siguiente enlace](https://www.glfw.org/download.html), aquí descargaremos el binario pre-compilado de Windows para 64 bits (los "**bits**" a utilizar dependerán de la versión de **`MinGw`** que utilicemos para ejecutar nuestro código).
 
-Ahora para utilizar estos elementos tenemos 2 formas de trabajar:
+Ahora para utilizar las funcionalidades del mismo tenemos que agregar a la carpeta "**include**" los archivos que encontramos en la carpeta con el mismo nombre dentro del archivo extraíble que hemos descargado.
 
-1. **Agregando la librería desde una carpeta general**.
-
-   Esta forma es la mas cómoda **para la creación de proyectos**, esto por que simplemente **agregaremos nuestros elementos a una carpeta** luego desde nuestros proyectos **haremos referencia a esa carpeta**.
-
-   Un tema de importancia es que cada vez que lo intentes abrir desde un nuevo ordenador, tendrás que crear la misma carpeta en el mismo lugar, o cambiar la configuración del proyecto.
-
-   Para ocupar este método recomiendo ir a tu disco local **`"C:"`** y agregar una carpeta con el nombre **`Development`**, ahí crearemos una carpeta con el nombre **`GLFW_W64`** (también podrías tener la versión de 32 bits creando una carpeta nueva).
-
-   En este agregaremos la carpeta de librería renombrándola a **`lib`** a demás de nuestra carpeta de **`includes`**.
-
-   Dentro de nuestra carpeta **`lib`** encontraremos un archivo **`.dll`** el cual agregaremos a nuestra carpeta **`bin`**.
-
-   ---
-
-2. **Agregando las carpetas de la librería a nuestro proyecto**.
-
-   Esta forma es la mas cómoda si lo que buscamos es **transportabilidad del proyecto**, si planeas abrirlo desde un segundo ordenador, trabajas en equipo o prefieres subirlo a **GitHub** este podría ahorrarte dolores de cabeza a cambio de espacio.
-
-   Ya que debemos agregar archivos de la librería dentro de nuestro proyecto, por lo que este al final terminara pesando mas para quien desee acceder a este.
-
-   en este caso haremos algo similar a el método anterior, solo que en este caso, los elementos de las carpetas **`lib`** y **`includes`** serán directamente agregadas en la estructura de nuestro proyecto.
+Y en nuestra "**lib**" haremos lo mismo respectivamente.
 
 
 ---
@@ -107,7 +87,7 @@ Entre estos archivos veremos uno con el nombre **`tasks.json`** donde encontrare
 	"-g",
     
     // nos encargamos de que se ejecuten/lean todos los archivos en "src" con extencion ".cpp"
-	"src\\*.cpp",
+	"${workspaceFolder}\\src\\*.cpp",
     
 	"-o",
     // seleccionamos donde se creara nuestro ejecutable (en nuestro caso la carpeta bin)
@@ -119,17 +99,9 @@ Entre estos archivos veremos uno con el nombre **`tasks.json`** donde encontrare
     
     // agregamos las librerias
 	"-lopengl32",
-	"-lglfw3",
-	"-lgdi32"
+    "-lglfw3",
+    "-lgdi32",
 ]
-~~~
-
-Si utilizamos el método de agregar la librería desde una carpeta general:
-
-~~~json
-// debemos agregar estas lineas bajo el include y lib ya agregados
-"-IC:\\Development\\GLFW_W64\\include",
-"-LC:\\Development\\GLFW_W64\\lib",
 ~~~
 
 Listo, ahora por medios de prueba en nuestro **`Main.cpp`** haremos lo siguiente:
@@ -148,15 +120,6 @@ int main(int argc, char* args[]) // sdl necesita estos parametros si o si
 ~~~
 
 Al presionar **`f5`** se debería generar un ejecutable en nuestra carpeta **`bin`**, al ejecutarlo debería abrirse una terminal con un mensaje y al presiona `enter` esta debería cerrarse.
-
-**Ojo:** existen 2 errores que podrian aparecer al intentar ejecutarlo, uno haciendo mencion a que falta un archivo **.dll** y otro directamente diciendo que el programa no se ha logrado iniciar.
-
-Estos errores pueden aparecer por 2 posibilidades:
-
-1. Te falta un **`.dll`**, revisa los que tengas y busca por si falta alguno.
-2. Estas utilizando un **`.dll`** de 64bits para un proyecto con la librería de 32bits (o viceversa).
-
-Cualquier error aparecido al presionar **`f5`** se debe a que algún paso anterior se ha concertado de forma errónea.
 
 ---
 
@@ -257,35 +220,17 @@ Para eliminarnos este problema, utilizaremos una librería.
 
 Este lo encontramos [en el siguiente enlace](http://glew.sourceforge.net/).
 
-Por ahora descargaremos los binarios para Windows específicamente en la opción de "**Binaries Windows 32-bit and 64-bit**"
+Por ahora descargaremos los binarios para Windows específicamente en la opción de "**Binaries Windows 32-bit and 64-bit**".
 
-Al descargarlo, tendremos un archivo `.zip` el cual extraeremos, la carpeta resultante la renombraremos por **`GLEW`**, y la llevaremos a nuestra carpeta de **`Dependencies`** dentro de nuestro proyecto, en el mismo lugar donde anteriormente agregamos la carpeta **`GLFW`**.
+Al descargarlo, tendremos un archivo `.zip` del cual nos centraremos simplemente en las carpetas **`lib`** donde encontraremos 2 carpetas (una para **32 bits** y una de **64 bits** utilizaremos uno u otro dependiendo de la version de **MinGW**) y **`include`**, los elementos dentro de estas carpetas los llevaremos a los **`lib`** y **`include`** de nuestro proyecto.
 
-Dentro de la carpeta **`GLEW`** tendremos tanto una carpeta **`lib`** como una **`includo`**, estas las enlazaremos al proyecto en si de forma similar a como agregamos las dependencias anteriores.
-
-+ Entrando a **`c/c++ > General`** buscaremos la casilla **`Additional include directories`** y añadimos donde ingresamos la carpeta "include" de nuestro extraíble, en mi caso es **`$(SolutionDir)Dependencies\GLEW\include`**.
-
-  ---
-
-+ Entrando a **`linker > General`** en "**`Additional library directories`**" añadimos donde ingresamos la carpeta "lib" de nuestro extraíble, en mi caso es **`$(SolutionDir)Dependencies\GLEW\lib\Release\Win32`**. 
-
-  ---
-
-+ Por ultimo enlazamos el archivo de la librería, en este caso al abrir **`lib > Release > win32`** nos daremos cuenta de que tenemos 2 archivos, nosotros nos centraremos en `glew32s.lib` dado que este es el archivo que contiene todas las funciones de la librería.
-
-  Para utilizar este debemos entrando a **`linker > Input`** en **`Additional Dependencies`** añadir `glew32s.lib` a la lista de librerías ya añadidas.
-
-Por ultimo debemos añadir una configuración a visual studio para trabajar con GLEW.
-
-Para esto vamos a las propiedades de la solución y entramos en `C/C++ > Preprocessor` y en la opción **`Preprocessor definitions`** añadimos el valor **`GLEW_STATIC`** .
-
-**Recuerda que para separar texto en estas opciones debemos utilizar `;` en lugar de `,`**
+Con esto hecho ya podremos empezar a trabajar con **GLEW**.
 
 ---
 
 ## Utilizando GLEW
 
-Antes de poder escribir mas código tendremos que llamar a la libreria recien agregada utilizando:
+Antes de poder escribir mas código tendremos que llamar a la librería recién agregada utilizando:
 
 ~~~c++
 #include <GL/glew.h>
@@ -360,7 +305,7 @@ std::cout << glGetString(GL_VERSION) << std::endl;
 
 # Vertex Buffer
 
-Anteriormente por razones de prueba mostre como hacer un triangulo en **OpenGl** con el siguiente codigo:
+Anteriormente por razones de prueba mostré como hacer un triangulo en **OpenGl** con el siguiente código:
 
 ~~~c++
 glBegin(GL_TRIANGLES);
