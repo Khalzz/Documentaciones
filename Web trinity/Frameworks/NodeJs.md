@@ -105,8 +105,8 @@ Con estas "iteraciones" nos referimos a algo similar a un "**CRUD**", o las acci
   + **GET** (/users): Utilizando simplemente el **GET** nos entrega acceso a **todos los usuarios**.
   + **GET** (/users/:id): Utilizando el **GET** junto a un id podremos acceder a **un usuario en especifico**.
 + **POST** (/users): Nos permite **agregar** usuarios.
-+ **PUT** (/users/:id): nos permite **reemplazar** un usuario especifico.
-+ **PATCH** (/users/:id): nos permite **actualizar** un usuario ya existente.
++ **PUT** (/users/:id): nos permite **reemplazar** un usuario especifico (cambiar una persona completa). 
++ **PATCH** (/users/:id): nos permite **actualizar** un usuario ya existente (cambiar el nombre de una persona).
 + **DELETE** (/users/:id): nos permite **eliminar** un usuario ya existente.
 
 Otro concepto relativamente relevante a los **Rest API'S** es algo conocido como "**Endpoints**", siendo estos **el lugar a donde nuestra "request"**.
@@ -268,3 +268,133 @@ app.get('/:id', (req, res) => {
 });
 ~~~
 
+---
+
+
+## Refactorizando
+
+Por temas de comodidad y legibilidad haremos un **refactoring** del código, recomiendo seguir este orden con cada elemento accesible de nuestro API.
+
+Empezaremos creando una carpeta llamada **`user.controller.js`**, este lo nombraremos según el elemento con el que trabajaremos, obviamente en este ejemplo trabajaremos con usuarios.
+
+En este crearemos una lista compuesta por las funciones que tendrán nuestros usuarios, viéndose de la siguiente forma:
+
+~~~javascript
+const User = {
+    get: (req,res) => {
+        res.status(200).send("Este es un elemento especifico");
+    },
+    list: (req,res) => {
+        res.status(200).send("Wena po");
+    },
+    create: (req,res) => {
+        res.status(201).send("Se ha creado un elemento");
+    },
+    update: (req,res) => {
+        res.status(204).send("Se ha actualizado un elemento");
+    },
+    delete: (req,res) => {
+        res.status(204).send("Se ha eliminado un elemento");
+    },
+}
+
+module.exports = User; // exportamos este archivo para nuestro index.js
+~~~
+
+Tras esto en nuestro **`index.js`** arreglaremos nuestros métodos http de la siguiente forma:
+
+~~~javascript
+const user = require('./user.controller'); // importamos nuestro archivo de funciones
+
+const express = require('express');
+app = express();
+port = 3000;
+
+// los referenciamos en nuestros metodos http
+app.get('/', user.list); // vemos todos los objetos
+app.get('/:id', user.get) // obtenemos un objeto especifico
+app.post('/', user.create); // agregamos un objeto
+app.put('/:id', user.update); // actualizamos un objeto
+app.patch('/:id', user.update); // actualizamos un objeto
+app.delete('/:id', user.delete); // eliminamos un objeto
+
+app.listen(port, ()=>{
+    console.log('la pagina ha funcionado en: http://localhost:' + port);
+})
+~~~
+
+Siguiendo esta forma nuestro código puede ser mas legible y cómodo a largo plazo.
+
+---
+
+## Capturando todas las peticiones.
+
+A la hora de trabajar con NodeJs te darás cuenta que al hacer peticiones invalidas (como por ejemplo es hacer un get a un id que no existe), este te devolverá un mensaje señalando específicamente que la pagina que tratas de buscar no existe, este mensaje por defecto puede ser cambiado haciendo lo siguiente:
+
+~~~javascript
+// ahora en cada momento que hagas un get invalido se devolvera ese mensaje
+app.get('*', (req, res) => {
+    res.status(404).send('Esta pagina no existe');
+})
+~~~
+
+Esto podríamos también hacerlo en otros métodos HTTP como son **`POST`**, aun que hacer esta edición es relativamente innecesaria, ya que el método post será ingresado directamente desde nuestra pagina, por ello es poco probable que esto sea visible desde el usuario.
+
+---
+
+# MongoDB
+
+Una de las bases de datos **noSql** mas utilizadas en la era actúa, MongoDB es una base de datos orientada a documentos de código abierto, el sistema de guardado de datos a diferencia de en otras bases de datos no se basa en tablas.
+
+Siendo una de las mejores opciones para cantidades gigantes de datos, dado su fácil escalabilidad.
+
+Este sistema se basa en archivos o **documentos** estructurados con un lenguaje similar a **JSON** conocido como **BSON**.
+
+MongoDB se compone de:
+
+* Documentos: Archivos JSON de los datos en si.
+* Colecciones: Un grupo o listado de Documentos (por ejemplo la colección "Users" es un listado de usuarios).
+* Propiedades: Elementos que definen los datos almacenados por cada documento.
+
+---
+
+## Atlas
+
+En si hay múltiples formas de trabajar con MongoDB, principalmente utilizaremos algo conocido como "MongoDB Atlas", esta es la opción de la nube que nos entrega MongoDB, entregándonos servidores con los que trabajar hasta 500mb de forma gratuita.
+
+También puedes hacerlo por medio de un servidor local, pero lo bueno de esta opción es que directamente puede ser testeado desde cualquier dispositivo sin tener que configurar personalmente un servidor.
+
+Mientras tanto, encárgate de crear una cuenta en la plataforma de atlas y selecciona la opción gratuita de MongoDB Atlas.
+
+Tras esto creamos un nuevo servidor, seleccionándolo con **AWS** eligiendo el servidor mas cercano a la zona donde nos encontremos, le entregamos un nombre y finalmente creamos un nuevo **Cluster**.
+
+Tras esto tendremos que agregar o crear nuestro super usuario, esto entregando un nombre de usuario y contraseña para el administrador de nuestra base de datos, en nuestro caso utilizare:
+
+* Usuario: admin
+* Contraseña: asdf123
+
+Obviamente estos cambiaran en un ambiente de producción ya que por temas de prueba he hecho una cuenta de este tipo y en la zona inferior nos encargamos de posicionar que **ip** referencia el dispositivo en el que hemos lanzado nuestra aplicación, en nuestro caso será desde nuestro computador con una **ip** que cambiara constantemente.
+
+Por ello simplemente usa `0.0.0.0/0` con la descripción de `Word`, ojo que en un ambiente de producción, eliminaríamos la **ip**: `0.0.0.0/0` y utilizaríamos el de nuestro dispositivo donde se lanzo la aplicación.
+
+Con todo esto listo, al presionar el botón **connect** nos entregara la posibilidad de conectarnos desde nuestra aplicación.
+
+Simplemente seleccionas la opción de **connect your application** y nos entregara una URL para conectarnos a nuestra base de datos (asegúrate de que en el driver este puesto **NodeJs** y como versión pongas la que estas utilizando actualmente).
+
+Esta es la siguiente:
+
+~~~
+mongodb+srv://admin:<password>@cluster0.ghuxske.mongodb.net/?retryWrites=true&w=majority
+~~~
+
+Acá tendrás que cambiar la contraseña o el nombre de usuario por los que generaste anteriormente, en mi caso este quedara así:
+
+~~~
+mongodb+srv://admin:<asdf123>@cluster0.ghuxske.mongodb.net/?retryWrites=true&w=majority
+~~~
+
+---
+
+## Conectándonos a nuestra base de datos
+
+Ahora podemos empezar con nuestra conexión en si.
