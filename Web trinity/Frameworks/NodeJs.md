@@ -129,6 +129,8 @@ Luego de hacer este proceso tendremos la siguiente estructura de carpetas:
   + **package-lock.json**: nuestro archivo encargado de asegurar las versiones de las dependencias.
   + **package.json**: nuestro archivo encargado de mencionar los datos esenciales del proyecto.
 
+*Ojo, recuerda que si tu archivo se llamara api.js este recomiendo que sea cambiado en el archivo `package.json` para que el mismo pueda ejecutarse simplemente utilizando `node .`, si no hacemos esto, al utilizar este comando se buscara por un archivo con nombre `index.js`*.
+
 ---
 
 ## Creando la API
@@ -390,11 +392,179 @@ mongodb+srv://admin:<password>@cluster0.ghuxske.mongodb.net/?retryWrites=true&w=
 Acá tendrás que cambiar la contraseña o el nombre de usuario por los que generaste anteriormente, en mi caso este quedara así:
 
 ~~~
-mongodb+srv://admin:<asdf123>@cluster0.ghuxske.mongodb.net/?retryWrites=true&w=majority
+mongodb+srv://admin:asdf123@cluster0.ghuxske.mongodb.net/miApp?retryWrites=true&w=majority
 ~~~
+
+A demás hay un valor escondido el cual es "el nombre de nuestra base de datos", este se encuentra entre `mongodb.net/` y el `?` que encontramos luego, en el ejemplo llame a mi base de datos **miApp**.
 
 ---
 
 ## Conectándonos a nuestra base de datos
 
 Ahora podemos empezar con nuestra conexión en si.
+
+Para esto utilizaremos una librería llamada **Mongoose**, esta nos permitirá hacer una conexión entre **MongoDB** y nuestro entorno de **NodeJs**.
+
+Primero instalaremos esta librería con el comando `npm install mongoose`.
+
+Tras esto podremos generar nuestra conexión en la base de datos haciendo lo siguiente:
+
+~~~javascript
+const mongoose = require('mongoose'); // importamos mongoose
+
+// generamos la conexion con el enlace que nos entrego Atlas
+mongoose.connect('mongodb+srv://admin:asdf123@cluster0.ghuxske.mongodb.net/miApp?retryWrites=true&w=majority');
+~~~
+
+En términos simples, ya nos habríamos conectado a nuestra base de datos.
+
+---
+
+## Guardando datos
+
+Para el proceso de guardado de datos llevaremos a cabo un conjunto de pasos que nos permitirán probar las funcionalidades de MongoDb, siendo estos:
+
+1. La creación de un modelo para nuestros elementos en la base de datos.
+2. La creación de datos e ingreso de los mismos en la base de datos.
+
+Para esto en nuestro mismo archivo de `index.js` agregaremos lo siguiente luego de la conexión a MongoDB:
+
+~~~javascript
+// modelos se crean con mayuscula
+// la funcion mongoose.model() tiene 2 parametros:
+	// 1. el nombre del modelo.
+	// 2. el modelo en cuestion segun su estructura (en este caso en json).
+const User = mongoose.model('User', {
+    username: String,
+    edad: Number,
+});
+
+const crear = async () => {
+    /// instancias de un modelo se crean con minuscula
+    const user = new User({username: 'Rodrigo Seguel', edad: 19})
+    
+    // la funcion de user.save es una promesa que guarda los elementos creados
+    // al ser una promesa podemos ejecutarlo con un .then y llamar una funcion luego de que se concrete
+    const savedUser = await user.save()
+    console.log(savedUser);
+}
+
+crear(); // llamamos la funcion de crear el nuevo usuario
+~~~
+
+Con esto al ejecutar nuestro archivo `index.js` veremos en nuestra terminal algo como lo siguiente:
+
+~~~
+{
+  username: 'Rodrigo Seguel',
+  edad: 19,
+  _id: new ObjectId("6322c3356c785f651359635e"),
+  __v: 0
+}
+~~~
+
+Esto es en si la representación del usuario guardado por la función `user.save()`, este elemento contiene los datos que le entregamos a demás de un **id**, este nos puede servir para obviamente identificar elementos en la base de datos.
+
+Permitiéndonos por ejemplo, si creamos un sistema de ingreso de productos, permitir acceder a quien le pertenece entregándole a este producto un elemento que referencie el identificador de el usuario que lo creo.
+
+Finalmente si vamos a nuestro cluster en Atlas, encontraras que al presionar **browse collections**, se abrirá la ventana de **miApp.users** donde deberías ver una instancia de nuestro usuario recién creado.
+
+---
+
+## Buscando datos
+
+Para buscar datos utilizaremos las funciones `find()` y `findOne()` respectivamente, permitiéndonos acceder a un arreglo de elementos o a un objeto representando un elemento de la misma base de datos en si.
+
+Para continuar, asegúrate de crear mas usuarios para así poder leerlos.
+
+* Buscar todos: Si deseamos leer todos los elementos en la base de datos podemos hacer lo siguiente:
+
+  ~~~javascript
+  const buscarTodo = async () => {
+      const users = await User.find() // esto nos devuelve un arreglo de usuarios
+      // console.log(users) si hacemos lo siguiente traeremos todos los elementos completos
+  
+      // al ser un arreglo, podemos hacer lo sigueinte
+      users.forEach(element => {
+          console.log(element.username) // y traer solamente el nombre de los usuarios
+      });
+  }
+  
+  buscarTodo()
+  ~~~
+
+  ---
+
+* Buscar elementos segun filtro: Si deseamos traer todos los elementos que compartan un valor (como por ejemplo nombre, edad, tipo u otras características del modelo) podemos hacer lo sigueinte:
+
+  ~~~javascript
+  const buscar = async () => {
+      // traemos un arreglo con todos los elementos cuya edad sea 19
+      const user = await User.find({edad: 19}) 
+      console.log(user)
+  }
+  
+  buscar()
+  ~~~
+
+  En este caso tengo 2 elementos con la misma edad por lo que devolverá un arreglo con estos, el problema es que si por ejemplo tenemos un solo elemento que cumple con las características, este también devolverá un arreglo.
+
+  ---
+
+* Buscar solo un elemento: Si deseamos traer un solo elemento segun un filtro debemos hacer lo siguiente:
+
+  ~~~javascript
+  const buscarUno = async () => {
+      // traemos el usuario cuyo nombre de usuario es "Rodrigo Seguel"
+      const user = await User.findOne({username: 'Rodrigo Seguel'})
+      console.log(user)
+  }
+  
+  buscarUno()
+  ~~~
+
+  En este caso, si hay varios elementos que se relacionan con el filtro (como `edad: 19`), este traerá el primer elemento encontrado de estos.
+
+---
+
+## Actualizar elementos
+
+Para actualizar elementos simplemente tenemos que acceder a uno de estos por medio de las funciones de búsqueda anteriormente utilizadas y simplemente asignando un nuevo valor a estos datos.
+
+Por ejemplo:
+
+~~~javascript
+const actualizar = async () => {
+    const user = await User.findOne({username: 'Rodrigo Seguel'})  // llamamos un elemento
+    user.edad = 20 // cambiamos la edad del usuario obtenido
+    await user.save() // guardamos los cambios
+    console.log(user) // mostramos el elemento con el nuevo valor 
+}
+
+actualizar();
+~~~
+
+---
+
+## Eliminar elementos
+
+La eliminación de elementos funciona de una forma similar a la de actualizar, simplemente buscando y eliminando el mismo de la siguiente forma:
+
+~~~javascript
+const eliminar = async () => {
+    const user = await User.findOne({username: 'Jennifer Conuel'})  // llamamos un elemento
+    
+    if (user) { // nos aseguramos de la existencia del elemento
+        console.log('se ha eliminado el usuario: ' + user.username)
+        await user.remove() // este se ejecutara solamente cuando el usuario exista
+    } else { // si este no existe mostraremos el siguiente mensaje
+        console.log('el usuario no existe')
+    }
+}
+
+eliminar();
+~~~
+
+---
+
+Con todo esto ahora podríamos actualizar nuestros Endpoints y permitirnos hacer mas acciones que simplemente mostrando **status codes**.
