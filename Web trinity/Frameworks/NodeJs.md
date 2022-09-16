@@ -568,3 +568,427 @@ eliminar();
 ---
 
 Con todo esto ahora podríamos actualizar nuestros Endpoints y permitirnos hacer mas acciones que simplemente mostrando **status codes**.
+
+---
+
+## Actualizando y organizando nuestra API
+
+Para continuar organizaremos nuestro código de una mejor forma uniendo las acciones hechas con nuestros Endpoints anteriormente creados.
+
+Antes de esto haremos ciertas configuraciones para poder trabajar esto sin problemas.
+
+Primero conectaremos nuestro archivo `api.js` haciendo lo siguiente:
+
+~~~javascript
+const express = require('express');
+
+const mongoose = require('mongoose'); // importamos mongoose
+
+const user = require('./user.controller');
+app = express();
+port = 3000;
+
+// esto es para obtener nuestras peticiones y poder trabajar con ellas
+app.use(express.json());
+
+// creamos conexion
+mongoose.connect('mongodb+srv://admin:asdf123@cluster0.ghuxske.mongodb.net/miApp?retryWrites=true&w=majority');
+
+app.get('/', user.list);
+//...
+~~~
+
+Con esto listo podremos crear nuestro modelo de datos, ahora creare otro modelo de **usuarios**, estos los crearemos en otro archivo el cual llamaremos `Users.js` y se vera de la siguiente forma:
+
+~~~javascript
+const mongoose = require('mongoose')
+
+// creamos el modelo de nuestros usuarios
+const Users = mongoose.model('User', {
+    name: {type: String, required: true, minLength: 3},
+    lastName: {type: String, required: true, minLength: 3}
+})
+
+module.exports = Users
+~~~
+
+Como podrás ver, Mongoose nos entrega la posibilidad de seleccionar ciertos elementos obligatorios de cada propiedad, en este caso el nombre:
+
+* Debe ser de tipo string.
+* Es requerido (debe estar obligatoriamente).
+* Debe tener un largo mínimo de 3.
+
+Tras esto ya podremos empezar a actualizar nuestro `user.controller.js`.
+
+---
+
+### Actualizando nuestro código
+
+Ahora finalmente actualizaremos nuestro archivo de `user.controller.js`, esto preferiblemente lo haremos en cierto orden, para así poder hacer pruebas y asegurarnos del correcto funcionamiento de nuestro código.
+
+Recuerda en este archivo primero agregar nuestro modelo de usuarios con agregando en la primera linea:
+
+~~~javascript
+const Users = require('./User');
+~~~
+
+Con esto ya podemos continuar.
+
+* **List**: Empezaremos actualizando la función `list()` permitiéndonos llamar todos los elementos en la base de datos dejándolo de la siguiente forma:
+
+  ~~~javascript
+  list: async (req,res) => {
+      const users = await Users.find(); // esto nos devuelve un arreglo de usuarios
+  	res.status(200).send(users);
+  }
+  ~~~
+
+  Ahora en Postman simplemente llamando el método **GET **veremos en si un arreglo compuesto por todos los usuarios ingresados en la base de datos.
+
+  ---
+
+* **Create**: Para este primero haremos una pequeña prueba (recuerda tener el `app.use(express.json());` en nuestro `api.js`):
+
+  ~~~javascript
+  create: async (req,res) => {
+  	console.log(req.body);
+     	res.status(201).send("Se ha creado un elemento");
+  }
+  ~~~
+
+  Tras esto iremos a Postman y cambiaremos el método por **POST**, tras esto iremos a la opción **"body"**, aquí agregaremos un dato en formato **JSON** el cual será agregado a la base de datos, por ejemplo:
+
+  ~~~json
+  {
+      "name": "Catalina",
+      "lastName": "Gonzales"
+  }
+  ~~~
+
+  Lastimosamente esto solo nos entregara un objeto vacío si lo ejecutamos, para que nos muestre el valor que le entregamos, tenemos que ir a la sección **"headers"** y agregar:
+
+  * Key = Content-type
+  * Value = application/json
+
+  Con esto listo ya seremos capaces de ejecutar esta petición y al hacerlo en nuestra terminal encontraremos el formato **JSON** de los datos que acabamos de crear.
+
+  Para ya poder subir estos datos agregados simplemente tendremos que dejar nuestra funcion como la siguiente:
+
+  ~~~javascript
+  create: async (req,res) => {
+      const user = new Users(req.body); // crea el nuevo usuario
+      const savedUser = await user.save(); // guardamos el usuario
+      res.status(201).send(savedUser._id); // retornamos el id del usuario creado
+  }
+  ~~~
+
+  En términos generales el `req.body` es en si el archivo **JSON** que hemos enviado por medio de nuestra peticion.
+
+  ---
+
+* **Get**: Para obtener solo un valor debemos dejar nuestra funcion como lo siguiente:
+
+  ~~~javascript
+  get: async (req,res) => {
+      const { id } = req.params; // definimos el parametro entregado en el enlace
+      const user = await Users.findOne({ _id: id}); // buscamos un usuario con el id obtenido
+      res.status(200).send(user); // retornamos el usuario obtenido
+  }
+  ~~~
+
+  Ahora cambiando nuestro método a **GET** si llamamos el enlace raíz agregando nuestro identificador como por ejemplo seria: `http://localhost:3000/6323e4757553ce4f2c044391`, obtendré el usuario que creamos, o sea:
+
+  ~~~json
+  {
+      "_id": "6323e4757553ce4f2c044391",
+      "name": "Catalina",
+      "lastName": "Gonzales",
+      "__v": 0
+  }
+  ~~~
+
+  ---
+
+* **Update**: para actualizar los datos de un elemento lo que haremos será el obtener este elemento y luego simplemente actualizar el dato especificado.
+
+  Para esto simplemente haremos:
+
+  ~~~javascript
+  update: async (req,res) => {
+      // traemos un objeto
+      const { id } = req.params;
+      const user = await Users.findOne({ _id: id});
+      
+      // asignamos nuevos valores segun el cuerpo de la peticion enviada
+      Object.assign(user, req.body);
+      await user.save(); // guardamos los cambios
+      
+      res.sendStatus(204); // enviamos nuestra respuesta
+      }
+  ~~~
+
+   Ahora si cambiamos el método a **PUT**, ingresamos `http://localhost:3000/6323e4757553ce4f2c044391` y cambiamos el **"body"** del mismo similar a como lo hicimos anteriormente (puedes cambiar cualquier valor), al ejecutar este se realizaran esos cambios en el mismo servidor.
+
+  Debes asegurarte de que en caso de que quieras alterar solamente un valor, en el **"body"** referencia solo a ese valor, por que sino, estarás reenviando todos los valores del mismo objeto, lo que a futuro puede generar problemas de rendimiento.
+
+  *por ejemplo:*
+
+  ~~~json
+  {
+      "name": "cata"
+  }
+  ~~~
+
+  ---
+
+* **Delete**: Finalmente para eliminar valores simplemente tendremos que hacer lo siguiente:
+
+  ~~~javascript
+  delete: async (req,res) => {
+      // buscamos el usuario
+      const { id } = req.params;
+      const user = await Users.findOne({ _id: id});
+      
+      // nos aseguramos de que exista
+      if (user) {
+          user.remove(); // lo eliminamos
+      }
+  	res.sendStatus(204); // enviamos respuesta
+  }
+  ~~~
+
+  Ahora simplemente al cambiar el método a **DELETE** y ejecutar el enlace con el id especificado, veremos que efectivamente nuestro usuario se eliminara de la base de datos.
+
+---
+
+# Utilizando nuestra API
+
+Finalmente empezaremos a mostrar nuestro uso del API en una pagina utilizable por nuestros usuarios, para ello empezaremos permitiendo el mostrar un **HTML** en la ventana.
+
+Esto es relativamente simple, para ello (continuando con el ejemplo que hemos seguido por el proyecto) haremos lo siguiente en nuestro `api.js`:
+
+~~~javascript
+//..
+app.get('/Users', user.list);
+app.get('/Users/:id', user.get);
+app.post('/Users', user.create); 
+app.put('/Users/:id', user.update);
+app.patch('/Users/:id', user.update);
+app.delete('/Users/:id', user.delete);
+
+// creamos este metodo get a la raiz de la pagina
+app.get('/', (req, res) => {
+    console.log(__dirname); // __dirname nos entrega la carpeta donde se encuentra el archivo
+    res.sendFile(`${__dirname}/index.html`); // enviamos al cliente el archivo de index.html
+})
+
+//..
+~~~
+
+Tras esto simplemente crea un archivo **HTML** con el nombre `index.html` y agrega lo que quieras a el por ahora, al abrir el servidor, podrás ver que el **HTML** se ha aplicado a la pagina raíz.
+
+pero antes de continuar tendré que mencionar un tema especifico, mínimo y que quizá te genere confusión.
+
+En nuestros métodos habrás notado que agregue un "**Users**" como parte del enlace para acceder a los métodos en si, esto fue para que cuando requieras de acceder al **HTML** esto se haga desde la carpeta raíz de forma normal.
+
+Mientras que para ejecutar estos métodos HTTP, necesitaremos que el enlace especifique que la edición es a **Users**, mas que nada **es una forma de separar la llamada a la pagina principal, con la llamada a los métodos HTTP**.
+
+---
+
+## Carpetas estáticas
+
+En el desarrollo web hay un concepto de carpetas estáticas, este representa los elementos como archivos **JS, HTML Y CSS** a los cuales nuestro cliente va a acceder, estos deben ser "preparados antes de ser accedidos".
+
+Entregándole en si a nuestra app, la ruta en la que estos contenidos serán accesibles utilizando la siguiente línea:
+
+~~~javascript
+app.use(express.static('client')); // nuestra carpeta estatica se llamara "client"
+
+// lo hacemos antes de nuestro get principal
+app.get('/', (req, res) => {
+    console.log(__dirname);
+    res.sendFile(`${__dirname}/index.html`);
+})
+~~~
+
+Por lo que desde ahora en adelante cuando accedamos a otros elementos desde nuestro `index.html`, estos deberan estar en esa carpeta estática.
+
+Entonces ahora crea una carpeta con el mismo nombre que le entregaste a la carpeta estática (en nuestro caso `client`), por y ahí por motivos de prueba, crearemos un script con el nombre de `main.js`.
+
+Ahora en nuestro `index.html` agrega lo siguiente:
+
+~~~html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>Hola</h1>
+</body>
+</html>
+~~~
+
+Si todo esta bien **nuestro `main.js` se utilizara de forma correcta**.
+
+---
+
+## Creando una plantilla y formulario
+
+Para empezar a trabajar recibiendo datos de nuestros usuarios primero llevaremos a cabo el proceso de crear un template, el cual se encargara de generar el formulario al que nuestros usuarios van a acceder.
+
+Para esto primero haremos unos cambios en nuestro `index.html`, dejándolo de la siguiente forma:
+
+~~~html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <script src="main.js"></script>
+</head>
+<body></body>
+</html>
+~~~
+
+Básicamente dejamos toda la pagina vacía, ya que será el body donde ingresaremos nuestro formulario.
+
+Ahora volviendo a nuestro `main.js` nos encargaremos de hacer lo siguiente:
+
+1. Crear una función que genere un template del formulario y lo aplique en el `<body></body>`.
+
+   ~~~javascript
+   // creamos el template para nuestro html
+   const loadInitialTemplate = () => {
+       // creamos el template a utilizar de nuestro formulario
+       const template = `
+           <h1>Usuarios</h1>
+           <form id="user-form">
+               <div>
+                   <label>Nombre</label>
+                   <input name="name">
+               </div>
+               <div>
+                   <label>Apellido</label>
+                   <input name="lastname">
+               </div>
+               <button type="submit">Enviar</button>
+           </form>
+           <ul id="user-list"></ul>
+       `
+   
+       // pasamos el template al body
+       const body = document.getElementsByTagName('body')[0] // buscamos el body en html
+       body.innerHTML = template // al body le entregamos la plantilla
+   }
+   ~~~
+
+   ---
+
+2. Crear una función que lea los datos enviados desde el formulario y los transforme en un JSON.
+
+   ~~~javascript
+   // esperamos a que se ejecute alguna accion en el formulario
+   const addFormListener = () => {
+       const userForm = document.getElementById('user-form') // buscamos el formulario
+       userForm.onsubmit = async (e) => { // presionas el submit
+   
+           e.preventDefault() // esto evita que la pagina se refresque cuando enviemos el formulario
+   
+           // transformamos los datos obtenidos por el formulario en un objeto JSON
+           const formData = new FormData(userForm) // obtenemos formulario
+           const data = Object.fromEntries(formData.entries()) // transformamos en JSON
+           console.log(data);
+       }
+   }
+   ~~~
+
+   ---
+
+3. Aplicar estas funciones cuando la pagina haya cargado.
+
+   ~~~javascript
+   // ejecutamos todo cuando la pagina se haya cargado
+   window.onload = () => {
+       loadInitialTemplate()
+       addFormListener()
+   }
+   ~~~
+
+   ---
+
+Con esto listo, al recargar el servidor y abrir la pagina nos aparecerá un formulario en el que podremos ingresar datos, al enviarlos, en nuestra terminal recibiremos un objeto **JSON** con los datos del mismo.
+
+---
+
+## Creando usuarios
+
+Para crear usuarios vamos a generar una pequeña actualización a nuestra función `addFormListener()`.
+
+La idea de esta función es el permitirnos ingresar datos en la base de datos para luego mostrarlos en una lista, por ello la función quedara de la siguiente forma:
+
+~~~javascript
+const addFormListener = () => {
+    const userForm = document.getElementById('user-form')
+    userForm.onsubmit = async (e) => {
+        e.preventDefault()
+        const formData = new FormData(userForm)
+        const data = Object.fromEntries(formData.entries())
+
+        // hacemos un post de usuarios, pasando nuestro json data como body
+        await fetch('/users', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        userForm.reset() // limpiamos el formulario
+    }
+}
+~~~
+
+---
+
+## Listando usuarios
+
+Para el listado de usuarios crearemos otra función antes de nuestro `addFormListener()` la cual se vera de la siguiente forma:
+
+~~~javascript
+const getUsers = async () => {
+    // hacemos una llamada a usuarios y la respuesta la recibimos en json
+    const response = await fetch('users')
+    const users = await response.json()
+
+    // creamos el template de los usuarios a listar
+    const template = user => `
+        <li>
+            ${user.name} ${user.lastName} <button data-id="${user._id}">Eliminar</button>
+        </li>
+    `
+
+    // aplicamos el template en nuestro html
+    const userList = document.getElementById('user-list')
+    userList.innerHTML = users.map(user => template(user)).join('')
+}
+
+~~~
+
+Ahora simplemente agregamos esta función en el `addFormListener()` y en el `onload()` haciendo:
+
+~~~javascript
+const addFormListener = () => {
+    //...
+    userForm.onsubmit = async (e) => { // presionas el submit
+		//...
+        getUsers() // llamamos la funcion cuando se crea un usuario nuevo
+    }
+}
+
+window.onload = () => {
+    loadInitialTemplate()
+    addFormListener()
+    getUsers() // llamamos la funcion cuando se carga la pagina
+}
+~~~
+
