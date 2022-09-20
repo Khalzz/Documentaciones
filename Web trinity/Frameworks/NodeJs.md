@@ -992,3 +992,40 @@ window.onload = () => {
 }
 ~~~
 
+---
+
+## Eliminando usuarios
+
+Para eliminar usuarios, simplemente haremos un pequeño cambio en la función que se encarga de cargar los nodos quye representan cada usuario en la base de datos, siendo en este caso `getUsers()`.
+
+Esta función la dejaremos de la siguiente forma:
+
+~~~javascript
+const getUsers = async () => {
+    const response = await fetch('users')
+    const users = await response.json()
+    const template = user => `
+        <li>
+            ${user.name} ${user.lastName} <button data-id="${user._id}">Eliminar</button>
+        </li>
+    `
+    const userList = document.getElementById('user-list')
+    userList.innerHTML = users.map(user => template(user)).join('')
+
+    // hacemos lo siguiente...
+    users.forEach(user => { // traemos cada boton de eliminar como un "nodo"
+        const userNode = document.querySelector(`[data-id="${user._id}"]`)
+
+        // al presionar el boton
+        userNode.onclick = async e => {
+            // eliminamos el elemento de la base de datos
+            await fetch(`/users/${user._id}`, {
+                method: 'DELETE',
+            })
+            userNode.parentNode.remove() // eliminamos el elemento de la lista
+            alert('se ha eliminado un elemento')
+        }
+    });
+}
+~~~
+
