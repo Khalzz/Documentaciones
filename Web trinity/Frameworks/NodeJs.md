@@ -1029,3 +1029,301 @@ const getUsers = async () => {
 }
 ~~~
 
+---
+
+# Autorización y registro
+
+Cuando empezamos a trabajar con bases de datos una de las funcionalidades mas especiales que nos interesaran será la de **confirmar la conexión de nuestros usuarios por medio de un proceso de "Registro y autorización"**.
+
+Por eso, en esta sección nos encargaremos de desarrollar un sistema que nos permita llevar a cabo esta funcionalidad especifica.
+
+Empezando por ciertos conceptos de relativa importancia, como son:
+
+* **Autenticación**: El proceso de **reconocer y confirmar** quienes somos y entregar una "llave" como respuesta.
+
+* **Autorización**: El proceso del servidor de **indicar** si tenemos permisos para acceder a un recurso.
+
+  Esto se hace por medio de un concepto conocido como "**FireWall**" como una "pared" que se encarga de filtrar si por ejemplo el usuario tiene o no acceso a recursos como `/Users` o `/Payments` entre otros...
+
+---
+
+## Criptografía
+
+La criptografía es uno de los conceptos mas importantes a la hora de mantener cierto **secretismo en nuestros datos**, siendo esta un área matemática encargada de "**esconder información**" con técnicas de **cifrado** y **codificado** permitiéndonos alterar las representaciones de nuestro lenguaje con el fin de hacerlos inteligibles a simple vista.
+
+Conocer la matemática detrás de esta área no es necesaria, pero hay ciertos conceptos que son esenciales para cada desarrollador BackEnd.
+
+*Estos son:*
+
+### Hash
+
+proveniente del mundo culinario, el termino "**Hash**" significa "**picar y mezclar**", este es un valor "codificado" generado por una "**función de hashing**", la cual se encargara de transformar un **input** en un conjunto de valores que sin las herramientas adecuadas se podría considerar como "**información basura**".
+
+La idea de esto es poder dar una primera capa de encriptación a nuestros datos ya que en caso de que por ejemplo alguien tenga acceso a nuestra base de datos, a parte tendrá que descifrar el hash para tener una claridad de los datos a los que tiene acceso, siendo muy seguro ya que a día de hoy es muy difícil para un computador descifrar un hash.
+
+Además de todo nos permitirá guardar datos sin siquiera conocer que datos hemos guardado, simplemente comprobando si están bien al ingresarse y al comprobarse, entregándonos una confianza ciega a nuestros usuarios de que no podremos acceder a sus datos.
+
+Un ejemplo de como implementar un hash en node:
+
+~~~javascript
+// importamos 'crypto' (este viene en los paquetes de node)
+const { createHash } = require('crypto');
+
+// creamos una funcion a la que le pasaremos un input
+function hash(input) {
+    // creamos el hash con 'sha256', este se aplicara al input y devolvera el hash como hexadecimal
+    return createHash('sha256').update(input).digest('hex');
+}
+
+// si imprimimos un dato con esta funcion nos entregara un hash
+console.log(hash('Hola, este dato estara encriptado!!!'));
+~~~
+
+*sha256, es un conjunto de algoritmos de hashing creados por la NSA (national security agency)*.
+
+Al ejecutar este código en nuestra terminal deberíamos ver un hash recién salido del horno, pero también podríamos hacer otras cosas, como por ejemplo comparar si 2 input son los mismos como hashes, por ejemplo:
+
+~~~javascript
+let password = 'password123';
+const hash1 = hash(password)
+
+let password2 = 'password123';
+const hash2 = hash(password)
+
+if (hash1 == hash2) {
+    console.log('The passwords are the same!!!');
+} else {
+    console.log('The passwords are different!!!')
+}
+~~~
+
+Pero como quizá pensaras, un hash no es suficiente para proteger este tipo de información.
+
+---
+
+### Salt
+
+Así nos referimos a una pequeña edición a nuestros valores antes de ser transformados en un "Hash", para así permitirnos un nivel extra de seguridad, ahora si alguien accede a nuestra base de datos, no solo tendrá que descifrar nuestro hash, sino también el Salt que le hemos agregado al mismo.
+
+Por si no lo sabias las contraseñas:`123456789`; `12345678`; `1234`; `111111`; `000000`; `1234567`; `1234567890` son de las mas utilizadas en el mundo por lo que aun que creamos que son la cosa mas insegura del mundo (y lo son), estas seguirán siendo utilizadas y lastimosamente esto nos puede jugar en contra.
+
+Si no utilizamos un **Salt**, alguien podría acceder a una tabla de contraseñas ya descifradas y hacer una búsqueda de los hashes de estas contraseñas en nuestra base de datos, así accediendo a los datos que no debería ya que como ya mencionamos, si hasheamos 2 veces el mismo elemento, estos resultados darán el mismo hash.
+
+Por eso el Salt es tan importante, nos permite generar cambios a los datos ingresados antes de ser generado este hash, así no será tan fácil de reconocer alguna coincidencia.
+
+ojo que por ejemplo al crear un usuario, cada usuario tendrá un Salt distinto para su contraseña en particular.
+
+---
+
+### HMAC
+
+Un **Hash-based message authentication code** es en si **un tipo de hash que requiere una contraseña o firma, esta nos permite verificar simultáneamente la integridad de los datos a demás de la autenticación de los datos**.
+
+Esto lo aplicamos en Node con algo conocido como **JSON web token** el cual será esta llave que nos permitirá verificar que nuestros datos provienen de un lugar seguro.
+
+Este siendo un método para manejar en si las autenticaciones en nuestras aplicación asegurando mayor seguridad entre ambas partes de la conexión (ya sea servidor - cliente o cliente - cliente).
+
+El proceso de verificar el origen de estos datos se logra gracias a un tipo de "firma" secreta asegurada por el **HMAC**.
+
+aun así el **Jwt** es mas visto en los escenarios de: autorización o intercambio de información entre 2 entidades en la aplicación.
+
+---
+
+## Empezando un nuevo proyecto
+
+Para probar estos conceptos crearemos un nuevo proyecto en el que haremos la prueba de crear usuarios y iniciar sesión con estos.
+
+Para ello como es obvio crearemos un proyecto nuevo siguiendo los siguientes pasos:
+
+1. Crea una carpeta con el nombre de tu proyecto (en mi caso lo llame "**`LoginTesting`**").
+2. En esta inicia un proyecto nuevo de Node con `npm init`.
+3. Instala las dependencias de este proyecto con `npm i express mongoose bcrypt jsonwebtoken express-jwt`.
+4. Creamos los archivos de código con los que trabajaremos inicialmente siendo estos: `index.js` y `user.js`
+
+Ahora podemos empezar con la configuración básica de nuestro proyecto:
+
++ En `Index.js` empezaremos haciendo lo siguiente:
+
+  ~~~js
+  // agregamos nuestras dependencias
+  const express = require('express');
+  const mongoose = require('mongoose');
+  const bcrypt = require('bcrypt');
+  const jwt = require('jsonwebtoken');
+  const expressJwt = require('express-jwt');
+  const User = require('./user');
+  
+  // creamos nuestra conexion a mongo
+  mongoose.connect('mongodb+srv://admin:asdf123@cluster0.ghuxske.mongodb.net/auth?retryWrites=true&w=majority');
+  
+  const app = express();
+  app.use(express.json());
+  
+  // ejecutamos nuestro servidor en el puerto 3000
+  app.listen(3000, () => {
+      console.log('listening on port 3000');
+  })
+  ~~~
+
++ En `user.js` creamos el modelo de nuestros usuarios en la base de datos de la siguiente forma:
+
+  ~~~js
+  const mongoose = require('mongoose');
+  
+  // creamos el modelo
+  const User = mongoose.model('User', {
+      username: {type: String, required: true},
+      password: {type: String, required: true},
+      salt: {type: String, required: true},
+  });
+  
+  // lo exportamos como un modulo (para que sea accesible desde nuestro index.js)
+  module.exports = User;
+  ~~~
+
+Con esto listo podemos comenzar con las funcionalidades principales de registro y autorización.
+
+---
+
+## Registrando un usuario
+
+Como es obvio empezaremos con una función importante para el proceso de inicio de sesión, ya que de cierto modo es imposible verificar la existencia de un usuario si ni un usuario existe en nuestra base de datos.
+
+Para esto crearemos nuestro End-point de registro de la siguiente forma::
+
++ Revisar si un usuario existe.
++ Agregar un usuario si el usuario no existe.
++ Enviarle al usuario 
++ Mostrar un error si alguno de estos pasos falla.
+
+Para ello haremos lo siguiente en nuestro `index.js`:
+
+~~~js
+// esta funcion se encargara de crear un token con el id que le entreguemos
+const signToken = _id => jwt.sign({ _id }, 'thisStringMustBeSecret');
+
+app.post('/register', async (req,res) => {
+    const { body } = req;
+    console.log(body);
+
+    try {
+        // buscamos si el username ya existe en la base de datos
+        const isUser = await User.findOne({ username: body.username });
+        if (isUser) {
+            return res.send('This user already exists');
+        }
+
+        // si el usuario no existe en la base de datos:
+        const salt = await bcrypt.genSalt(); // generamos un salt
+        const hashed = await bcrypt.hash(body.password, salt); // lo aplicamos a nuestra password
+        
+        // creamos la instancia de user con el nombre de usuario, el hash creado y nuestro salt
+        const user = await User.create({ username:body.username, password:hashed, salt })
+
+        // finalmente para poder enviar estos datos al cliente los firmamos como un token JWT
+        const signed = signToken(user);
+        res.status(201).send(signed); // y enviamos el token firmado al usuario
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+    }
+});
+~~~
+
+Un tema importante antes de continuar, si ves la siguiente linea:
+
+~~~javascript
+// esta funcion se encargara de crear un token con el id que le entreguemos
+const signToken = _id => jwt.sign({ _id }, 'thisStringMustBeSecret');
+~~~
+
+esta función tiene un string `'thisStringMustBeSecret'`, como dice el mismo, este debe ser secreto, ya que es el que utilizaremos para firmar nuestros tokens.
+
+En términos generales la idea es revisar la existencia de este usuario, en caso de que no exista simplemente crearemos este mismo pasando su contraseña por un hash y agregando un salt, para luego todos estos datos firmarlos como un JWT.
+
+Si entramos ahora a **Postman** y intentamos hacer un registro desde el enlace `http://localhost:3000/register` (de la misma forma que hacíamos un **POST** como cuando creamos nuestro primer Rest API) y le entregamos como Body lo siguiente:
+
+~~~javascript
+{
+    "username": "Rodrigo",
+    "password": "contrasena"
+}
+~~~
+
+Recibiremos un codigo similar al siguiente:
+
+~~~
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOnsidXNlcm5hbWUiOiJBbGVqYW5kcm8iLCJwYXNzd29yZCI6IiQyYiQxMCRiRzBXMldxUEtFSzVsMHdHbmtEMGtPZDR4alZsbktKcTBNWkhLMWtsL2wvcTQzNXk2MDNWdSIsInNhbHQiOiIkMmIkMTAkYkcwVzJXcVBLRUs1bDB3R25rRDBrTyIsIl9pZCI6IjYzNjMzZjNiYmU2MWE5YTUxN2JhZmJkZSIsIl9fdiI6MH0sImlhdCI6MTY2NzQ0ODYzNX0.2HIIFbMk_uhT5ARl06kpzeJjQzso0Cv8Sr-_sqfgCDw
+~~~
+
+En este caso este es el código que le entregamos a nuestro cliente, técnicamente es simplemente el id de nuestro usuario pero transformado en un **Json Web Token**.
+
+Finalmente si revisamos nuestra base de datos de MongoDb encontraras algo como lo siguiente:
+
+~~~json
+{"_id":"635f706d1d0f3c6a666bbfc4",
+ "username":"Rodrigo",
+ "password":"$2b$10$LQkP1ucljvpEft6Z6uMlNeLTeRUjDNb0zMDygF/N1qUWb9b8zR5Va",
+ "salt":"$2b$10$LQkP1ucljvpEft6Z6uMlNe",
+ "__v":"0"}
+~~~
+
+Como podrás ver nuestra contraseña se encuentra encriptada, para mantener este secretismo necesario.
+
+----
+
+## Iniciando sesión
+
+Continuando con lo anteriormente visto ahora nos enfocaremos en buscar estos datos y confirmar de forma segura que un usuario ingrese a estos sin problemas.
+
+Por ello crearemos ahora el End-Point de inicio de sesión de la siguiente forma:
+
+~~~javascript
+app.post('/login', async (req,res) => {
+    const { body } = req;
+    console.log(body)
+
+    try {
+        const user = await User.findOne({ username: body.username });
+        if (!user) { // revisamos si un usuario NO existe
+            return res.send('Username or password is incorrect!!!');
+        } else { // si este existe
+            const isMatch = await bcrypt.compare(body.password, user.password) 
+            if (isMatch) { // comprobamos que la password sea correcta
+                const signed = signToken(user._id);
+                res.status(200).send(signed) // si es correcta enviamos token al usuario
+            } else {
+                res.status(403).send('Username or password is incorrect!!!')
+            }
+        }
+    } catch (error) {
+        res.status(500).send(err.message);
+    }
+});
+~~~
+
+Un elemento importante de esta función es el: 
+
+~~~javascript
+const isMatch = await bcrypt.compare(body.password, user.password) 
+~~~
+
+La función `bcrypt.compare()` se encarga de hacer una comparación entre 2 parametros:
+
++ Un String sin encriptar (en este caso la contraseña que le entregamos desde el Body).
++ Un String encriptado (en este caso la contraseña que encontramos al hacer la búsqueda del usuario).
+
+Por ello es mas eficiente utilizar esto a una condicional normal al menos cuando utilizamos **bcrypt**.
+
+Ahora si hacemos una prueba en **Postman** desde el enlace `http://localhost:3000/login` pasándole como Body un elemento ya existente como es: 
+
+~~~javascript
+{
+    "username": "Rodrigo",
+    "password": "contrasena"
+}
+~~~
+
+Debería devolvernos un JWT del id de este elemento y en caso de que ingreses un usuario o contraseña invalida, te mostrara un error.
+
+Recuerda que el End-point lo creamos con el método **POST** así que debe estar en el mismo cuando ejecutes la peticion.
