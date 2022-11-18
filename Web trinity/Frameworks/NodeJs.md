@@ -1327,3 +1327,34 @@ Ahora si hacemos una prueba en **Postman** desde el enlace `http://localhost:300
 Debería devolvernos un JWT del id de este elemento y en caso de que ingreses un usuario o contraseña invalida, te mostrara un error.
 
 Recuerda que el End-point lo creamos con el método **POST** así que debe estar en el mismo cuando ejecutes la peticion.
+
+----
+
+### Middlewares
+
+Antes de continuar hay un concepto importante que debes conocer sobre **express** siendo este los **middlewares**, en si estos no los hemos visto de forma literal pero los has utilizado sin darte cuenta.
+
+En si, un **Middleware** es una función que **se ejecuta después de recibir nuestras peticiones y antes de enviar nuestras respuestas**, siendo como dice su nombre, lo que se encuentra en medio de estos pasos.
+
+Un ejemplo ya visto de estos **Middlewares** proviene en la función `app.use()` que ya hemos utilizado.
+
+Al llamar esta función, nuestro servidor esperara por una petición (sin importar con que método HTTP se envíe), cuando esta se reciba, ejecutara una función seleccionada por nosotros.
+
+El ejemplo mas fácil es el siguiente:
+
+~~~javascript
+app.use(express.json);
+~~~
+
+Esta función esperara a que llegue una petición, cuando esta llegue, transformara el estilo de la misma para que se transforme a un JSON, para luego pasar a la siguiente función.
+
+#### Parámetros de un middleware
+
+La forma real de un Middleware en si es la siguiente:
+
+~~~javascript
+const middleware = (req, res, next) => {
+    
+}
+~~~
+

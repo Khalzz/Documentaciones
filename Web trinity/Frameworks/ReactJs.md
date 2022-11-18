@@ -1,4 +1,4 @@
-# React Js
+# ReactJs
 
 **Documentación escrita por Rodrigo Seguel**.
 

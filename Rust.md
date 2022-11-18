@@ -1010,9 +1010,11 @@ struct Jugador {
 
 // creamos una "implementacion" del struct
 impl Jugador {
-    fn mostrar_datos(&self) -> String { // creamos un metodo que nos entrega el nombre y vidas del jugador 
+    // creamos un metodo que nos entrega el nombre y vidas del jugador 
+    fn mostrar_datos(&self) -> String { 
         // usamos la funcion format para concatenar un string con un int
-        return format!("nombre:{}, vidas:{}", self.nombre.clone(), self.vidas) // cuando retornas un string debes tener un clon
+        // recuerda que al retornar un string debemos retornar un clon del mismo
+        return format!("nombre:{}, vidas:{}", self.nombre.clone(), self.vidas) 
     }
 }
 
@@ -1022,7 +1024,8 @@ fn main() {
         vidas: 3, // y una cantidad de vidas
     };
 
-    print!("{}", jugador1.mostrar_datos()); // al llamar esta funcion, recibiremos los datos segun el return de nuestro metodo
+    // al llamar esta funcion, recibiremos los datos segun el return de nuestro metodo
+    print!("{}", jugador1.mostrar_datos()); 
 }
 ~~~
 
@@ -1037,7 +1040,8 @@ Los Enums son **otra estructura de datos** definidos como una lista de valores p
 La sintaxis de un enum es simple ya que en terminos basicos funcionan como listas implementados de la siguiente forma:
 
 ~~~rust
-enum Direcciones { // este enum hara referencia a las direcciones posibles a las que podra moverse nuestro jugador
+// este enum hara referencia a las direcciones posibles a las que podra moverse nuestro jugador
+enum Direcciones { 
 	// las posibilidades del mismo enum serian:
     Arriba,
     Abajo,
@@ -1079,10 +1083,11 @@ fn main() {
     let Jugador1 = Jugador{direccion: Direcciones::Arriba}; // continuando con el ejemplo anterior
     
     match Jugador1.direccion { // creamos un match que revisara por la direccion del jugador 1
-        Direcciones::Arriba => print!("Estas viendo arriba"), // en caso de que la direccion sea "arriba" imprimir mensaje
+        // en caso de que la direccion sea "arriba" imprimir mensaje
+        Direcciones::Arriba => print!("Estas viendo arriba"), 
+     	// si quieres usar un bloque de codigo, debes utilizar "({}),"   
         Direcciones::Abajo => {
         	print!("Estas viendo abajo")   
-            // en caso de que quieras utilizar un bloque de codigo debes usar llaves ({}) y una coma al final
         },
         Direcciones::Izquierda => print!("Estas viendo a la izquierda"),
         Direcciones::Derecha => print!("Estas viendo a la derecha"),
