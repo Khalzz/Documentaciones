@@ -1618,3 +1618,72 @@ app.use((err, req, res, next) => {
 ~~~
 
 En si es un middleware global el cual posee un error, este se ejecutara **siempre que usemos un `next()` pasándole un error como parámetro**, lo que puedes hacer es crear este y probar enviando datos inválidos a nuestro middleware, así veras ambos mensajes.
+
+Esto a demás nos puede servir para no solo retornar un mensaje al cliente, sino también una pagina especificando que estos errores se han encontrado.
+
+---
+
+## Haciendo nuestra palabra secreta
+
+Como quizá recordaras hay 2 líneas importantes de nuestro código, siendo las siguientes:
+
+~~~javascript
+const  validateJwt = expJwt({secret: 'thisStringMustBeSecret', algorithms: ['HS256'] })
+const signToken = _id => jwt.sign({ _id }, 'thisStringMustBeSecret');
+~~~
+
+En estas líneas creamos una función que validara un JWT en base a un "string secreto" y el otro firmara un JWT en base a este mismo "string secreto".
+
+El error esta a simple vista, **¿como puede ser esto un secreto si podemos verlo sin problemas?**, la respuesta es que simplemente no lo es, si subimos así nuestro código a git por ejemplo, cualquier persona tendrá acceso a nuestra palabra secreta, lo que facilitara el trabajo de robar datos de nuestras bases de datos.
+
+Para evitar esto, utilizaremos algo conocido como **Variables de entorno**, siendo estas **variables creadas específicamente en nuestro sistema, que solamente son accesibles desde el mismo**, es decir que esta variable debe crearse en cada sistema que corra el software, por ejemplo cuando subamos el proyecto a un servidor, debemos crear estos.
+
+Entonces si alguien accede a nuestro código y tiene que ejecutarlo, deberá crear el su propia variable de entorno, con su propia palabra secreta y con otros valores en caso de que utilicemos mas variables que requieran cierto secretismo.
+
+---
+
+### Como hacer una variable de entorno
+
+Empezaremos de forma simple, hay un modulo de node conocido como `dotenv` que nos permite acceder a archivos que se encargaran de definir estas variables de entorno.
+
+Este lo instalaremos con el comando `npm install dotenv` y luego simplemente lo importaremos agregando arriba del todo lo siguiente:
+
+~~~javascript
+require('dotenv').config();
+~~~
+
+Cuando esto este listo, crearemos un archivo con el nombre de `.env` y en el haremos lo siguiente:
+
+~~~
+SECRET=thisStringMustBeSecret
+~~~
+
+Agregaremos el nombre de nuestra variable de entorno y le entregaremos un valor (estos no pueden estar separados por un espacio), en si este modulo simplemente se encarga de facilitarnos el proceso de hacer todo esto a mano ya que varia entre lenguaje y sistema.
+
+Pero con esto listo simplemente podemos probarlo escribiendo lo siguiente en nuestro código:
+
+~~~javascript
+console.log(process.env.SECRET);
+~~~
+
+Si esto te muestra el texto de `thisStringMustBeSecret`, todo ha funcionado correctamente, por lo que en teoría ahora podríamos cambiar nuestras líneas anteriormente mencionadas por lo siguiente:
+
+~~~javascript
+const  validateJwt = expJwt({secret: process.env.SECRET, algorithms: ['HS256'] })
+const signToken = _id => jwt.sign({ _id }, process.env.SECRET);
+~~~
+
+---
+
+### importante
+
+Un tema **obligatorio** si trabajaras con `dotenv` es que este archivo **NO DEBE SER SUBIDO A NUESTRO REPOSITORIO PUBLICO**, ya que el mismo contiene estos datos privados.
+
+Recuerda que cuando subas este código a tu repositorio, agregar a `.gitignore` la línea:
+
+~~~
+.env
+~~~
+
+Ahora finalmente tienes una palabra secreta **realmente secreta**.
+
