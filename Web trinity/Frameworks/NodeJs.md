@@ -1150,7 +1150,7 @@ Ahora podemos empezar con la configuración básica de nuestro proyecto:
   const mongoose = require('mongoose');
   const bcrypt = require('bcrypt');
   const jwt = require('jsonwebtoken');
-  const expressJwt = require('express-jwt');
+  const {expressjwt: expJwt} = require("express-jwt");
   const User = require('./user');
   
   // creamos nuestra conexion a mongo
@@ -1354,7 +1354,267 @@ La forma real de un Middleware en si es la siguiente:
 
 ~~~javascript
 const middleware = (req, res, next) => {
-    
+    console.log('este es el test de un Middleware');
+    next();
+}
+
+app.use(middleware);
+~~~
+
+En si este se define por 3 parámetros importantes:
+
+1. `req`: anteriormente usado, nos permite acceder a el `request` hecho por el usuario.
+2. `res`: anteriormente usado, nos permite generar una `response` que se enviara al usuario.
+3. `next`: representa la siguiente función después de la ejecución de nuestro middleware, este es ejecutado con el `next()` y en las funciones que no lo posean de forma explicita, este será ejecutado de forma automática.
+
+Por lo que imagina que tenemos lo siguiente:
+
+~~~javascript
+app.use(middleware);
+
+app.get('/', (req,res) => {
+    console.log('has entrado a la pagina')
+})
+
+const middleware = (req, res, next) => {
+    console.log('este es el test de un Middleware');
+    next();
 }
 ~~~
 
+En este caso creamos al final el middleware y al inicio hacemos la llamada del mismo, este será ejecutado y **al tener el `next()`, nos permitirá ejecutar el siguiente middleware (la función `app.get()`)**, en caso de que este `next()` no se encuentre, **no se nos permitirá ejecutar nunca nuestro `app.get()`**.
+
+De esta forma podemos hacer cosas como, permitir que nuestro usuario acceda a una lista de productos **solo cuando este inicie sesión**, por ejemplo de la siguiente forma:
+
+~~~javascript
+app.use(isConnected);
+
+app.get('/productos', (req, res) => {
+    res.status(200).send('el usuario esta conectado, felicidades!!!');
+});
+
+function isConnected(req, res, next) {
+    let connected = true;
+    
+    if (connected) { 
+        next();
+    } else {
+        res.status(200).send('el usuario no esta conectado');
+    }
+}
+~~~
+
+Lo que tenemos es una pagina que al acceder a nuestro **endpoint** `/productos`, dependiendo del estado de la variable `connected` recibiremos un mensaje en la misma, avisando si el usuario esta o no conectado.
+
+Estos son los que conocemos como `middlewares globales` ya que la forma en la que estos afectan es en base a la posicion que tienen respecto otros middlewares.
+
+> De hecho si tenemos algo como lo siguiente:
+>
+> ~~~javascript
+> // primero el get
+> app.get('/productos', (req, res) => {
+>     res.status(200).send('el usuario esta conectado, felicidades!!!');
+> });
+> 
+> // luego el end point
+> app.use(isConnected);
+> ~~~
+>
+> Solo obtendremos el mensaje de `"el usuario esta conectado"` ya que al ejecutar el `app.get()` no le entregamos el endpoint que referencie la ejecución del `app.use()`.
+>
+> Para ejecutar el `app.use()` simplemente haríamos lo siguiente:
+>
+> ~~~javascript
+> app.get('/productos', (req, res, next) => {
+>     res.status(200).send('el usuario esta conectado, felicidades!!!');
+>     next(); // llamamos al siguiente endpoint
+> });
+> 
+> app.use(isConnected);
+> ~~~
+
+A demás debo aclarar que este funcionamiento se encuentra presente solo cuando llamamos el metodo `app.use()`o cuando otro endpoint tiene luego un `app.use()`, ya que usualmente nuestros endpoints como `GET`, `POST`, `PUT`, etc... suelen jser ejecutados por el usuario, el `app.use()` no.
+
+El `app.use()` se ejecuta automáticamente por nuestro código, y el `next` afecta solamente a estas funcionalidades que están después de este o a los end points que luego tienen uno.
+
+por eso no necesitamos un `next` cuando hacemos algo como esto:
+
+~~~javascript
+app.get('/productos', (req, res, next) => {
+    res.status(200).send('lista de productos');
+    next(); // llamamos al siguiente endpoint
+});
+
+app.get('/usuarios', (req, res, next) => {
+    res.status(200).send('lista de usuarios');
+    next(); // llamamos al siguiente endpoint
+});
+~~~
+
+pero si cuando tenemos:
+
+~~~javascript
+app.get('/productos', (req, res, next) => {
+    res.status(200).send('lista de productos');
+    next(); // llamamos al siguiente endpoint
+});
+
+app.use(ejemplo);
+
+app.get('/usuarios', (req, res, next) => {
+    res.status(200).send('lista de usuarios');
+    next(); // llamamos al siguiente endpoint
+});
+~~~
+
+---
+
+### Middlewares generales y singulares
+
+Estos se dividen en 2 tipos en si:
+
+* Generales: trabajan en base a las funciones que creamos, de forma "general" donde definimos nuestros metodos.
+* Singulares: trabajan de forma especifica en una acciona en si (dentro de una función).
+
+La primera ya lo vimos, lo utilizamos para aprender que es un middleware, pero ahora revisaremos específicamente que es un middleware singular.
+
+Este lo podemos aplicar de una forma perfecta para nuestro funcionamiento ya creado de identificar si un usuario esta o no logeado, de la siguiente forma:
+
+~~~javascript
+app.get('/productos', isConnected , (req, res) => {
+    res.status(200).send('el usuario esta conectado, felicidades!!!');
+});
+
+function isConnected(req, res, next) {
+    let connected = true;
+    if (connected) {
+        next();
+    } else {
+        res.status(200).send('el usuario no esta conectado');
+    }
+}
+~~~
+
+Como podrás ver en el ejemplo, ahora eliminamos el middleware de nuestro `app.use()`, ahora simplemente definimos su uso como un parámetro de nuestro get, esto significa que **siempre se ejecutara antes de ejecutar el get** y según lo que ocurra en el mismo, accederemos o no a la función con esta forma de autenticación.
+
+---
+
+## Validando un jwt
+
+Continuando con nuestro código anterior de inicio de sesión nos encargaremos de verificar que el JWT traído sea correcto y valido.
+
+Para ello tendré que recordarte la siguiente línea de código:
+
+~~~js
+const {expressjwt: expJwt} = require("express-jwt");   
+~~~
+
+Esta misma nos trae una funcion la cual no hemos utilizado por ahora, este mismo lo utilizaremos como un middleware para confirmar que un json web token sea correcto, entregandole al mismo nuestra palabra secreta y el algoritmo con el que hemos encpriptado nuestros datos de la siguiente forma:
+
+~~~js
+const  validateJwt = expJwt({ 
+    secret: 'thisStringMustBeSecret', // esta es nuestra palabra secreta
+    algorithms: ['HS256'] // este es un array con el algoritmo utilizado para encriptar
+})
+
+// solo por temas de orden, crearemos el validate antes de nuestro firmador
+const signToken = _id => jwt.sign({ _id }, 'thisStringMustBeSecret');
+~~~
+
+Con esto listo simplemente iremos al endpoint `/middleware` que ya creamos para hacer lo siguiente:
+
+~~~js
+app.get('/middleware', validateJwt, (req, res) => {
+    console.log('log', req.auth)
+    res.send('ok');
+})
+~~~
+
+Ahora por motivos de prueba abriremos **Postman** y seguiremos los siguientes pasos:
+
+1. Haremos un post de login para algún usuario que tengamos creado (si no hay, debes registrarlo), al hacerlo recibiremos en **Postman** un id largo, este es nuestro JWT.
+2. Copiamos ese JWT y vamos a el panel de "Headers" en **Postman**, ahi agregaremos:
+   + Key: `Authorization`
+   + Value: `Bearer {el JWT sin las llaves}`
+3. Con esto listo ahora podremos hacer la llamada de nuestro middleware sin problemas, simplemente cambiamos nuestro enlace al de `http://localhost:3000/middleware` y ejecutamos un método `GET`.
+
+Si todo esta correcto, deberíamos recibir en nuestro Postman el texto "ok", mientras que en nuestra terminal recibiremos un texto con 2 valores:
+
+1. El id de nuestro usuario (el que hemos encriptado).
+2. Un valor llamado **iat** (este define cuando se creo el JWT y nos es útil en caso de que queramos caducar un JWT).
+
+Con esto listo podremos acceder a nuestros datos y en efecto ahora **buscar un usuario y acceder a todos sus datos en base a este request hecho**, principalmente por que por ahora de nuestro usuario solo tenemos los valores de **id** y **iat**.
+
+Para hacer esta asignacion haremos lo siguiente:
+
+~~~js
+const findAndAssignUser = async (req, res, next) => { // 1.
+    try {
+        const user = await User.findById(req.auth._id); // 2.
+        if (!user) { // 3.
+            return res.status(401).end();
+        }
+        req.user = user;
+        next(); // 4.
+    } catch (e) {
+        next(e); // 5.
+    }
+}
+
+app.get('/middleware', validateJwt, findAndAssignUser, (req, res) => {
+    res.send(req.user);
+    console.log(req.user);
+})
+~~~
+
+Con esto listo, veremos de uno en uno las partes importantes de este codigo.
+
+1. Creamos un middleware externo solo para tener mayor facilidad en la lectura de nuestro código.
+2. Intentamos asignar un usuario buscado en base a lo que recibamos en el request anterior.
+3. En caso de que el usuario no exista retornaremos un status de "no encontrado".
+4. En caso de que el usuario exista se pasara a la siguiente función (donde mostraremos los datos del usuario).
+5. En caso de que haya un error, ejecutaremos un middleware especial con el error enviado (se vera mas adelante)
+
+Listo, ahora si intentas ejecutar el código como antes, deberías tener los datos del usuario en base al mensaje con el **id** y el **iat**, a demás, prueba cambiar una palabra del **JWT** que ingresaste como `Authorization` en **Postman**, ahí veras como la api rechaza tu petición, ya que no se ha podido validar el **JWT** recibido.
+
+Como extra antes de continuar podemos unificar los middleware en uno solo gracias a una función de express, siendo la siguiente:
+
+~~~javascript
+// agregamos nuestros middleware en uno solo
+const isAuthenticated = express.Router().use(validateJwt, findAndAssignUser)
+
+// despues simplemente lo llamamos
+app.get('/middleware', isAuthenticated, (req, res) => {
+    res.send(req.user);
+    console.log(req.user);
+})
+~~~
+
+Así haciendo mas corto nuestros endpoints.
+
+---
+
+### Manejo de errores
+
+Como habrás visto, en nuestro middleware recién creado tenemos lo siguiente:
+
+~~~javascript
+catch (e) {
+	next(e);
+}
+~~~
+
+Esto lo tenemos específicamente para poder ejecutar una acción en caso que nuestro código genere un error.
+
+En si un tema importante a mencionar es que **cuando le pasamos un error a un `next()`, este ejecutara otro middleware que creemos especialmente para el manejo de estos errores**.
+
+Estos los crearemos de la siguiente forma:
+
+~~~javascript
+app.use((err, req, res, next) => {
+    console.log('ha habido un error', err)
+    res.send('Ha habido un error')
+})
+~~~
+
+En si es un middleware global el cual posee un error, este se ejecutara **siempre que usemos un `next()` pasándole un error como parámetro**, lo que puedes hacer es crear este y probar enviando datos inválidos a nuestro middleware, así veras ambos mensajes.
