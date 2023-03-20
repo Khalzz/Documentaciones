@@ -100,7 +100,7 @@ Sobre los tipos de datos, tenemos varios tipos comunes en otros lenguajes por ej
 	$edad = 30; // int
 	$precioEnDolares = 10.99; // float
 	$activo = true; // booleano
-	$fruits = array("Manzana", "Platano", "Naranja"); // array
+	$fruits = ["Manzana", "Platano", "Naranja"]; // array
 	$valorNulo = null;
 ?>
 ~~~
@@ -108,6 +108,32 @@ Sobre los tipos de datos, tenemos varios tipos comunes en otros lenguajes por ej
 *Como recordatorio, puedes hacer concatenación básica con el `variable . variable`*.
 
 También existen tipos de datos como las clases, pero los veremos mas adelante.
+
+---
+
+## Constantes
+
+Otro tema importante para el manejo de memoria en PHP es el conocer como funcionan las constantes, estos son un tipo de variable cuyo valor **no puede cambiar**, esto usualmente se utiliza en datos que utilizamos como convención, datos como:
+
+* Transformación de pies a metros.
+* Valor de un dólar en peso chileno.
+* Velocidad equivalente a 1 mph en k/h.
+
+En si existen 2 formas de instanciar una constante:
+
+~~~php
+// el define nos permite setear constantes fuera de una clase
+// si intentamos usarlos dentro de una clase tendremos un error
+define("NOMBRE_VARIABLE", "valor");
+define("VALOR_DOLAR_EN_PESO", 826.08);
+
+// el const funciona dentro y fuera de las clases
+// pero es usualmente utilizado dentro de las mismas
+const UN_MPH_EN_KH = 1.60934;
+const UN_PIE_EN_METROS = 0.3048;
+~~~
+
+
 
 ---
 
@@ -409,7 +435,7 @@ Este bucle se caracteriza por permitirnos ejercer un conteo en base a los elemen
 
 ~~~php
 // imagina que tenemos la sigueinte lista:
-$frutas = array("manzana","pera","platano","durazno","naranja");
+$frutas = ["manzana","pera","platano","durazno","naranja"];
 
 // ahora podriamos mostrarlos en pantalla de la sigueinte forma
 foreach($frutas as $fruta) {
@@ -428,7 +454,7 @@ A estos bucles le agregamos 2 utilidades necesarias de entender, siendo estas **
 El `break` se encarga de "salir del bucle", por ejemplo si encontramos un valor necesario y no queremos revisar lo que queda de la lista simplemente podemos hacer:
 
 ~~~php
-$frutas = array("manzana","pera","platano","durazno","naranja");
+$frutas = ["manzana","pera","platano","durazno","naranja"];
 
 foreach($frutas as $fruta) {
     if ($fruta == "durazno") {
@@ -444,7 +470,7 @@ foreach($frutas as $fruta) {
 Por otro lado el `continue`, sirve para saltarnos un punto del bucle, por ejemplo:
 
 ~~~php
-$frutas = array("manzana","pera","platano","durazno","naranja");
+$frutas = ["manzana","pera","platano","durazno","naranja"];
 
 foreach($frutas as $fruta) {
     if ($fruta == "durazno") {
@@ -479,6 +505,495 @@ echo $total; // esto nos retornara 20
 ~~~
 
 Ahora y siguiendo el ejemplo, cada vez que queramos hacer una suma, simplemente usas `suma(valor1, valor2)`.
+
+---
+
+# Clases
+
+Las "clases" u "objetos" son una metodología programática que nos permite "almacenar datos de una forma mas clara" en base a un "molde" el cual contiene **Métodos**(funciones) y **Propiedades**(variables) que definen no solo que es un objeto, si no también que puede hacer el mismo.
+
+Imagina que tenemos una clase con el nombre "persona", esta se instancia con nombre y edad, y posee un método que al ser ejecutado, te permite saludar a alguien y mostrar los datos del mismo.
+
+Este se veria de la siguiente forma:
+
+~~~php
+class Persona {
+    public $nombre;
+    public $edad;
+
+    // esta funcion se encargara de permitirnos crear una nueva persona (esta se crea por defecto)
+    public function __construct($nombre, $edad) { 
+        $this->nombre = $nombre;
+        $this->edad = $edad;
+    }
+
+    public function saludar() {
+        echo "Hola!, mi nombre es " . $this->nombre . " y mi edad es: " . $this->edad;
+    }
+}
+~~~
+
+Con esto ya tendríamos la base, ahora simplemente instanciamos el objeto y después llamamos su método:
+
+~~~php
+$persona1 = new Persona("Rodrigo Seguel", 20);
+$persona1->saludar();
+~~~
+
+Esto nos retornara un texto como el siguiente: `Hola!, mi nombre es Rodrigo Seguel y mi edad es: 20`.
+
+Recuerda que a diferencia de en otros lenguajes, cuando queremos llamar el método de una clase creada, debemos usar `->` en lugar de un punto.
+
++ Método en C#: `Persona.saludar();`.
++ Método en PHP: `Persona->saludar();`.
+
+---
+
+## Herencia
+
+La herencia es la capacidad de una clase de "clonar una clase base" para poder utilizar sus métodos y propiedades solo que editándolas o agregando mas.
+
+Siguiendo el ejemplo anterior, puede que queramos hacer una clase "mascota", los animales en si también tienen nombres y edad por lo que podríamos mantener los datos anteriores y agregar otros, por ejemplo:
+
+~~~php
+class Mascota extends Persona {
+    // ahora tenemos todas las variables de persona incluyendo los datos nuevos como es "patas"
+    public $patas;
+
+    public function __construct($nombre, $patas) {
+        $this->nombre = $nombre;
+        $this->patas = $patas;
+    }
+
+    // si quisieramos que el mensaje fuera exactamente el mismo no haria falta agregarlo aqui
+    // pero como lo vamos a cambiar lo instanciamos, esto se llama "polimorfismo"
+    public function saludar() {
+        echo "Mi nombre es " . $this->nombre . "y tengo" . $this->patas . "patas";
+    }
+}
+~~~
+
+zAhora simplemente puedes instanciar el nuevo objeto de la siguiente forma:
+
+~~~php
+$mascota1 = new Mascota("Cachulo", 4);
+$mascota1->saludar();
+~~~
+
+El resultado de esto seria el texto: `Mi nombre es Cachulo y tengo 4 patas`.
+
+Listo, con esto ya podríamos trabajar con objetos.
+
+---
+
+# Manejo de errores
+
+Otra de las funcionalidades presentes en todos (o la mayoría de lenguajes de programación) es el "manejo de errores por medio de `try...catch`".
+
+La función de este es permitirnos **"intentar(try)" ejecutar un bloque de código** y en caso de que algo falle y nos lance un error, **atraparemos(catch)** el mismo y ejecutaremos otro bloque en base a esto.
+
+Un ejemplo seria lo siguiente:
+
+~~~php
+try {
+    // aqui ejecutaremos un codigo
+} catch (Exception $e) { // si el codigo falla aqui guardaremos el error
+    echo 'Algo ha salido mal: ' . $e->getMessage(); // y lo retornare como un "echo"
+}
+~~~
+
+Esto es útil ya que el correcto uso de los `try...catch` nos permite responder a los errores que pueden crashear nuestro sistema.
+
+Cabe aclarar que en caso de que no se ejecute lo que escribas en el try, los cambios hechos en el mismo no se van a aplicar, por lo que si por ejemplo falla el try, hicimos una suma y falla el proceso de subir a la base de datos, la suma se desacera y recibiremos el mensaje de error.
+
+---
+
+# Interacciones con HTML
+
+Como es obvio, PHP al ser un lenguaje de BackEnd hay ciertos elementos que debemos tomar en cuenta como es por ejemplo, traer datos de una base de datos directamente desde nuestro servidor.
+
+Esto lo logramos directamente utilizando el tag `<?php?>` de por ejemplo la siguiente forma:
+
+~~~php
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Document</title>
+    </head>
+    <body>
+        <ul>
+            <?php
+                $frutas = ["Manzana", "Banana", "Pera", "Naranja"];
+                foreach ($frutas as $fruta) {
+                    echo "<li>".$fruta."</li>";
+                }
+            ?>
+        </ul>
+    </body>
+</html>
+~~~
+
+Con esto ya estaríamos sirviendo desde nuestra base de datos los elementos de esta lista en si.
+
+Aun que hay un elemento importante a tomar en cuenta, siendo este.
+
+## Include
+
+El "include" es una parte útil de las etiquetas de PHP, este nos permite acceder a código PHP que se encuentre en otros archivos y nos será vital para la forma en la que organizamos nuestro proyecto.
+
+Para hacer una prueba similar haremos lo siguiente:
+
+Crea un archivo llamado `frutas.php` y agrega lo siguiente:
+
+~~~php
+<?php
+    $frutas = ["Manzana", "Banana", "Pera", "Naranja"];
+    foreach ($frutas as $fruta) {
+        echo "<li>".$fruta."</li>";
+    }
+?>
+~~~
+
+Con esto listo, podemos ir a nuestro `index.html` e ingresaremos lo siguiente:
+
+~~~php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+		<?php include 'frutas.php' ?>
+	</ul>
+</body>
+</html>
+~~~
+
+Con el `<?php include 'frutas.php'?>` estamos diciendo que se ejecute lo que haya en el archivo llamado `frutas.php`.
+
+---
+
+# Post y Get
+
+Unas de las funcionalidades mas útiles en el desarrollo web es el "enviar y recibir" valores desde nuestra pagina, con el uso de formularios `POST` y `GET`.
+
+## Get
+
+Empezaremos con la función "GET", este nos permite **traer** valores de nuestro backend, y nuestro formulario se veria de la siguiente forma:
+
+~~~php
+<form action="get.php" method="GET">
+  <label for="inputNombre">Name:</label>
+  <input type="text" name="nombre">
+  <button type="submit">Submit</button>
+</form>
+~~~
+
+Debes fijarte que el valor que enviamos tenga un `name` para que así podamos acceder al mismo desde el PHP.
+
+Asegúrate de crear el archivo `get.php` y de tener seleccionado el método especifico `GET` en el formulario, en el archivo recién creado agregaremos el siguiente código:
+
+~~~php
+<?php
+    $nombre = $_GET["nombre"]; // el $_GET[] nos permite acceder a los valores segun su "name"
+    echo $nombre; // finalmente solo retornamos el elemento recibido
+?>
+~~~
+
+Aun que a parte de esto también podríamos acceder a datos que se encuentren en una base de datos, pero esto se vera mas adelante. 
+
+Recuerda que si tienes el formulario en tipo `GET`, los datos se enviaran desde el enlace, por lo que al presionar `submit`, tendremos un enlace como el siguiente: `http://localhost/hello-php/get.php?nombre=Rodrigo`, por lo que no es muy seguro si necesitamos hacer algo como un inicio de sesión.
+
+---
+
+## Post
+
+El otro método utilizado en los formularios es `POST`, este nos permite enviar datos a la base de datos de una forma mas segura, ya que los mismos no son enviados por el enlace.
+
+De nuestro formulario lo único que cambiaríamos seria lo siguiente:
+
+~~~php
+<!--Creamos un archivo llamado post.php y cambiamos el metodo a POST-->
+<form action="post.php" method="POST">
+~~~
+
+Con este cambio listo, desde nuestro `post.php` agregamos lo siguiente:
+
+~~~php
+<?php
+    $nombre = $_POST["nombre"];
+    echo $nombre
+?>
+~~~
+
+Ahora veras que el enlace simplemente es: `http://localhost/hello-php/post.php` cuando hacemos el submit.
+
+---
+
+# MySQL
+
+Aprovechando que estamos utilizando Xampp, aprovecharemos de crear directamente la conexión con esta base de datos.
+
+Por lo que directamente entenderé daré por hecho que sabes lo básico de la utilización de MySql.
+
+Para empezar directamente abre Xampp y presiona el botón `start` en la opción de **MySql**, tras esto podrás presionar en `admin` y abrirás el administrador de base de datos, donde crearas una base de datos (yo la llamare `test`) y directamente podremos empezar a trabajar.
+
+Para ello simplemente presiona en `Nueva` y te abrirá una pagina donde podrás definir el nombre de la base de datos.
+
+Luego ve a la seccion de `sql` y ejecutas el siguiente código:
+
+~~~sql
+CREATE TABLE fruits (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO fruits (name) VALUES ('Manzana');
+INSERT INTO fruits (name) VALUES ('Platano');
+INSERT INTO fruits (name) VALUES ('Naranja');
+~~~
+
+Con esto crearemos una tabla llamada `frutas` con un id auto-incremental y un valor `nombre` que es un string.
+
+Con esto listo simplemente podemos empezar una conexión a MySql.
+
+Para esta parte de la documentación seguiremos un poco una nueva estructura de código:
+
++ controllers
+  + frutas
+    + `get.php`: aquí ingresaremos el código para llamar a todos los elementos de la base de datos
+    + `post.php`: aquí ingresamos el código para agregar datos a la base de datos.
++ configuration
+  + `db.php`
++ `index.php`: aquí ingresamos el código base de la pagina.
+
+Empezaremos definiendo los datos de nuestra base de datos en `configuration/db.php`, aquí ingresaremos lo siguiente:
+
+~~~php
+<?php
+    // here i will set the configuration of teh database
+    $host = 'localhost';
+    $user = 'root';
+    $password = '';
+    $database = 'test';
+    $conn = mysqli_connect($host, $user, $password, $database);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } else {
+        echo "Ok: ";
+    }
+?>
+~~~
+
+Ahora simplemente al inicio de cada elemento que se conecte a la base de datos tendrás que ingresar la siguiente lineal:
+
+~~~php
+require_once(dirname(__FILE__) .'/../../configuration/db.php');
+~~~
+
+Con esto listo, en nuestro `index.php` agregamos lo siguiente:
+
+~~~php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <ul> <!--En esta lista pondremos todos los valores traidos desde la basae de datos-->
+		<?php include './controllers/frutas/get.php' ?>
+	</ul>
+</body>
+</html>
+~~~
+
+Mientras que en nuestro `get.php` agregaremos el siguiente código:
+
+~~~php
+<?php
+    require_once(dirname(__FILE__) .'/../../configuration/db.php');
+
+    $sql = "SELECT * FROM fruits"; // aqui ingresamos el codigo de sql a ejecutar
+    $result = mysqli_query($conn, $sql);
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<li>".$row["name"]."</li>";
+    }
+
+    mysqli_close($conn);
+?>
+~~~
+
+Listo, básicamente esto es todo, el proceso de "llamado de datos desde PHP a una base de datos MySql", ahora para el caso del "POST" podemos hacer algo similar pero un poco diferente.
+
+Primero en nuestro `index.php` agregamos lo siguiente:
+
+~~~php
+<form action="./controllers/frutas/post.php" method="POST">
+      <label for="inputFruta">ingresa una fruta nueva:</label>
+      <input type="text" name="fruta">
+      <button type="submit">Submit</button>
+</form>
+~~~
+
+Y en nuestro `post.php` agregamos lo siguiente:
+
+~~~php
+<?php
+    $fruta = $_POST["fruta"];
+
+    require_once(dirname(__FILE__) .'/../../configuration/db.php');
+
+	// aqui ingresamos el codigo de sql a ejecutar
+    $sql = "INSERT INTO fruits (name) VALUES ('$fruta');"; 
+    
+    // manejamos los errores
+    if (mysqli_query($conn, $sql)) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+      
+    mysqli_close($conn);
+?>
+~~~
+
+OJO: **Hay un problema importante en este código a resaltar y tiene que ver con seguridad**, el problema que podríamos recibir se conoce como **Sql Injection**
+
+Esto ocurre por ejemplo si el usuario en lugar de efectivamente escribir en el input algo como `Pera`, ingresa algo como un código de SQL que pueda romper nuestra base de datos.
+
+Para solucionar este problema utilizamos algo llamado **Prepared Statements**, esto nos permitirá "preparar" nuestro código antes de ejecutarlo, así de cierta forma evitando que se ejecute código no deseado que llegue a nuestra base de datos.
+
+Para arreglar esto debes hacer algo como lo siguiente:
+
+~~~php
+<?php
+    $fruta = $_POST["fruta"];
+    require_once(dirname(__FILE__) .'/../../configuration/db.php');
+    
+    // preparamos nuestro "statement (stmt)"
+    $stmt = $conn->prepare("INSERT INTO fruits (name) VALUES (?)");
+    $stmt->bind_param("s", $fruta); // con esto asignamos el $name a nuestro stmt
+
+    // Ejecutamos el statement
+    if ($stmt->execute()) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+  
+    // cerramos el statement y la conexion
+    $stmt->close();
+    $conn->close();
+?>
+~~~
+
+En caso de que nuestra tabla tenga varios valores, podemos hacer algo como lo siguiente:
+
+~~~php
+$stmt = $conn->prepare("INSERT INTO users (name, surname, age) VALUES (?, ?)");
+$stmt->bind_param("ssi", $name, $surname, $age);
+~~~
+
+El `bind_params()` nos permite setear los datos al "statement", por ello mencionamos en un string la inicial; de los tipos de datos de nuestros valores ("ssi" = string, string, integer).
+
+Con esto ya podrá funcionar nuestro código sin problemas de los conocidos SQL Ijection.
+
+Algo similar podemos hacer con nuestro `get.php` y lo haremos simplemente para mantener consistencia en nuestro código.
+
+~~~php
+// get.php
+<?php
+    require_once(dirname(__FILE__) .'/../../configuration/db.php');
+
+    $sql = "SELECT * FROM fruits"; // aqui ingresamos el codigo de sql a ejecutar
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo "<li>".$row["name"]."</li>";
+        }
+    } else {
+        echo "Something went wrong";
+    }
+
+    $conn->close();
+?>
+~~~
+
+Listo, ahora sabemos lo básico para trabajar con MySql.
+
+---
+
+# Ajax
+
+Hasta ahora hemos visto simplemente la conexión que podemos conseguir entre PHP y HTML, esta siendo una conexión directa por lo que no podremos hacer cosas como validación de datos en JavaScript antes de enviarlos, al menos no sin utilizar AJAX.
+
+Ajax es una técnica para crear sitios web interactivos utilizando datos en forma de XML o Json, dicho mas fácil, es simplemente una forma de hacer Fetching de datos a PHP desde nuestro JavaScript.
+
+El funcionamiento del mismo podríamos resumirlo de la siguiente forma.
+
+Volvamos al formulario que ya teníamos, a este le eliminaremos el `action` que tenia y dejaremos lo siguiente:
+
+~~~php
+<form id="my-form" method="POST"> <!--Simplemente agregamos un id-->
+    <label for="inputNombre">ingresa una fruta nueva:</label>
+    <input type="text" name="fruta">
+    <button type="submit">Submit</button>
+</form>
+<script src="main.js"></script> <!--Recuerda llamar el archivo de js-->
+~~~
+
+Luego desde un archivo JavaScript (el cual llame `main.js` y posicione en la carpeta raíz del proyecto) , en este agregaremos el siguiente codigo:
+
+~~~javascript
+const form = document.getElementById("my-form");
+
+form.onsubmit = (e) => {
+    e.preventDefault(); // evitamos que se recargue la pagina al presionar submit
+    
+    // traemos los datos del formulario
+    const data = new FormData(form);
+    const fruta = data.get("fruta");
+    
+    // revisamos que el valor traido tenga un largo mayor a 0
+    if (fruta.length > 0) {
+        // hacemos la llamada a php
+        fetch('./controllers/frutas/post.php', {
+            method: "POST",
+            body: "fruta=" + fruta,
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded"
+            }
+          })
+          .then(response => response.text())
+          .then(data => alert(data))
+          .catch(error => console.error(error));
+    }
+}
+~~~
+
+Simplemente hacemos un fetching de datos  y en base a los datos obtenidos recibiremos una respuesta, recuerda que al hacer esto, los datos que se retornen con un `echo` se devolverán como un string, por lo que podemos mostrar una alerta con los datos retornados.
+
+**Algo a tomar en cuenta**: es que en el código de Javascript que hicimos hacemos la validación de un dato, esto al estar en el front-end también tendríamos que hacer algo similar desde nuestro código de PHP, como lo siguiente:
+
+~~~php
+// definicion de variables
+if (strlen($fruta) < 1 || empty($fruta)) {
+	echo "Error, the data with more than 1 letter";
+	exit();
+}
+// conexion base de datos y subida de datos
+~~~
+
+Este código obviamente va antes de los métodos de subidas de datos, ya que así cancelamos todo y enviamos el mensaje de error si es que el usuario ingresa un valor que posea menos de 1  letra o esta vacío.
+
+Otro tema a comentar es que al presionar submit, la pagina no se actualiza automáticamente, por lo que deberás subir un "valor nuevo desde javascript" el cual se cargara cuando recargues la pagina.
+
+Pero eso queda como una tarea para ti.
 
 ---
 
