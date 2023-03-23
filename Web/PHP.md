@@ -133,7 +133,7 @@ const UN_MPH_EN_KH = 1.60934;
 const UN_PIE_EN_METROS = 0.3048;
 ~~~
 
-
+De cierta  forma el funcionamiento de las constantes nos permite generar datos con menos memoria, eliminando esta mutabilidad.
 
 ---
 
@@ -926,6 +926,8 @@ Algo similar podemos hacer con nuestro `get.php` y lo haremos simplemente para m
 
 Listo, ahora sabemos lo básico para trabajar con MySql.
 
+**Ojo**: recuerden siempre cerrar la conexión o los `stmt` ya que no hacerlo puede llevar a **memory leaks**, esa es la razón principal por la que lo hacemos.
+
 ---
 
 # Ajax
@@ -994,6 +996,57 @@ Este código obviamente va antes de los métodos de subidas de datos, ya que as�
 Otro tema a comentar es que al presionar submit, la pagina no se actualiza automáticamente, por lo que deberás subir un "valor nuevo desde javascript" el cual se cargara cuando recargues la pagina.
 
 Pero eso queda como una tarea para ti.
+
+---
+
+# Sessions
+
+Un concepto útil para el desarrollo de plataformas mas completas en PHP son las `SESSIONS`, estas nos permiten almacenar datos en nuestro backend y así mantener datos en las distintas ventanas que estén conectadas a la sesión, por ejemplo su uso mas común, es para guardar datos del usuario cuando inicie sesión.
+
+Su utilización es simple, y se basan en 2 funcionalidades principales:
+
+* **Almacenar datos en una sesión**:
+
+  El almacenar datos en una sesión es relativamente fácil y no requiere mayor explicación:
+
+  ~~~php
+  session_start(); // iniciamos la sesion (se debe iniciar en cada archivo que lo utilice)
+  
+  $username = "Rodrigo Seguel"; // creamos un username (este puede traerse desde un POST)
+  
+  $_SESSION['username'] = $username; // agregamos el valor a nuestra sesion
+  ~~~
+
+  ---
+
+* **Acceder a datos de una sesión**:
+
+  Este proceso es igual de sencillo y simplemente requiere de:
+
+  ~~~php
+  session_start(); // iniciamos la sesion (se debe iniciar en cada archivo que lo utilice)
+  
+  $username = $_SESSION['username'];
+  ~~~
+
+  ---
+
+* **Salir de una sesión**:
+
+  Para salir de una sesión (por ejemplo si cierras sesión en una pagina) debes seguir el siguiente procedimiento:
+
+  ~~~php
+  // Iniciamos la sesion
+  session_start();
+  
+  // Eliminamos las variables de sesion
+  $_SESSION = array();
+  
+  // Destruimos la sesion
+  session_destroy();
+  ~~~
+
+  Cabe aclarar que el `session_destroy()` elimina los datos de sesión del servidor, pero no los valores que se encuentran en la variable `$_SESSION`, por lo que técnicamente aun son accesibles, utilizo `$_SESSION = array();` para eliminar todos los datos de aquí también y después `session_destroy()` elimina los datos del servidor.
 
 ---
 
