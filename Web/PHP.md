@@ -729,6 +729,23 @@ Con este cambio listo, desde nuestro `post.php` agregamos lo siguiente:
 
 Ahora veras que el enlace simplemente es: `http://localhost/hello-php/post.php` cuando hacemos el submit.
 
+**Ojo**: si tienes un submit en PHP tambien puuedes comprobar que se presione usando `$_POST['name-del-boton']`, por lo que por ejemplo una implementacion funcional de esto seria tener lo siguiente:
+
+~~~php
+<form action="" method="POST">
+    <?php include("./../controllers/user/login_user.php") ?>
+    <input type="submit" id="submitForm" value="login" name="login">
+</form>
+~~~
+
+Y en nuestra logica de Backend:
+
+~~~php
+if (!empty($_POST["login"])) {
+    // codigo aqui...
+}
+~~~
+
 ---
 
 # MySQL
@@ -1047,6 +1064,8 @@ Su utilización es simple, y se basan en 2 funcionalidades principales:
   ~~~
 
   Cabe aclarar que el `session_destroy()` elimina los datos de sesión del servidor, pero no los valores que se encuentran en la variable `$_SESSION`, por lo que técnicamente aun son accesibles, utilizo `$_SESSION = array();` para eliminar todos los datos de aquí también y después `session_destroy()` elimina los datos del servidor.
+  
+  **Ojo**: La sesión de PHP no se almacena en el servidor, sino que en las cookies, por lo que cuando el servidor debe acceder a los datos guardados en la sesión, este revisara simplemente lo que hay en las cookies.
 
 ---
 
