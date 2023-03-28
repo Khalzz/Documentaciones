@@ -1069,3 +1069,15 @@ Su utilización es simple, y se basan en 2 funcionalidades principales:
 
 ---
 
+# Mailing
+
+Puede que en algún momento necesitemos enviar correos desde nuestro backend, ya sea para requerir confirmaciones o para otras peticiones de datos importantes, por ello debes saber que con `PHPMailer` puedes efectivamente enviar correos.
+
+Una cosa a tomar en cuenta antes de intentarlo es que para la completa funcionalidad de esto, debes tener un servidor configurado para el envió de correos o en otro caso, tener una librería externa que haga esto por ti.
+
+*La función se ve de la siguiente forma:*
+
+~~~php
+// todo:
+~~~
+
