@@ -53,8 +53,6 @@ Este contiene los siguientes elementos:
 + `page.jsx`
 + `page.modules.css`
 
-
-
 ### Page.jsx
 
 En si el sistema de rutas de Next.js requiere siempre de un archivo con el nombre `page.jsx` o `page.js`, para mencionar que ese elemento es una pagina.

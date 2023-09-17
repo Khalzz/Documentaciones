@@ -1124,3 +1124,20 @@ Por otro lado un **crate librería** es un código **no compilable** ya que no p
 
 En términos simples, **un package es un proyecto de Rust** creado con **`cargo new proyecto`**, mientras que **un crate es un archivo de código de Rust**.
 
+---
+
+## Linker
+
+Uno de los conceptos importantes cuando hagamos proyectos grandes en Rust es el Linker.
+
+Este nos permitirá de cierta forma acceder a ciertas librerías que no se encuentren listadas en cargo o que requieran archivos externos de tipo `.dll` o `.lib`.
+
+Usualmente notaras que por ejemplo al utilizar SDL2 te dara errores como `fatal error LNK1181: cannot find file 'SDL2.lib'`, esto significa que tienes el crate, pero aun te faltan elementos.
+
+Para solucionar esto, simplemente descargas el archivo de la librería a utilizar (por ejemplo `sdl2_image-devel-VC.zip`) y dentro del mismo tendrás una carpeta llenas de archivos `.lib` y un `.dll`.
+
+Este `.lib` debe ir a donde Rust ingrese sus librerías, en caso de Windows siendo:
+
+`C:\Users\[username]\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib\rustlib`
+
+Luego el o los archivos `.dll` debemos ingresarlos directamente en la carpeta raíz de nuestro proyecto.

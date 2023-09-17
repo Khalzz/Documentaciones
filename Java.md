@@ -12,7 +12,8 @@ Java a demás es uno de los 2 lenguajes principales para el desarrollo nativo en
 
 ## Indice
 
-+ 
+
+
 ---
 # Primeros pasos en java
 
@@ -1453,7 +1454,7 @@ De este codgo hay varias cosas a mencionar:
 
     `"INSERT INTO `usuarios`(`USERNAME`, `PASSWORD`) VALUES ('[value-1]','[value-2]')"` y cambiamos el "[value-1]" y "[value-2]" por un `?` 
 
-   ---
+---
 
 2. En el código usamos `pst.setString(1, u.getUsername);`, la función de este es enviar los datos a la tabla en si según la posición del parámetro ingresado en la función, en este caso al primer parámetro (USERNAME) y el segundo parámetro es el valor que le enviaremos al mismo, el nombre "setString()" varia dependiendo del tipo de dato que enviaremos, si es un integer por ejemplo se transformara en un "setInt()".
 
@@ -1513,8 +1514,6 @@ public ArrayList<Usuario[]> Read() { // llamamos la funcion que ya creamos en la
         return false
     }
 ~~~
-
-
 
 ---
 
